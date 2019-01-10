@@ -1,0 +1,7 @@
+.bundle/
+vendor/bundle/
+.env
+.sass[-_]cache/
+node_modules/
+config/certs/*
+!config/certs/.keep
