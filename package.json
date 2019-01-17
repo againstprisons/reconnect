@@ -1,0 +1,19 @@
+{
+  "name": "reconnect",
+  "version": "0.1.0-alpha.1",
+  "description": "A penpal network management system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peopleagainstprisons/reconnect.git"
+  },
+  "author": "People Against Prisons Aotearoa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peopleagainstprisons/reconnect/issues"
+  },
+  "homepage": "https://github.com/peopleagainstprisons/reconnect#readme",
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "purecss": "^1.0.0"
+  }
+}

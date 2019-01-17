@@ -1,0 +1,51 @@
+:'meta_description': "English"
+
+# Languages
+:'language/change': "Change language"
+:'lanugage/invalid': "The chosen language was not found."
+
+# Fields
+:'email_address': "Email address"
+:'email_address/change': "Change email address"
+:'password': "Password"
+:'password/confirm': "Password (again, to confirm)"
+:'password/current': "Current password"
+:'password/new': "New password"
+:'password/new/confirm': "New password (again, to confirm)"
+:'password/change': "Change password"
+:'name': "Name"
+:'name/change': "Change your name"
+:'required_field_missing': "A required field was not provided."
+
+# Errors
+:'errors/not_found/title': "Page not found"
+:'errors/not_found/content': "The page you have requested could not be found."
+
+# Maintenance
+:'maintenance/warning': "Maintenance mode is enabled!"
+
+# Index
+:'index/title': "Home"
+
+# Authentication
+:'auth/login_or_signup': "Log in or sign up"
+:'auth/logout': "Log out"
+:'auth/logout/success': "You have successfully logged out."
+:'auth/login/title': "Log in"
+:'auth/login/failure': "Username or password is incorrect."
+:'auth/login/success': "You have successfully logged in."
+:'auth/signup/title': "Sign up"
+:'auth/signup/email_already_used': "The provided email is already in use. Try <a href=\"/auth\">logging in</a>."
+:'auth/signup/password_confirm_incorrect': "Please enter the same password in both fields."
+:'auth/signup/success': "Your sign up was successful. Welcome to <%= site_name %>!"
+:'auth/reset/title': "Reset password"
+
+# Account settings
+:'account/title': "Account settings"
+:'account/twofactor': "Two-factor authentication"
+
+# System settings
+:'system/title': "System admin"
+
+# Miscellaneous things
+:'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://github.com/peopleagainstprisons/reconnect\">re:connect</a>"

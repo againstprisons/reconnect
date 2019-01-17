@@ -1,0 +1,12 @@
+!!!html
+%html
+  %head
+    = haml :layout_head, :locals => {:title => title}
+
+  %body
+    - if logged_in? && is_maintenance?
+      = haml :'maintenance/warning'
+
+    .body-container
+      = render_flashes
+      = yield

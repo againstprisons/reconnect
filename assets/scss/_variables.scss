@@ -1,0 +1,31 @@
+$font_stack: sans-serif;
+
+/* Symbolic colors */
+$symbolic_primary_foreground: #fff;
+$symbolic_primary_background: #0078e7;
+$symbolic_primary_border: #0078e7;
+
+$symbolic_success_background: #0b0;
+$symbolic_success_foreground: #dfb;
+$symbolic_success_border: #12e512;
+
+$symbolic_warning_background: #fec;
+$symbolic_warning_foreground: #860;
+$symbolic_warning_border: #fea;
+
+$symbolic_error_background: #b00;
+$symbolic_error_foreground: #fcc;
+$symbolic_error_border: #e51212;
+
+/* Generic body colors */
+$color_body_fg: #000;
+$color_body_bg: #fff;
+$color_dimmed_fg: #888;
+$color_dimmed_bg: $color_body_bg;
+
+/* Body header */
+$color_body_header_fg: #000;
+$color_body_header_bg: #efefef;
+$color_body_header_border: #bbb;
+$color_body_header_navbar_hover_border: $symbolic_primary_background;
+$color_body_header_navbar_selected_border: $symbolic_primary_background;

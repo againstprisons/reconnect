@@ -1,0 +1,12 @@
+.auth-container
+  .pure-g
+    .pure-u-1.pure-u-md-1-4
+    .pure-u-1.pure-u-md-1-2
+      .auth-header
+        %a.auth-header-link.auth-header-link-login{:href => "/auth", :class => [current?("/auth")].compact}
+          = t :'auth/login/title'
+
+        %a.auth-header-link.auth-header-link-signup{:href => "/auth/signup", :class => [current?("/auth/signup")].compact}
+          = t :'auth/signup/title'
+
+      = yield

@@ -1,0 +1,8 @@
+%footer.page-footer
+  %p= t :powered_by_reconnect, :site_name => site_name
+
+  = haml :language_switcher
+
+  - if ReConnect.display_version
+    %p= "re:connect #{ReConnect.version}"
+

@@ -1,0 +1,33 @@
+@import 'variables';
+
+*,
+*:before,
+*:after
+{
+  box-sizing: border-box;
+}
+
+html,
+button,
+input,
+select,
+textarea,
+.pure-g [class *= "pure-u"]
+{
+  font_family: $font_stack;
+}
+
+@import 'body_header';
+@import 'body_container';
+@import 'body_footer';
+@import 'form';
+@import 'button';
+@import 'message';
+@import 'sidebar';
+
+/* Maintenance header */
+@import 'maintenance';
+
+/* Section-specific styles */
+@import 'section_auth';
+@import 'section_account';

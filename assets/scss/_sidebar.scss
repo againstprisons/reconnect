@@ -1,0 +1,31 @@
+.sidebar-menu
+{
+  background: $color_body_header_bg;
+  color: $color_body_header_fg;
+  margin: 0 1.5em 0 0;
+  padding: 0.25em 0;
+
+  border: 1px solid $color_body_header_border;
+  border-radius: 4px;
+
+  .sidebar-menu-item
+  {
+    background: transparent;
+
+    a
+    {
+      margin-left: 0.25em;
+      border-left: 2px solid transparent;
+    }
+
+    &.pure-menu-selected
+    {
+      font-weight: bold;
+
+      a
+      {
+        border-left-color: $color_body_header_navbar_selected_border;
+      }
+    }
+  }
+}

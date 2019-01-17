@@ -1,0 +1,29 @@
+%header.body-header
+  .body-header-top
+    %h1.body-header-title
+      %a{:href => "/"}
+        = site_name
+
+    .body-header-user-controls
+      - if logged_in?
+        .body-header-user-controls-name
+          %i.fa.fa-user
+          = current_user_name_or_email
+
+        .body-header-user-controls-actions
+          %a.body-header-user-controls-logout{:href => '/auth/logout'}
+            = t :'auth/logout'
+
+      - else
+        %a.body-header-user-controls-login{:href => '/auth'}
+          %i.fa.fa-user
+          = t :'auth/login_or_signup'
+
+  - items = navbar_items
+  - if items.count.positive?
+    %nav.body-header-navbar.pure-menu.pure-menu-horizontal
+      %ul.pure-menu-list
+        - items.each do |item|
+          %li.pure-menu-item.body-header-navbar-item{:class => [('pure-menu-selected' if item[:selected])].compact}
+            %a.pure-menu-link{:href => item[:link]}
+              = item[:text]

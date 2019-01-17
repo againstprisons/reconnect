@@ -1,0 +1,21 @@
+preload:
+  - ApplicationController
+
+controllers:
+  - path: /auth/signup
+    controller: AuthSignupController
+  - path: /auth/logout
+    controller: AuthLogoutController
+  - path: /auth
+    controller: AuthLoginController
+
+  - path: /account
+    controller: AccountIndexController
+
+  - path: /language
+    controller: LanguageController
+
+  - path: /static
+    controller: StaticController
+  - path: /
+    controller: IndexController

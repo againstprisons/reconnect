@@ -1,0 +1,21 @@
+.form-wrapped
+{
+  h1
+  {
+    font-size: 1.25em;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    margin: .25em 0 1em 0;
+    padding: .25em 0;
+  }
+
+  input:not([type = 'checkbox']),
+  textarea,
+  select,
+  button,
+  a.button
+  {
+    width: 100%;
+    margin: 0 0 1em 0 !important;
+  }
+}

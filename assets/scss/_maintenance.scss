@@ -1,0 +1,17 @@
+.maintenance-warning
+{
+  display: block;
+  width: 100%;
+  
+  color: $symbolic_error_foreground;
+  background: $symbolic_error_background;
+  border-bottom: 1px solid $symbolic_error_border;
+
+  p
+  {
+    margin: 0;
+    padding: 0.5em 0;
+
+    text-align: center;
+  }
+}

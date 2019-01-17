@@ -1,0 +1,20 @@
+.page-footer
+{
+  text-align: center;
+  font-size: 0.8em;
+  color: $color_dimmed_fg;
+
+  a
+  {
+    color: inherit;
+    text-decoration: underline;
+    border-bottom: 1px solid transparent;
+
+    &:focus,
+    &:hover
+    {
+      text-decoration: none;
+      border-bottom-color: $color_dimmed_fg;
+    }
+  }
+}

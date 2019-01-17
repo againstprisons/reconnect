@@ -1,0 +1,16 @@
+.auth-login
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    %label{:for => "email"}= t(:'email_address')
+    %input#email{:name => 'email', :type => 'email', :placeholder => t(:'email_address'), :required => true}
+
+    %label{:for => "password"}= t(:'password')
+    %input#password{:name => 'password', :type => 'password', :placeholder => t(:'password'), :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'auth/login/title')
+
+    .auth-reset-password-link
+      %a{:href => '/auth/reset'}
+        = t(:'auth/reset/title')

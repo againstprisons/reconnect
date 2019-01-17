@@ -1,0 +1,16 @@
+%meta(charset="utf-8")
+%meta(name="viewport" content="width=device-width,initial-scale=1")
+%title= [(defined?(title) && !title.nil?) ? "#{title} &laquo; " : nil, site_name].compact.join('')
+
+- if ReConnect.display_version
+  %meta{:name => 'generator', :content => "re:connect #{ReConnect.version}"}
+- else 
+  %meta{:name => 'generator', :content => "re:connect"}
+
+%link(rel="stylesheet" href="/static/vendor/purecss/build/pure-min.css")
+%link(rel="stylesheet" href="/static/vendor/purecss/build/grids-responsive-min.css")
+%link(rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css")
+%link(rel="stylesheet" href="/static/styles.css")
+
+- if ReConnect.theme_dir
+  %link(rel="stylesheet" href="/static/theme.css")
