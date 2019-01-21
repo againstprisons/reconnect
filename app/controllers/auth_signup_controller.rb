@@ -7,9 +7,17 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     @title = t(:'auth/signup/title')
 
+    unless signups_enabled?
+      return haml(:'auth/layout', :locals => {:title => @title}) do
+        haml(:'auth/signup_disabled', :layout => false, :locals => {
+          :title => @title,
+        })
+      end
+    end
+
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title}) do
-        haml(:'auth/signup', :locals => {
+        haml(:'auth/signup', :layout => false, :locals => {
           :title => @title,
         })
       end
@@ -58,6 +66,6 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     after_login = session.delete(:after_login)
     return redirect after_login if after_login
-    redirect "/"
+    redirect to("/")
   end
 end

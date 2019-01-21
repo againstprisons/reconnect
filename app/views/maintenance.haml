@@ -1,0 +1,12 @@
+.pure-g
+  .pure-u-1.pure-u-md-1-4
+  .pure-u-1.pure-u-md-1-2
+    .maintenance-splash.form-wrapped.xy-margin
+      %h1= t(:'errors/maintenance/title')
+
+      %p
+        = t(:'errors/maintenance/content', :site_name => site_name)
+
+      %p
+        %a.maintenance-admin-login{:href => '/auth'}
+          = t(:'errors/maintenance/admin_login_link')

@@ -3,6 +3,6 @@
 
   = haml :language_switcher
 
-  - if ReConnect.display_version
+  - if ReConnect.app_config["display-version"]
     %p= "re:connect #{ReConnect.version}"
 

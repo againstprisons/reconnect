@@ -1,0 +1,30 @@
+.system-admin-debugging
+  %h1= t(:'system/debugging/title')
+
+  %a.pure-button.button{:href => '/system/debugging/routes'}
+    %i.fa.fa-list-alt
+    = t(:'system/debugging/routes/title')
+
+  .form-wrapped
+    %h1= t(:'system/debugging/session')
+
+    %ul
+      - session.keys.each do |skey|
+        %li
+          %code
+            &= skey.inspect
+            = " => "
+            &= session[skey].inspect
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/flash'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/debugging/flash/title')
+
+    %label{:for => 'flash-type'}= t(:'system/debugging/flash/type')
+    %select#flash-type{:name => 'type'}
+      %option{:value => 'success'}= t(:'system/debugging/flash/type/success')
+      %option{:value => 'warning'}= t(:'system/debugging/flash/type/warning')
+      %option{:value => 'error'}= t(:'system/debugging/flash/type/error')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'system/debugging/flash/submit')

@@ -1,0 +1,20 @@
+.maintenance-splash
+{
+  text-align: center;
+
+  a.maintenance-admin-login
+  {
+    font-size: 0.8em;
+    color: $color_dimmed_fg;
+
+    text-decoration: underline;
+    border-bottom: 1px solid transparent;
+
+    &:hover,
+    &:focus
+    {
+      text-decoration: none;
+      border-bottom-color: $color_dimmed_fg;
+    }
+  }
+}

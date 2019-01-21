@@ -12,22 +12,22 @@
 
   &.message-success
   {
-    border-color: $symbolic_success_border;
-    background: $symbolic_success_background;
-    color: $symbolic_success_foreground;
+    border-color: $color_symbolic_success_border;
+    background: $color_symbolic_success_bg;
+    color: $color_symbolic_success_fg;
   }
 
   &.message-warning
   {
-    border-color: $symbolic_warning_border;
-    background: $symbolic_warning_background;
-    color: $symbolic_warning_foreground;
+    border-color: $color_symbolic_warning_border;
+    background: $color_symbolic_warning_bg;
+    color: $color_symbolic_warning_fg;
   }
 
   &.message-error
   {
-    border-color: $symbolic_error_border;
-    background: $symbolic_error_background;
-    color: $symbolic_error_foreground;
+    border-color: $color_symbolic_error_border;
+    background: $color_symbolic_error_bg;
+    color: $color_symbolic_error_fg;
   }
 }

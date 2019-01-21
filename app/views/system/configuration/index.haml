@@ -1,0 +1,51 @@
+.system-admin-configuration
+  %h1= title
+
+  .system-admin-configuration-actions.xy-margin
+    %a.button.pure-button{:href => '/system/configuration/keys'}
+      %i.fa.fa-pencil
+      = t :'system/configuration/key_value/title'
+
+    %form{:method => "POST", :action => '/system/configuration/refresh', :style => 'display:inline-block'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %button.button.pure-button{:type => 'submit', :disabled => !ReConnect.app_config_refresh_pending}
+        %i.fa.fa-refresh
+        - if ReConnect.app_config_refresh_pending
+          = t :'system/configuration/refresh_global_config'
+        - else 
+          = t :'system/configuration/refresh_global_config/disabled'
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/configuration/quick_toggle/title')
+
+        %form.pure-form.pure-form-stacked{:method => 'POST', :action => '/system/configuration/toggle'}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %input{:type => 'hidden', :name => 'key', :value => "maintenance"}
+
+          - if is_maintenance
+            %button.pure-button.button.button-primary{:type => 'submit'}
+              = t(:'system/configuration/quick_toggle/maintenance/disable')
+          - else
+            %button.pure-button.button.button-error{:type => 'submit'}
+              = t(:'system/configuration/quick_toggle/maintenance/enable')
+
+        %form.pure-form.pure-form-stacked{:method => 'POST', :action => '/system/configuration/toggle'}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %input{:type => 'hidden', :name => 'key', :value => "signups"}
+
+          - if signups_enabled
+            %button.pure-button.button.button-error{:type => 'submit'}
+              = t(:'system/configuration/quick_toggle/signups/disable')
+          - else
+            %button.pure-button.button.button-primary{:type => 'submit'}
+              = t(:'system/configuration/quick_toggle/signups/enable')
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/configuration/site_settings')
+
+        %a.pure-button.button.button-primary{:href => '/system/configuration/site-org-name'}
+          %i.fa.fa-pencil
+          = t(:'system/configuration/site_org_name/title')

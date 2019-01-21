@@ -1,0 +1,35 @@
+.page-header-warning
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  color: $color_warning_unspecified_fg;
+  background: $color_warning_unspecified_bg;
+  border-bottom: 1px solid $color_warning_unspecified_border
+
+  p
+  {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    text-align: center;
+  }
+
+  &.maintenance-warning
+  {
+    color: $color_warning_maintenance_fg;
+    background: $color_warning_maintenance_bg;
+    border-bottom-color: $color_warning_maintenance_border;
+  }
+
+  &.appconfig-refresh-warning
+  {
+    color: $color_warning_appconfig_refresh_fg;
+    background: $color_warning_appconfig_refresh_bg;
+    border-bottom-color: $color_warning_appconfig_refresh_border;
+  }
+}

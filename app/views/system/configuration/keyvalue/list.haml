@@ -1,0 +1,20 @@
+.system-admin-configuration-keyvalue-list
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/configuration'}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  %ul.block-list
+    - entries.each do |k, v|
+      %li
+        - if has_role?("system:configuration:edit")
+          %a.block-button.pure-button.button{:href => v[:edit_link], :title => t(:edit)}
+            %i.fa.fa-pencil
+
+        %span
+          %strong= k
+          = "(#{v[:type]}): "
+
+        %code.code-line
+          &= v[:value_truncated]

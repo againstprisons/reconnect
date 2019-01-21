@@ -6,20 +6,13 @@ module ReConnect::Helpers::FlashHelpers
   end
 
   def render_flashes
-    return "" unless session[:flash]
-    out = []
+    return "" unless session[:flash].is_a?(Array)
 
-    session[:flash].each do |f|
-      locals = {
-        :type => f[:type].to_s.force_encoding("UTF-8"),
-        :message => f[:message].force_encoding("UTF-8"),
-      }
-
-      out << haml(:flash, :locals => locals)
-    end
-
-    session[:flash] = []
-
-    out.join("")
+    session.delete(:flash).map do |f|
+      haml(:flash, :locals => {
+        :type => f[:type].to_s,
+        :message => f[:message],
+      }).to_s
+    end.compact.join("").force_encoding("UTF-8")
   end
 end

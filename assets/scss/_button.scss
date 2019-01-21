@@ -3,25 +3,25 @@
 {
   &.button-primary
   {
-    color: $symbolic_primary_foreground;
-    background-color: $symbolic_primary_background;
+    color: $color_symbolic_primary_fg;
+    background-color: $color_symbolic_primary_bg;
   }
 
   &.button-success
   {
-    color: $symbolic_success_foreground;
-    background: $symbolic_success_background;
+    color: $color_symbolic_success_fg;
+    background: $color_symbolic_success_bg;
   }
 
   &.button-warning
   {
-    color: $symbolic_warning_foreground;
-    background: $symbolic_warning_background;
+    color: $color_symbolic_warning_fg;
+    background: $color_symbolic_warning_bg;
   }
 
   &.button-error
   {
-    color: $symbolic_error_foreground;
-    background: $symbolic_error_background;
+    color: $color_symbolic_error_fg;
+    background: $color_symbolic_error_bg;
   }
 }

@@ -18,4 +18,8 @@ class ReConnect::Models::User < Sequel::Model
 
     token
   end
+
+  def invalidate_all_tokens_except!(token)
+    self.tokens.reject{|x| x.token == token.token}.map(&:invalidate!)
+  end
 end

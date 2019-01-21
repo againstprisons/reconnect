@@ -2,7 +2,7 @@
 %meta(name="viewport" content="width=device-width,initial-scale=1")
 %title= [(defined?(title) && !title.nil?) ? "#{title} &laquo; " : nil, site_name].compact.join('')
 
-- if ReConnect.display_version
+- if ReConnect.app_config["display-version"]
   %meta{:name => 'generator', :content => "re:connect #{ReConnect.version}"}
 - else 
   %meta{:name => 'generator', :content => "re:connect"}

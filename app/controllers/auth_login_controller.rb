@@ -9,7 +9,7 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
 
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title}) do
-        haml(:'auth/login', :locals => {
+        haml(:'auth/login', :layout => false, :locals => {
           :title => @title,
         })
       end
@@ -56,6 +56,6 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
 
     after_login = session.delete(:after_login)
     return redirect after_login if after_login
-    redirect "/"
+    redirect to("/")
   end
 end

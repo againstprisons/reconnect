@@ -1,0 +1,17 @@
+.system-admin-debugging-routes
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/debugging'}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  %ul
+    - routes.each do |controller, routes|
+      - routes.each do |routedesc|
+        %li
+          %code
+            &= routedesc[:path]
+            = " ==> "
+            &= routedesc[:method]
+
+          = "(#{[routedesc[:verbs]].flatten.join(", ")})"

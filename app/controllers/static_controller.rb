@@ -18,19 +18,19 @@ class ReConnect::Controllers::StaticController < ReConnect::Controllers::Applica
   end
 
   def styles_css
-    scss :styles, :style => :compressed
+    scss :styles, :style => :compressed, :layout => false
   end
 
   def theme_css
-    return 404 unless ReConnect.theme_dir
-    scss :theme, :style => :compressed
+    return halt 404, "" unless ReConnect.theme_dir
+    scss :theme, :style => :compressed, :layout => false
   end
 
   def vendor(splat)
     fn = File.expand_path(splat, "/")
-    return 404 unless VENDOR_WHITELIST.map{|x| fn.start_with?(x)}.any?
+    return halt 404, "" unless VENDOR_WHITELIST.map{|x| fn.start_with?(x)}.any?
     path = File.join(ReConnect.root, "node_modules", fn)
-    return 404 unless File.file? path
+    return halt 404, "" unless File.file? path
     send_file path
   end
 
@@ -42,7 +42,7 @@ class ReConnect::Controllers::StaticController < ReConnect::Controllers::Applica
       path = themepath if File.file? themepath
     end
 
-    return 404 unless File.file? path
+    return halt 404, "" unless File.file? path
     send_file path
   end
 end

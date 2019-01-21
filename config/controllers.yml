@@ -12,6 +12,17 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/configuration/site-org-name
+    controller: SystemConfigurationSiteOrgNameController
+  - path: /system/configuration/keys
+    controller: SystemConfigurationKeysController
+  - path: /system/configuration
+    controller: SystemConfigurationController
+  - path: /system/debugging
+    controller: SystemDebuggingController
+  - path: /system
+    controller: SystemIndexController
+
   - path: /language
     controller: LanguageController
 

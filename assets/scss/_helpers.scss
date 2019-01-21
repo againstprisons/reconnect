@@ -1,0 +1,47 @@
+.x-margin
+{
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.y-margin
+{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.xy-margin
+{
+  @extend .x-margin;
+  @extend .y-margin;
+}
+
+.x-margin-large
+{
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.y-margin-large
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.xy-margin-large
+{
+  @extend .x-margin-large;
+  @extend .y-margin-large;
+}
+
+.code-line
+{
+  margin: 0.125em;
+  padding: 0.25em 0.375em;
+
+  color: $color_codeline_fg;
+  background: $color_codeline_bg;
+  border: 1px solid $color_codeline_border;
+
+  border-radius: 2px;
+}

@@ -14,9 +14,9 @@ module ReConnect
   class << self
     attr_reader :app
     attr_accessor :database
-    attr_accessor :theme_dir
 
-    attr_accessor :site_name, :org_name, :display_version
+    attr_accessor :site_dir, :theme_dir
+    attr_accessor :app_config, :app_config_refresh_pending
 
     attr_accessor :default_language, :languages
   end
@@ -83,8 +83,13 @@ module ReConnect
     @database.extension(:pagination)
     ReConnect::Models.load_models unless opts[:no_load_models]
 
-    self.load_configs unless opts[:no_load_configs]
-    self.load_theme
+    # load config files (including site config)
+    self.load_config
+
+    # load config from database
+    @app_config = {}
+    @app_config_refresh_pending = true
+    self.app_config_refresh unless opts[:no_load_configs] || opts[:no_load_models]
 
     @app = ReConnect::Application.new
   end
@@ -106,42 +111,47 @@ module ReConnect
     end
   end
 
-  def self.load_configs
+  def self.load_config
     require File.join(ReConnect.root, 'config', 'default_config.rb')
     require File.join(ReConnect.root, 'config', 'environments', "#{ENV["RACK_ENV"]}.rb")
 
-    self.refresh_db_configs
+    self.site_load_config
   end
 
-  def self.refresh_db_configs
-    @site_name = "re:connect"
-    ReConnect::Models::Config.where(key: 'site-name').each do |m|
-      @site_name = m.value
+  def self.app_config_refresh(force = false)
+    return unless force || @app_config_refresh_pending
+
+    ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
+      cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
+        a.type = desc[:type].to_s
+
+        a.value = desc[:value]
+        a.value = (a.value == 'yes') if desc[:type] == :bool
+      end
+
+      value = cfg.value
+      value = (cfg.value == 'yes') if desc[:type] == :bool
+
+      @app_config[key] = value
     end
 
-    @org_name = "Example Organisation"
-    ReConnect::Models::Config.where(key: 'org-name').each do |m|
-      @org_name = m.value
-    end
+    @app_config_refresh_pending = false
+  end
 
-    @display_version = false
-    ReConnect::Models::Config.where(key: 'display-version').each do |m|
-      @display_version = (m.value == 'yes')
+  def self.site_load_config
+    site_dir = ENV["SITE_CONFIG_DIR"]
+    return if site_dir.nil?
+    return unless Dir.exist?(site_dir)
+
+    @site_dir = site_dir
+
+    if File.file?(File.join(@site_dir, "config.rb"))
+      require File.join(@site_dir, "config.rb")
     end
   end
 
-  def self.load_theme
-    @theme_dir = nil
-
-    return unless ENV.key?("THEME_DIR")
-    theme_dir = ENV["THEME_DIR"]
-    return unless Dir.exist?(theme_dir)
+  def self.site_load_theme(theme_dir)
+    return false unless Dir.exist?(theme_dir)
     @theme_dir = theme_dir
-
-    if File.file?(File.join(@theme_dir, "theme.rb"))
-      require File.join(@theme_dir, "theme.rb")
-    end
   end
 end
-
-

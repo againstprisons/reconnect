@@ -17,6 +17,13 @@ textarea,
   font_family: $font_stack;
 }
 
+/* Helpers */
+@import 'helpers';
+
+/* Warning headers */
+@import 'page_header_warning';
+
+/* Main styling */
 @import 'body_header';
 @import 'body_container';
 @import 'body_footer';
@@ -25,9 +32,9 @@ textarea,
 @import 'message';
 @import 'sidebar';
 
-/* Maintenance header */
-@import 'maintenance';
+/* Miscellaneous things */
+@import 'block_list';
 
 /* Section-specific styles */
+@import 'section_maintenance';
 @import 'section_auth';
-@import 'section_account';

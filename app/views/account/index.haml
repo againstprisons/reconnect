@@ -1,1 +1,44 @@
 .account-settings-index
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => "/account/edit-name"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t :'name/change'
+
+    %label{:for => "name_change"}= t :name
+    %input#name_change{:name => 'name', :type => 'text', :placeholder => t(:name), :required => true, :value => current_user.decrypt(:name)}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t :'name/change'
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => "/account/edit-email"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t :'email_address/change'
+
+    %label{:for => "email_change"}= t :email_address
+    %input#email_change{:name => 'email', :type => 'email', :placeholder => t(:email_address), :required => true, :value => current_user.email}
+
+    %label{:for => "email_change_pw"}= t :'password/current'
+    %input#email_change_pw{:name => 'password', :type => 'password', :placeholder => t(:'password/current'), :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t :'email_address/change'
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => "/account/edit-password"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t :'password/change'
+
+    %p= t(:'account/change_password/will_log_out_sessions')
+
+    %label{:for => "password_change_current"}= t :'password/current'
+    %input#password_change_current{:name => 'password', :type => 'password', :placeholder => t(:'password/current'), :required => true}
+
+    %label{:for => "password_change_new"}= t :'password/new'
+    %input#password_change_new{:name => 'new_password', :type => 'password', :placeholder => t(:'password/new'), :required => true}
+
+    %label{:for => "password_change_new_confirm"}= t :'password/new/confirm'
+    %input#password_change_new_confirm{:name => 'new_password_confirm', :type => 'password', :placeholder => t(:'password/new/confirm'), :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t :'password/change'

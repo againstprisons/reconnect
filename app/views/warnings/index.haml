@@ -1,0 +1,6 @@
+- if logged_in?
+  - if has_role?("system:configuration:refresh") && ReConnect.app_config_refresh_pending
+    = haml :'warnings/appconfig_refresh_pending', :layout => false
+
+  - if is_maintenance?
+    = haml :'warnings/maintenance', :layout => false

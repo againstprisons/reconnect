@@ -13,5 +13,12 @@ module ReConnect::Helpers::MaintenanceHelpers
 
     false
   end
+
+  def maintenance_render
+    haml(:'maintenance', :layout => :layout_minimal, :locals => {
+      :title => t(:'errors/maintenance/title'),
+      :no_flash => true,
+    })
+  end
 end
 

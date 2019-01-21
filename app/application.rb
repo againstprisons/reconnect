@@ -10,9 +10,7 @@ class ReConnect::Application < Sinatra::Base
   before do
     # Check if maintenance mode
     if is_maintenance? && !maintenance_path_allowed?
-      next haml(:'maintenance/index', :layout => :layout_minimal, :locals => {
-        :title => "Maintenance"
-      })
+      next halt 503, maintenance_render
     end
 
     # Set and check CSRF
@@ -25,6 +23,7 @@ class ReConnect::Application < Sinatra::Base
   not_found do
     haml :'errors/not_found', :locals => {
       :title => t(:'errors/not_found/title'),
+      :no_flash => true,
     }
   end
 end

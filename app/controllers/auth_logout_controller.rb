@@ -11,6 +11,6 @@ class ReConnect::Controllers::AuthLogoutController < ReConnect::Controllers::App
     session.delete(:token)
 
     flash :success, t(:'auth/logout/success')
-    redirect '/auth'
+    redirect to('/auth')
   end
 end

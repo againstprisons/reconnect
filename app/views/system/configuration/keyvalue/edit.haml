@@ -1,0 +1,33 @@
+.system-admin-configuration-keyvalue-list
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/configuration/keys'}
+    %i.fa.fa-chevron-left
+    = t(:'system/configuration/key_value/back_to_list')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/configuration/key_value/edit_key/edit')
+
+    %label{:for => 'type'}= t(:'system/configuration/key_value/edit_key/type')
+    %select#type{:name => 'type', :required => true}
+      %option{:value => 'bool', :selected => (type == "bool")} bool
+      %option{:value => 'text', :selected => (type == "text")} text
+
+    %label{:for => 'value'}= t(:'system/configuration/key_value/edit_key/value')
+    %input#value{:name => 'value', :required => true, :value => value}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'system/configuration/key_value/edit_key/edit')
+
+  - unless is_new
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => delete_url}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %h1= t(:'system/configuration/key_value/edit_key/delete')
+
+      %label{:for => 'delete_confirm'}
+        %input#delete_confirm{:name => 'confirm', :type => 'checkbox', :required => true}
+        = t(:'system/configuration/key_value/edit_key/delete/confirm')
+
+      %button.pure-button.button.button-error{:type => 'submit'}
+        = t(:'system/configuration/key_value/edit_key/delete')

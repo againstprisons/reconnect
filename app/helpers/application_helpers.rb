@@ -20,15 +20,18 @@ module ReConnect::Helpers::ApplicationHelpers
   require_relative './user_helpers'
   include ReConnect::Helpers::UserHelpers
 
+  require_relative './signup_helpers'
+  include ReConnect::Helpers::SignupHelpers
+
   require_relative './navbar_helpers'
   include ReConnect::Helpers::NavbarHelpers
 
   def site_name
-    ReConnect.site_name
+    ReConnect.app_config["site-name"]
   end
 
   def org_name
-    ReConnect.org_name
+    ReConnect.app_config["org-name"]
   end
 
   def current_prefix?(path = '/')

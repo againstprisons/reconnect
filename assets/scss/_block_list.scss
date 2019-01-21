@@ -1,0 +1,17 @@
+ul.block-list
+{
+  &.block-list-no-indicators
+  {
+    list-style-type: none outside none;
+
+    li
+    {
+      list-style-type: none outside none;
+    }
+  }
+
+  li
+  {
+    margin: 0.25em 0;
+  }
+}
