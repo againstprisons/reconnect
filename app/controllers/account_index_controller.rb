@@ -115,7 +115,7 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
     end
 
     user.password = newpass
-    user.invalidate_all_tokens_except!(current_token)
+    user.invalidate_tokens_except!(current_token)
     user.save
 
     flash :success, t(:'account/change_password/success')
