@@ -28,6 +28,9 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
       end
     end
 
+    old_site_name = site_name_cfg.value
+    old_org_name = org_name_cfg.value
+
     site_name = request.params["site_name"]&.strip
     org_name = request.params["org_name"]&.strip
 
@@ -41,13 +44,19 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
       return redirect request.path
     end
 
-    site_name_cfg.value = site_name
-    site_name_cfg.save
+    # push site-name to refresh list if it's changed
+    if site_name != old_site_name
+      site_name_cfg.value = site_name
+      site_name_cfg.save
+      ReConnect.app_config_refresh_pending << "site-name"
+    end
 
-    org_name_cfg.value = org_name
-    org_name_cfg.save
-
-    ReConnect.app_config_refresh_pending = true
+    # push org-name to refresh list if it's changed
+    if org_name != old_org_name
+      org_name_cfg.value = org_name
+      org_name_cfg.save
+      ReConnect.app_config_refresh_pending << "org-name"
+    end
 
     flash :success, t(:'system/configuration/site_org_name/success')
     return redirect request.path

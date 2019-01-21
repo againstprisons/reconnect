@@ -14,6 +14,10 @@ module ReConnect
       :type => :bool,
       :default => false,
     },
+    "signups" => {
+      :type => :bool,
+      :default => false,
+    },
   }
 
   class Application

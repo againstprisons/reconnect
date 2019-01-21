@@ -88,7 +88,7 @@ module ReConnect
 
     # load config from database
     @app_config = {}
-    @app_config_refresh_pending = true
+    @app_config_refresh_pending = ReConnect::APP_CONFIG_ENTRIES.keys
     self.app_config_refresh unless opts[:no_load_configs] || opts[:no_load_models]
 
     @app = ReConnect::Application.new
@@ -119,9 +119,13 @@ module ReConnect
   end
 
   def self.app_config_refresh(force = false)
-    return unless force || @app_config_refresh_pending
+    return unless force || @app_config_refresh_pending.count.positive?
+    keys = []
 
     ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
+      next unless force || @app_config_refresh_pending.include?(key)
+      keys << key
+
       cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
         a.type = desc[:type].to_s
 
@@ -131,13 +135,12 @@ module ReConnect
         end
       end
 
-      value = cfg.value
-      value = (cfg.value == 'yes') if desc[:type] == :bool
-
-      @app_config[key] = value
+      @app_config[key] = cfg.value
+      @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
     end
 
-    @app_config_refresh_pending = false
+    @app_config_refresh_pending = []
+    keys
   end
 
   def self.site_load_config

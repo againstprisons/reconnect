@@ -41,6 +41,16 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     cfg.value = (cfg.value == 'yes' ? 'no' : 'yes')
     cfg.save
 
+    # push key name to the list of pending refreshes
+    unless %w[maintenance].include?(key)
+      ReConnect.app_config_refresh_pending << key
+    end
+
+    # clear signup pending if we're back at the cached state
+    if key == "signups" && ReConnect.app_config["signups"] == (cfg.value == 'yes')
+      ReConnect.app_config_refresh_pending.delete("signups")
+    end
+
     flash :success, t(:'system/configuration/quick_toggle/toggled', :key => key, :value => cfg.value)
     redirect to("/system/configuration")
   end
@@ -64,7 +74,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     maint_cfg.save
 
     # refresh
-    ReConnect.app_config_refresh
+    keys = ReConnect.app_config_refresh
 
     # disable maintenance mode if it wasn't already enabled
     unless maint_enabled
@@ -72,7 +82,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
       maint_cfg.save
     end
 
-    flash :success, t(:'system/configuration/refresh_global_config/success')
+    flash :success, t(:'system/configuration/refresh_global_config/success', :count => keys.count)
     redirect to("/system/configuration")
   end
 end

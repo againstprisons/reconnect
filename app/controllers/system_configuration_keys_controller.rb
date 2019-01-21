@@ -69,7 +69,11 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     entry.value = value
     entry.save
 
-    ReConnect.app_config_refresh_pending = true
+    # push key name to the list of pending refreshes
+    ReConnect.app_config_refresh_pending ||= []
+    unless %w[maintenance].include?(key)
+      ReConnect.app_config_refresh_pending << key
+    end
 
     flash :success, t(:'system/configuration/key_value/edit_key/success', :key => key)
     redirect request.path
@@ -93,7 +97,11 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     end
 
     entry.delete
-    ReConnect.app_config_refresh_pending = true
+
+    # push key name to the list of pending refreshes
+    unless %w[maintenance].include?(key)
+      ReConnect.app_config_refresh_pending << key
+    end
 
     flash :success, t(:'system/configuration/key_value/edit_key/delete/success', :key => key)
     return redirect to("/system/configuration/keys")
