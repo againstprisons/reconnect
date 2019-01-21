@@ -126,7 +126,9 @@ module ReConnect
         a.type = desc[:type].to_s
 
         a.value = desc[:value]
-        a.value = (a.value == 'yes') if desc[:type] == :bool
+        if desc[:type] == :bool && !desc[:value].is_a?(String)
+          a.value = (desc[:value] ? 'yes' : 'no')
+        end
       end
 
       value = cfg.value
