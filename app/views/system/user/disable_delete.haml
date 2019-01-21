@@ -13,8 +13,8 @@
     %label{:for => 'disable_reason'}= t(:'system/user/disable_delete/disable/reason')
     %input{:type => 'text', :name => 'reason', :placeholder => t(:'system/user/disable_delete/disable/reason'), :value => disabled_reason}
 
-    %button.pure-button.button.button-primary{:type => 'submit'}
-      %i.fa.fa-envelope
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-lock
       = t(:'system/user/disable_delete/disable')
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
@@ -31,6 +31,6 @@
         %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
         = t(:'system/user/disable_delete/delete/confirm')
 
-    %button.pure-button.button.button-primary{:type => 'submit'}
-      %i.fa.fa-lock
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-trash
       = t(:'system/user/disable_delete/delete')
