@@ -67,7 +67,7 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
 
     # check the user isn't trying to change their email to their current email
     if user.email == email
-      flash :error, t(:'account/change_email/change_to_existing')
+      flash :error, t(:'account/change_email/change_to_current')
       return redirect to("/account")
     end
 

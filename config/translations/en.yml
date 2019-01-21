@@ -58,7 +58,7 @@
 :'account/twofactor': "Two-factor authentication"
 :'account/change_name/success': "Your name was successfully changed."
 :'account/change_email/password_incorrect': "Couldn't change your email address as your password was incorrect."
-:'account/change_email/change_to_existing': "Couldn't change your email address as you didn't provide a new email address."
+:'account/change_email/change_to_current': "Couldn't change your email address as you provided the same email address as is currently on your account."
 :'account/change_email/email_already_used': "Couldn't change your email address as the provided email is already in use."
 :'account/change_email/success': "Your email address has been changed."
 :'account/change_password/will_log_out_sessions': "Changing your password will log you out of all other sessions except the current one."
