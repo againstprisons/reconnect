@@ -18,6 +18,13 @@ class ReConnect::Application < Sinatra::Base
     unless request.safe?
       next halt 403, "CSRF failed" unless csrf_ok?
     end
+
+    if current_user_is_disabled?
+      next halt haml(:'auth/user_disabled', :layout => :layout_minimal, :locals => {
+        :title => t(:'auth/user_disabled/title'),
+        :reason => current_user.decrypt(:disabled_reason),
+      })
+    end
   end
 
   not_found do

@@ -50,6 +50,8 @@
 :'auth/signup/password_confirm_incorrect': "Please enter the same password in both fields."
 :'auth/signup/success': "Your sign up was successful. Welcome to <%= site_name %>!"
 :'auth/reset/title': "Reset password"
+:'auth/user_disabled/title': "Account disabled"
+:'auth/user_disabled/content': "Sorry, your user account has been disabled. The following reason was given:"
 
 # Account settings
 :'account/title': "Account settings"
