@@ -9,11 +9,42 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
 
     @title = t(:'system/configuration/title')
 
+    signups_enabled = ReConnect::Models::Config.where(:key => "signups").first&.value == "yes"
+    signups_pending = ReConnect.app_config["signups"] != signups_enabled
+
+    quick_toggles = [
+      {
+        :key => "maintenance",
+        :enabled => is_maintenance?(),
+        :pending_refresh => false,
+        :button_classes => {
+          :enable => 'button-error',
+          :disable => 'button-primary',
+        },
+        :text => {
+          :enabled => t(:'system/configuration/quick_toggle/maintenance/is_enabled'),
+          :disabled => t(:'system/configuration/quick_toggle/maintenance/is_disabled'),
+        },
+      },
+      {
+        :key => "signups",
+        :enabled => signups_enabled,
+        :pending_refresh => signups_pending,
+        :button_classes => {
+          :enable => 'button-primary',
+          :disable => 'button-error',
+        },
+        :text => {
+          :enabled => t(:'system/configuration/quick_toggle/signups/is_enabled'),
+          :disabled => t(:'system/configuration/quick_toggle/signups/is_disabled'),
+        },
+      },
+    ]
+
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/configuration/index', :layout => false, :locals => {
         :title => @title,
-        :is_maintenance => is_maintenance?(),
-        :signups_enabled => signups_enabled?(),
+        :quick_toggles => quick_toggles,
       })
     end
   end

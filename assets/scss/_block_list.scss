@@ -3,6 +3,8 @@ ul.block-list
   &.block-list-no-indicators
   {
     list-style-type: none outside none;
+    margin: 0;
+    padding: 0;
 
     li
     {
@@ -13,5 +15,22 @@ ul.block-list
   li
   {
     margin: 0.25em 0;
+    vertical-align: baseline;
+
+    .block-form
+    {
+      display: inline-block;
+
+      button,
+      a.button
+      {
+        margin: 0 !important;
+      }
+    }
+
+    .block-text
+    {
+      display: inline-block;
+    }
   }
 }

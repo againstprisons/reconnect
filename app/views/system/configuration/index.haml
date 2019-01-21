@@ -20,27 +20,28 @@
       .form-wrapped.x-margin
         %h1= t(:'system/configuration/quick_toggle/title')
 
-        %form.pure-form.pure-form-stacked{:method => 'POST', :action => '/system/configuration/toggle'}
-          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-          %input{:type => 'hidden', :name => 'key', :value => "maintenance"}
+        %ul.block-list
+          - quick_toggles.each do |data|
+            %li.system-admin-configuration-quick-toggle-entry{:'data-key' => data[:key], :'data-enabled' => data[:enabled] ? 'yes' : 'no'}
+              %form.pure-form.pure-form-stacked.block-form{:method => 'POST', :action => '/system/configuration/toggle'}
+                %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                %input{:type => 'hidden', :name => 'key', :value => data[:key]}
 
-          - if is_maintenance
-            %button.pure-button.button.button-primary{:type => 'submit'}
-              = t(:'system/configuration/quick_toggle/maintenance/disable')
-          - else
-            %button.pure-button.button.button-error{:type => 'submit'}
-              = t(:'system/configuration/quick_toggle/maintenance/enable')
+                - if data[:enabled]
+                  %button.pure-button.button{:type => 'submit', :class => [data[:button_classes][:disable]].compact}
+                    = t(:'system/configuration/quick_toggle/disable')
+                - else
+                  %button.pure-button.button{:type => 'submit', :class => [data[:button_classes][:enable]].compact}
+                    = t(:'system/configuration/quick_toggle/enable')
 
-        %form.pure-form.pure-form-stacked{:method => 'POST', :action => '/system/configuration/toggle'}
-          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-          %input{:type => 'hidden', :name => 'key', :value => "signups"}
+              .block-text
+                - if data[:enabled]
+                  = data[:text][:enabled]
+                - else
+                  = data[:text][:disabled]
 
-          - if signups_enabled
-            %button.pure-button.button.button-error{:type => 'submit'}
-              = t(:'system/configuration/quick_toggle/signups/disable')
-          - else
-            %button.pure-button.button.button-primary{:type => 'submit'}
-              = t(:'system/configuration/quick_toggle/signups/enable')
+                - if data[:pending_refresh]
+                  = t(:'system/configuration/quick_toggle/pending_refresh')
 
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
