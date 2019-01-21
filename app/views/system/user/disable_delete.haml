@@ -1,0 +1,36 @@
+.system-admin-user-disable-delete
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/user/#{user.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %input{:type => 'hidden', :name => 'action', :value => 'disable'}
+    %h1= t(:'system/user/disable_delete/disable')
+
+    %label{:for => 'disable_reason'}= t(:'system/user/disable_delete/disable/reason')
+    %input{:type => 'text', :name => 'reason', :placeholder => t(:'system/user/disable_delete/disable/reason'), :value => disabled_reason}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-envelope
+      = t(:'system/user/disable_delete/disable')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %input{:type => 'hidden', :name => 'action', :value => 'delete'}
+    %h1= t(:'system/user/disable_delete/delete')
+
+    %label{:for => "delete_email"}
+      = t(:'system/user/disable_delete/delete/enter_email', :email => user_email)
+    %input{:type => 'email', :name => 'email', :placeholder => t(:'email_address'), :required => true}
+
+    .y-margin-large
+      %label{:for => "delete_confirm"}
+        %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
+        = t(:'system/user/disable_delete/delete/confirm')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-lock
+      = t(:'system/user/disable_delete/delete')

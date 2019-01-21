@@ -1,0 +1,34 @@
+.system-admin-user-edit-profile
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/user/#{user.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %input{:type => 'hidden', :name => 'action', :value => 'pwreset'}
+    %h1= t(:'system/user/auth_options/password_reset')
+
+    .y-margin-large
+      %label{:for => "pwreset_confirm"}
+        %input#pwreset_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
+        = t(:'system/user/auth_options/password_reset/confirm')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-envelope
+      = t(:'system/user/auth_options/password_reset')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %input{:type => 'hidden', :name => 'action', :value => 'invalidate'}
+    %h1= t(:'system/user/auth_options/invalidate')
+
+    .y-margin-large
+      %label{:for => "invalidate_confirm"}
+        %input#invalidate_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
+        = t(:'system/user/auth_options/invalidate/confirm')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-lock
+      = t(:'system/user/auth_options/invalidate')

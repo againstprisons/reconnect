@@ -1,0 +1,27 @@
+.system-admin-user-index
+  %h1= title
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/user/by-id'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/user/find_by_id')
+
+        %label{:for => 'user_id'}= t(:'user_id')
+        %input#user_id{:type => 'number', :name => 'id', :required => true, :placeholder => t(:user_id)}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-search
+          = t(:search)
+
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/user/by-email'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/user/find_by_email')
+
+        %label{:for => 'user_email'}= t(:'email_address')
+        %input#user_email{:type => 'email', :name => 'email', :required => true, :placeholder => t(:email_address)}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-search
+          = t(:search)

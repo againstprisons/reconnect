@@ -12,6 +12,16 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/user
+    controller: SystemUserController
+  - path: /system/user/:id/disable
+    controller: SystemUserDisableController
+  - path: /system/user/:id/auth
+    controller: SystemUserAuthenticationController
+  - path: /system/user/:id/edit-profile
+    controller: SystemUserEditProfileController
+  - path: /system/user/:id
+    controller: SystemUserViewController
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
   - path: /system/configuration/keys

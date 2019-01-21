@@ -1,0 +1,20 @@
+.system-admin-user-edit-profile
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/user/#{user.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/user/edit_profile/section_title')
+
+    %label{:for => "edit_name"}= t(:'name')
+    %input#edit_name{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name'), :value => user_name}
+
+    %label{:for => "edit_email"}= t(:'email_address')
+    %input#edit_email{:type => 'email', :name => 'email', :required => true, :placeholder => t(:'email_address'), :value => user_email}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t(:'save_changes')
