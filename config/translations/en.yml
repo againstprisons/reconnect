@@ -15,6 +15,7 @@
 
 # Fields
 :'user_id': "User ID"
+:'penpal_id': "Penpal ID"
 :'email_address': "Email address"
 :'email_address/change': "Change email address"
 :'password': "Password"
@@ -87,6 +88,7 @@
 :'system/user/view/user_info': "User info"
 :'system/user/view/current_sessions': "Current sessions"
 :'system/user/view/roles': "Roles"
+:'system/user/view/penpal_id': "Penpal object ID"
 :'system/user/edit_profile/title': "Editing profile for user <%= name %> (id <%= id %>)"
 :'system/user/edit_profile/section_title': "Profile data"
 :'system/user/edit_profile/email_already_used': "Refusing to change email address as a user already exists with that email."

@@ -15,6 +15,7 @@ class ReConnect::Controllers::SystemUserViewController < ReConnect::Controllers:
       [t(:'name'), @name],
       [t(:'email_address'), @user.email],
       [t(:'user_id'), @user.id],
+      [t(:'system/user/view/penpal_id'), @user.penpal&.id.inspect],
       [t(:'system/user/view/current_sessions'), @user.tokens.select{|x| x.use == "session" && x.valid}.count],
       [t(:'system/user/view/roles'), @user.user_roles.count],
     ]
@@ -23,6 +24,7 @@ class ReConnect::Controllers::SystemUserViewController < ReConnect::Controllers:
       haml(:'system/user/view', :layout => false, :locals => {
         :title => @title,
         :user => @user,
+        :penpal_obj => @user.penpal,
         :display_fields => display_fields,
       })
     end
