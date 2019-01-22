@@ -11,6 +11,10 @@
             %a.pure-menu-link.sidebar-menu-link{:href => '/system/user'}
               = t :'system/user/title'
 
+          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/penpal"))].compact}
+            %a.pure-menu-link.sidebar-menu-link{:href => '/system/penpal'}
+              = t :'system/penpal/title'
+
           %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/configuration"))].compact}
             %a.pure-menu-link.sidebar-menu-link{:href => '/system/configuration'}
               = t :'system/configuration/title'

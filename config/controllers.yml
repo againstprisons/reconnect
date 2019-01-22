@@ -14,6 +14,11 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/penpal
+    controller: SystemPenpalController
+  - path: /system/penpal/:id
+    controller: SystemPenpalViewController
+
   - path: /system/user
     controller: SystemUserController
   - path: /system/user/:id/disable

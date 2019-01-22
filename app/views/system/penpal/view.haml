@@ -1,0 +1,31 @@
+.system-admin-user-view
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/penpal'}
+    %i.fa.fa-chevron-left
+    = t(:'new_search')
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/penpal/view/penpal_info')
+
+        %ul
+          - display_fields.each do |d|
+            %li
+              %strong= "#{d.first}:"
+              %span
+                &= d.last
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/penpal/actions')
+
+        - if user
+          %a.pure-button.button{:href => "/system/user/#{user.id}"}
+            %i.fa.fa-user
+            = t(:'system/penpal/actions/jump_to_user')
+        - else 
+          %a.pure-button.button{:href => "#", :disabled => true}
+            %i.fa.fa-user
+            = t(:'system/penpal/actions/jump_to_user/no_associated')
