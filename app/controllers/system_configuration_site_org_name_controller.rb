@@ -22,8 +22,8 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
       return haml(:'system/layout', :locals => {:title => @title}) do
         haml(:'system/configuration/site_org_name', :layout => false, :locals => {
           :title => @title,
-          :site_name_cfgval => site_name_cfg.value || ReConnect.site_name,
-          :org_name_cfgval => org_name_cfg.value || ReConnect.org_name,
+          :site_name_cfgval => site_name_cfg.value || ReConnect.app_config["site-name"],
+          :org_name_cfgval => org_name_cfg.value || ReConnect.app_config["org-name"],
         })
       end
     end

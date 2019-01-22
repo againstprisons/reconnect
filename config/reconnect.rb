@@ -129,9 +129,9 @@ module ReConnect
       cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
         a.type = desc[:type].to_s
 
-        a.value = desc[:value]
-        if desc[:type] == :bool && !desc[:value].is_a?(String)
-          a.value = (desc[:value] ? 'yes' : 'no')
+        a.value = desc[:default]
+        if desc[:type] == :bool && !desc[:default].is_a?(String)
+          a.value = (desc[:default] ? 'yes' : 'no')
         end
       end
 
