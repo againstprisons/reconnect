@@ -119,6 +119,8 @@
 :'system/user/disable_delete/delete/email_not_valid': "Refusing to delete user as the provided email did not match the user."
 :'system/user/disable_delete/delete/success': "Successfully deleted user."
 :'system/penpal/title': "Penpal info"
+:'system/penpal/copy_link_notification': "Current copied penpal link: <%= name %> (id <%= id %>)"
+:'system/penpal/copy_link_notification/clear': "Clear copied link"
 :'system/penpal/find_by_id': "Find penpal by ID"
 :'system/penpal/find_by_name': "Find penpal by name"
 :'system/penpal/search_failed': "Could not find a penpal object with those parameters."

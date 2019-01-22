@@ -2,5 +2,8 @@
   - if has_role?("system:configuration:refresh") && ReConnect.app_config_refresh_pending.count.positive?
     = haml :'warnings/appconfig_refresh_pending', :layout => false
 
+  - if has_role?("system:penpal:access") && session[:copied_penpal_id]
+    = haml :'warnings/system_penpal_copied_link', :layout => false
+
   - if is_maintenance?
     = haml :'warnings/maintenance', :layout => false

@@ -1,0 +1,10 @@
+- obj = ReConnect::Models::Penpal[session[:copied_penpal_id].to_i]
+- if obj
+  .page-header-warning.system-penpal-copied-link-warning
+    %p
+      = t(:'system/penpal/copy_link_notification', :name => obj.get_name || '(unknown)', :id => obj.id)
+
+      &nbsp;&middot;&nbsp;
+
+      %a{:href => "/system/penpal/clear-copied"}
+        = t(:'system/penpal/copy_link_notification/clear')

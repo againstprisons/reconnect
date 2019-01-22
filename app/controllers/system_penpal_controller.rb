@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemPenpalController < ReConnect::Controllers::A
   add_route :get, "/"
   add_route :post, "/by-id", :method => :by_id
   add_route :post, "/by-name", :method => :by_name
+  add_route :get, "/clear-copied", :method => :clear_copied
 
   def index
     return halt 404 unless logged_in?
@@ -50,5 +51,10 @@ class ReConnect::Controllers::SystemPenpalController < ReConnect::Controllers::A
 
     # TODO: search by name once indexing works
     #redirect to("/system/penpal/#{penpal.id}")
+  end
+
+  def clear_copied
+    session.delete(:copied_penpal_id)
+    redirect back
   end
 end

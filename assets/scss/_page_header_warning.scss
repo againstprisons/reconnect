@@ -19,6 +19,11 @@
     text-align: center;
   }
 
+  a
+  {
+    color: inherit;
+  }
+
   &.maintenance-warning
   {
     color: $color_warning_maintenance_fg;
@@ -31,5 +36,12 @@
     color: $color_warning_appconfig_refresh_fg;
     background: $color_warning_appconfig_refresh_bg;
     border-bottom-color: $color_warning_appconfig_refresh_border;
+  }
+
+  &.system-penpal-copied-link-warning
+  {
+    color: $color_warning_system_penpal_copied_link_fg;
+    background: $color_warning_system_penpal_copied_link_bg;
+    border-bottom-color: $color_warning_system_penpal_copied_link_border;
   }
 }
