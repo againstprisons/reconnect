@@ -28,6 +28,7 @@
 :'name/change': "Change your name"
 :'prisoner_number': "Prisoner number"
 :'address': "Address"
+:'is_incarcerated': "Is incarcerated?"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -128,7 +129,6 @@
 :'system/penpal/actions/copy_link/success': "Successfully copied link for penpal <%= name %> (id <%= id %>)."
 :'system/penpal/view/title': "Viewing penpal <%= name %> (id <%= id %>)"
 :'system/penpal/view/penpal_info': "Penpal info"
-:'system/penpal/view/is_incarcerated': "Is incarcerated?"
 :'system/penpal/view/relationship_count': "Number of relationships"
 :'system/penpal/view/relationships/title': "Penpal relationships"
 :'system/penpal/view/relationships/empty': "There are no relationships for this penpal."
@@ -144,7 +144,6 @@
 :'system/penpal/relationships/penpal/two': "Penpal two"
 :'system/penpal/relationships/penpal/no_data': "No data available for this penpal."
 :'system/penpal/relationships/penpal/jump_to_penpal': "Jump to penpal"
-:'system/penpal/relationships/penpal/is_incarcerated': "Is incarcerated?"
 :'system/penpal/relationships/create/title': "Create relationship"
 :'system/penpal/relationships/create/submit': "Create relationship"
 :'system/penpal/relationships/create/invalid_penpals': "One of the provided penpals does not exist."

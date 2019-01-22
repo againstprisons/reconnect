@@ -1,4 +1,6 @@
 class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controllers::ApplicationController
+  include ReConnect::Helpers::SystemPenpalHelpers
+
   add_route :get, "/"
   add_route :post, "/copy-link", :method => :copy_link
 
@@ -11,25 +13,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @name = @penpal.get_name
     @user = @penpal.user
 
-    @display_fields = [
-      [t(:'penpal_id'), @penpal.id.inspect],
-      [t(:'name'), @name],
-      [t(:'system/penpal/view/relationship_count'), @penpal.relationship_count],
-      [t(:'system/penpal/view/is_incarcerated'), @penpal.is_incarcerated ? 'yes' : 'no'],
-    ]
-
-    if @penpal.is_incarcerated
-      prisoner_number = @penpal.decrypt(:prisoner_number)&.strip
-      prisoner_number = "(unknown)" if prisoner_number.nil? || prisoner_number == ""
-      @display_fields << [t(:'prisoner_number'), prisoner_number]
-
-      address = @penpal.decrypt(:address)
-        &.split("\n")
-        &.map(&:strip)
-        &.join(" / ")
-      address = "(unknown)" if address.nil? || address == ""
-      @display_fields << [t(:'address'), address]
-    end
+    @pp_data = penpal_view_data(@penpal)
 
     @relationships = @penpal.relationships.map do |r|
       other_party = r.penpal_one
@@ -40,11 +24,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
       {
         :id => r.id,
         :link => "/system/penpal/relationship/#{r.id}",
-        :other_party => {
-          :id => other_party.id,
-          :name => other_party.get_name,
-          :is_incarcerated => other_party.is_incarcerated,
-        },
+        :other_party => penpal_view_data(other_party),
       }
     end.compact
 
@@ -66,7 +46,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :penpal => @penpal,
         :user => @user,
         :name => @name,
-        :display_fields => @display_fields,
+        :display_fields => @pp_data[:display_fields],
         :relationships => @relationships,
         :copied_link => @copied_link,
       })
