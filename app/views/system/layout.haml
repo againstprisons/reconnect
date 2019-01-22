@@ -7,21 +7,25 @@
             %a.pure-menu-link.sidebar-menu-link{:href => '/system'}
               = t :'system/index/title'
 
-          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/user"))].compact}
-            %a.pure-menu-link.sidebar-menu-link{:href => '/system/user'}
-              = t :'system/user/title'
+          - if has_role?("system:user:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/user"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/user'}
+                = t :'system/user/title'
 
-          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/penpal"))].compact}
-            %a.pure-menu-link.sidebar-menu-link{:href => '/system/penpal'}
-              = t :'system/penpal/title'
+          - if has_role?("system:penpal:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/penpal"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/penpal'}
+                = t :'system/penpal/title'
 
-          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/configuration"))].compact}
-            %a.pure-menu-link.sidebar-menu-link{:href => '/system/configuration'}
-              = t :'system/configuration/title'
+          - if has_role?("system:configuration:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/configuration"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/configuration'}
+                = t :'system/configuration/title'
 
-          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/debugging"))].compact}
-            %a.pure-menu-link.sidebar-menu-link{:href => '/system/debugging'}
-              = t :'system/debugging/title'
+          - if has_role?("system:debugging")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/debugging"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/debugging'}
+                = t :'system/debugging/title'
 
     .pure-u-1.pure-u-md-3-4
       = yield

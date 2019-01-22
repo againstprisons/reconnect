@@ -21,27 +21,32 @@
       .form-wrapped.x-margin
         %h1= t(:'system/user/actions')
 
-        %a.pure-button.button{:href => "/system/user/#{user.id}/edit-profile"}
-          %i.fa.fa-pencil
-          = t(:'system/user/actions/edit_profile')
+        - if has_role?("system:user:edit")
+          %a.pure-button.button{:href => "/system/user/#{user.id}/edit-profile"}
+            %i.fa.fa-pencil
+            = t(:'system/user/actions/edit_profile')
 
-        %a.pure-button.button{:href => "/system/user/#{user.id}/penpal-obj"}
-          - if penpal_obj.nil?
-            %i.fa.fa-plus
-            = t(:'system/user/actions/create_penpal_obj')
+        - if has_role?("system:penpal:access")
+          %a.pure-button.button{:href => "/system/user/#{user.id}/penpal-obj"}
+            - if penpal_obj.nil?
+              %i.fa.fa-plus
+              = t(:'system/user/actions/create_penpal_obj')
 
-          - else
-            %i.fa.fa-user
-            = t(:'system/user/actions/jump_to_penpal')
+            - else
+              %i.fa.fa-user
+              = t(:'system/user/actions/jump_to_penpal')
 
-        %a.pure-button.button{:href => "/system/user/#{user.id}/roles", :disabled => true}
-          %i.fa.fa-list-alt
-          = t(:'system/user/actions/roles')
+        - if has_role?("system:user:roles")
+          %a.pure-button.button{:href => "/system/user/#{user.id}/roles", :disabled => true}
+            %i.fa.fa-list-alt
+            = t(:'system/user/actions/roles')
 
-        %a.pure-button.button.button-warning{:href => "/system/user/#{user.id}/auth"}
-          %i.fa.fa-lock
-          = t(:'system/user/actions/auth_options')
+        - if has_role?("system:user:auth_options")
+          %a.pure-button.button.button-warning{:href => "/system/user/#{user.id}/auth"}
+            %i.fa.fa-lock
+            = t(:'system/user/actions/auth_options')
 
-        %a.pure-button.button.button-error{:href => "/system/user/#{user.id}/disable"}
-          %i.fa.fa-remove
-          = t(:'system/user/actions/disable_delete')
+        - if has_role?("system:user:disable")
+          %a.pure-button.button.button-error{:href => "/system/user/#{user.id}/disable"}
+            %i.fa.fa-remove
+            = t(:'system/user/actions/disable_delete')

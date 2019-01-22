@@ -3,7 +3,7 @@ class ReConnect::Controllers::SystemUserPenpalObjectController < ReConnect::Cont
 
   def index(uid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:user:edit")
+    return halt 404 unless has_role?("system:penpal:access")
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
