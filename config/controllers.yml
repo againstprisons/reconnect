@@ -16,6 +16,8 @@ controllers:
 
   - path: /system/penpal
     controller: SystemPenpalController
+  - path: /system/penpal/:id/relationships
+    controller: SystemPenpalRelationshipsController
   - path: /system/penpal/:id
     controller: SystemPenpalViewController
 

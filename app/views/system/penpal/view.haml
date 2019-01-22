@@ -1,4 +1,4 @@
-.system-admin-user-view
+.system-admin-penpal-view
   %h1= title
 
   %a.pure-button.button{:href => '/system/penpal'}
@@ -29,3 +29,7 @@
           %a.pure-button.button{:href => "#", :disabled => true}
             %i.fa.fa-user
             = t(:'system/penpal/actions/jump_to_user/no_associated')
+
+        %a.pure-button.button.button-primary{:href => "/system/penpal/#{penpal.id}/relationships"}
+          %i.fa.fa-link
+          = t(:'system/penpal/actions/show_relationships')

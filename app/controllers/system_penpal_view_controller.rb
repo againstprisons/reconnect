@@ -13,6 +13,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @display_fields = [
       [t(:'penpal_id'), @penpal.id.inspect],
       [t(:'name'), @name],
+      [t(:'system/penpal/view/relationship_count'), @penpal.relationship_count],
     ]
 
     @title = t(:'system/penpal/view/title', :name => @name, :id => @penpal.id)
