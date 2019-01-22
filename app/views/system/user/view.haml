@@ -25,6 +25,15 @@
           %i.fa.fa-pencil
           = t(:'system/user/actions/edit_profile')
 
+        %a.pure-button.button{:href => "/system/user/#{user.id}/penpal-obj"}
+          - if penpal_obj.nil?
+            %i.fa.fa-plus
+            = t(:'system/user/actions/create_penpal_obj')
+
+          - else
+            %i.fa.fa-user
+            = t(:'system/user/actions/jump_to_penpal')
+
         %a.pure-button.button{:href => "/system/user/#{user.id}/roles", :disabled => true}
           %i.fa.fa-list-alt
           = t(:'system/user/actions/roles')

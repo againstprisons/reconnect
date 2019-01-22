@@ -81,6 +81,8 @@
 :'system/user/search_failed': "Could not find a user with those parameters."
 :'system/user/actions': "Actions for this user"
 :'system/user/actions/edit_profile': "Edit name/email address"
+:'system/user/actions/create_penpal_obj': "Create associated penpal object"
+:'system/user/actions/jump_to_penpal': "Jump to associated penpal object"
 :'system/user/actions/roles': "Modify roles"
 :'system/user/actions/auth_options': "Authentication options"
 :'system/user/actions/disable_delete': "Disable or delete user"

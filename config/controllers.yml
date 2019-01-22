@@ -21,6 +21,8 @@ controllers:
 
   - path: /system/user
     controller: SystemUserController
+  - path: /system/user/:id/penpal-obj
+    controller: SystemUserPenpalObjectController
   - path: /system/user/:id/disable
     controller: SystemUserDisableController
   - path: /system/user/:id/auth
