@@ -18,6 +18,8 @@ controllers:
     controller: SystemPenpalController
   - path: /system/penpal/relationship/create
     controller: SystemPenpalRelationshipCreateController
+  - path: /system/penpal/relationship/:id/delete
+    controller: SystemPenpalRelationshipDeleteController
   - path: /system/penpal/relationship/:id
     controller: SystemPenpalRelationshipController
   - path: /system/penpal/:id

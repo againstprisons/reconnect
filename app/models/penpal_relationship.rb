@@ -11,4 +11,10 @@ class ReConnect::Models::PenpalRelationship < Sequel::Model
 
     nil
   end
+
+  def delete!
+    # TODO: delete correspondence for this relationship?
+
+    self.delete
+  end
 end
