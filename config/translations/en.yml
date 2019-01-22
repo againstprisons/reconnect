@@ -148,6 +148,7 @@
 :'system/penpal/relationships/create/title': "Create relationship"
 :'system/penpal/relationships/create/submit': "Create relationship"
 :'system/penpal/relationships/create/invalid_penpals': "One of the provided penpals does not exist."
+:'system/penpal/relationships/create/same_penpal': "Can't create a penpal relationship where both sides are the same penpal."
 :'system/penpal/relationships/create/relationship_exists': "The provided penpals already have a relationship."
 :'system/penpal/relationships/create/success': "The relationship was created."
 :'system/configuration/title': "Configuration"

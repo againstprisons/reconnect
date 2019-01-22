@@ -28,6 +28,11 @@ class ReConnect::Controllers::SystemPenpalRelationshipCreateController < ReConne
       return redirect back
     end
 
+    if @penpal_one.id == @penpal_two.id
+      flash :error, t(:'system/penpal/relationships/create/same_penpal')
+      return redirect back
+    end
+
     if ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal_one, @penpal_two)
       flash :error, t(:'system/penpal/relationships/create/relationship_exists')
       return redirect back
