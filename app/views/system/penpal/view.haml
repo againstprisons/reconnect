@@ -21,15 +21,66 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/actions')
 
-        - if user
-          %a.pure-button.button{:href => "/system/user/#{user.id}"}
-            %i.fa.fa-user
-            = t(:'system/penpal/actions/jump_to_user')
-        - else 
-          %a.pure-button.button{:href => "#", :disabled => true}
-            %i.fa.fa-user
-            = t(:'system/penpal/actions/jump_to_user/no_associated')
+        - if has_role?("system:user:access")
+          - if user
+            %a.pure-button.button{:href => "/system/user/#{user.id}"}
+              %i.fa.fa-user
+              = t(:'system/penpal/actions/jump_to_user')
+          - else 
+            %a.pure-button.button{:href => "#", :disabled => true}
+              %i.fa.fa-user
+              = t(:'system/penpal/actions/jump_to_user/no_associated')
 
-        %a.pure-button.button.button-primary{:href => "/system/penpal/#{penpal.id}/relationships"}
-          %i.fa.fa-link
-          = t(:'system/penpal/actions/show_relationships')
+        %form{:method => 'POST', :action => "/system/penpal/#{penpal.id}/copy-link"}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %button.pure-button.button.button-primary{:type => 'submit'}
+            %i.fa.fa-clipboard
+            = t(:'system/penpal/actions/copy_link')
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/penpal/view/relationships/title')
+
+        - if relationships.empty?
+          = t(:'system/penpal/view/relationships/empty')
+
+        - else
+          %ul.block-list
+            - relationships.each do |r|
+              %li
+                %strong= name
+                and
+                %strong= r[:other_party][:name]
+
+                .block-form
+                  %a.block-button.pure-button.button{:href => r[:link]}
+                    %i.fa.fa-link
+                    See relationship
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/penpal/view/relationships/create/title')
+
+        - if copied_link
+          %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/relationship/create"}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+            %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
+            %input{:type => 'hidden', :name => 'penpal_two', :value => copied_link[:id]}
+
+            %button.pure-button.button.button-primary{:type => 'submit'}
+              %i.fa.fa-link
+              = t(:'system/penpal/view/relationships/create/from_link', :name => copied_link[:name], :id => copied_link[:id])
+
+          %div{:style => 'border-bottom: 1px solid #000; margin: .5em 0 1em 0'}
+
+        %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/relationship/create"}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
+
+          %label{:for => "other_penpal_id"}= t(:'system/penpal/view/relationships/create/from_id')
+          %input#other_penpal_id{:type => 'number', :name => 'penpal_two', :placeholder => t(:'penpal_id')}
+
+          %button.pure-button.button{:type => 'submit'}
+            %i.fa.fa-link
+            = t(:'system/penpal/view/relationships/create/submit')
+

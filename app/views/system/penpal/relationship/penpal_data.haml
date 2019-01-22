@@ -1,0 +1,16 @@
+%ul
+  %li
+    %strong= "#{t(:'penpal_id')}: "
+    = penpal[:id]
+
+  %li
+    %strong= "#{t(:'name')}: "
+    = penpal[:name]
+
+  %li
+    %strong= "#{t(:'system/penpal/relationships/penpal/is_incarcerated')}: "
+    = penpal[:is_incarcerated] ? 'yes' : 'no'
+
+%a.pure-button.button{:href => "/system/penpal/#{penpal[:id]}"}
+  %i.fa.fa-user
+  = t(:'system/penpal/relationships/penpal/jump_to_penpal')
