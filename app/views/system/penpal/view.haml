@@ -48,6 +48,9 @@
           %ul.block-list
             - relationships.each do |r|
               %li
+                %code.code-line
+                  = "#{r[:id]}"
+
                 %strong= name
                 and
                 %strong= r[:other_party][:name]
