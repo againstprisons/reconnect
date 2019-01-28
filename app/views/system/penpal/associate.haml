@@ -1,0 +1,44 @@
+.system-admin-penpal-associate
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/penpal/#{penpal.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %p
+    - if user.nil?
+      = t(:'system/penpal/associate/content_no_association')
+    - else
+      = t(:'system/penpal/associate/content_has_association', :user_name => user_name, :user_id => user.id)
+
+  - if user.nil? # no association
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %h1= t(:'system/penpal/associate/add_association/title')
+
+      %p
+        = t(:'system/penpal/associate/add_association/content')
+
+      %label{:for => "assoc_user_id"}= t(:'user_id')
+      %input#assoc_user_id{:name => 'userid', :type => 'number', :required => true, :placeholder => t(:'user_id')}
+
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-chain
+        = t(:'system/penpal/associate/add_association/submit')
+
+  - else
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'userid', :value => '0'}
+      %h1= t(:'system/penpal/associate/remove_association/title')
+
+      %p
+        = t(:'system/penpal/associate/remove_association/content', :user_name => user_name)
+
+      %label{:for => "assoc_remove_confirm"}
+        %input#assoc_remove_confirm{:name => 'confirm', :type => 'checkbox', :required => true}
+        = t(:'system/penpal/associate/remove_association/confirm')
+
+      %button.pure-button.button.button-error{:type => 'submit'}
+        %i.fa.fa-chain-broken
+        = t(:'system/penpal/associate/remove_association/submit')

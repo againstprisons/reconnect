@@ -26,10 +26,19 @@
             %a.pure-button.button{:href => "/system/user/#{user.id}"}
               %i.fa.fa-user
               = t(:'system/penpal/actions/jump_to_user')
+
+            %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/associate"}
+              %i.fa.fa-chain-broken
+              = t(:'system/penpal/actions/user_association_remove')
+
           - else 
             %a.pure-button.button{:href => "#", :disabled => true}
               %i.fa.fa-user
               = t(:'system/penpal/actions/jump_to_user/no_associated')
+
+            %a.pure-button.button.button-primary{:href => "/system/penpal/#{penpal.id}/associate"}
+              %i.fa.fa-chain
+              = t(:'system/penpal/actions/user_association_add')
 
         %form{:method => 'POST', :action => "/system/penpal/#{penpal.id}/copy-link"}
           %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
