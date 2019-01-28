@@ -9,9 +9,13 @@
     - routes.each do |controller, routes|
       - routes.each do |routedesc|
         %li
-          %code
-            &= routedesc[:path]
-            = " ==> "
-            &= routedesc[:method]
+          .y-margin-large
+            %code.code-line
+              &= routedesc[:path]
 
-          = "(#{[routedesc[:verbs]].flatten.join(", ")})"
+            = "=>"
+
+            %code.code-line
+              &= routedesc[:method]
+
+            = "(#{[routedesc[:verbs]].flatten.join(", ")})"

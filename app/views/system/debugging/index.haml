@@ -8,13 +8,17 @@
   .form-wrapped
     %h1= t(:'system/debugging/session')
 
-    %ul
+    %ul.block-list
       - session.keys.each do |skey|
         %li
-          %code
-            &= skey.inspect
-            = " => "
-            &= session[skey].inspect
+          .y-margin-large
+            %code.code-line
+              &= skey.inspect
+
+            = "=>"
+
+            %code.code-line
+              &= session[skey].inspect
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/flash'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
