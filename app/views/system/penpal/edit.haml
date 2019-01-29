@@ -1,0 +1,24 @@
+.system-admin-penpal-edit
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/penpal/#{penpal.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/penpal/edit/section_title')
+
+    %label{:for => "edit_name"}= t(:'name')
+    %input#edit_name{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name'), :value => pp_data[:name]}
+
+    %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
+    %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number'), :value => pp_data[:prisoner_number]}
+
+    %label{:for => "edit_address"}= t(:'address')
+    %textarea#edit_address{:name => 'address', :required => false, :placeholder => t(:'address')}
+      &= pp_data[:address]
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t(:'save_changes')
