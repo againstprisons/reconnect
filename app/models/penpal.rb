@@ -24,4 +24,21 @@ class ReConnect::Models::Penpal < Sequel::Model
 
     [ds_one.all, ds_two.all].flatten.compact
   end
+
+  def delete!
+    # delete relationships
+    self.relationships.map(&:delete)
+
+    # TODO: delete correspondence
+
+    # remove user association
+    unless self.user_id.nil?
+      u = self.user
+      u&.penpal_id = nil
+      u&.save
+    end
+
+    # bye!
+    self.delete
+  end
 end

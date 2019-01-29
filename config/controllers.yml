@@ -22,6 +22,8 @@ controllers:
     controller: SystemPenpalRelationshipDeleteController
   - path: /system/penpal/relationship/:id
     controller: SystemPenpalRelationshipController
+  - path: /system/penpal/:id/delete
+    controller: SystemPenpalDeleteController
   - path: /system/penpal/:id/edit
     controller: SystemPenpalEditController
   - path: /system/penpal/:id/associate
