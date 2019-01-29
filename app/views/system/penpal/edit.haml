@@ -12,6 +12,10 @@
     %label{:for => "edit_name"}= t(:'name')
     %input#edit_name{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name'), :value => pp_data[:name]}
 
+    %label{:for => "edit_is_incarcerated"}
+      %input#edit_is_incarcerated{:type => 'checkbox', :name => 'is_incarcerated', :checked => pp_data[:is_incarcerated]}
+      = t(:'is_incarcerated')
+
     %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
     %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number'), :value => pp_data[:prisoner_number]}
 

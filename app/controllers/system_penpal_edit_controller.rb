@@ -47,6 +47,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     @penpal.encrypt(:name, pp_name)
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
     @penpal.encrypt(:address, pp_address)
+    @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
     @penpal.save
 
     flash :success, t(:'system/penpal/edit/success')
