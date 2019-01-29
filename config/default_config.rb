@@ -18,6 +18,22 @@ module ReConnect
       :type => :bool,
       :default => false,
     },
+    "email-from" => {
+      :type => :text,
+      :default => 'reconnect@example.com',
+    },
+    "email-smtp-host" => {
+      :type => :text,
+      :default => 'user:password@localhost',
+    },
+    "email-smtp-tls" => {
+      :type => 'text',
+      :default => 'no',
+    },
+    "email-subject-prefix" => {
+      :type => 'text',
+      :default => 'site-name-brackets',
+    }
   }
 
   class Application
