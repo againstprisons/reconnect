@@ -1,0 +1,17 @@
+.system-admin-penpal-create
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/penpal'}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/penpal/create/section_title')
+
+    %label{:for => 'name'}= t(:'name')
+    %input#name{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name')}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-plus
+      = t(:'system/penpal/create/submit')
