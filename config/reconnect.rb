@@ -8,8 +8,14 @@ require 'haml'
 
 module ReConnect
   @@root = File.expand_path("../..", __FILE__)
+
+  def self.root
+    @@root
+  end
+
   require File.join(@@root, 'app', 'version')
   require File.join(@@root, 'app', 'utils')
+  require File.join(@@root, 'app', 'workers')
 
   class << self
     attr_reader :app
@@ -19,10 +25,6 @@ module ReConnect
     attr_accessor :app_config, :app_config_refresh_pending
 
     attr_accessor :default_language, :languages
-  end
-
-  def self.root
-    @@root
   end
 
   def self.filter_strip_chars
