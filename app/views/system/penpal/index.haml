@@ -24,8 +24,8 @@
         %h1= t(:'system/penpal/find_by_name')
 
         %label{:for => 'penpal_name'}= t(:'name')
-        %input#user_email{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name')}
+        %input#user_email{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name'), :disabled => true}
 
-        %button.pure-button.button.button-primary{:type => 'submit'}
+        %button.pure-button.button.button-primary{:type => 'submit', :disabled => true}
           %i.fa.fa-search
           = t(:search)
