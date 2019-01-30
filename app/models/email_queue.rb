@@ -17,15 +17,33 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     return out.force_encoding("UTF-8")
   end
 
+  def self.recipients_list(data)
+    mode = data["mode"]&.strip&.downcase
+    if mode == "list"
+      return data["list"]
+    elsif mode == "roles"
+      roles = data["roles"].map(&:strip).map(&:downcase)
+      uids = []
+
+      roles.each do |role|
+        ReConnect::Models::UserRole.where(:role => role).all.each do |ur|
+          uids << ur.user_id
+        end
+      end
+
+      return uids.uniq.map do |uid|
+        ReConnect::Models::User[uid]&.email
+      end.compact
+    end
+
+    []
+  end
+
   def generate_recipients_list
     return [] if self.recipients.nil?
 
-    recipients = JSON.parse(self.decrypt(:recipients))
-    if recipients["mode"]&.strip&.downcase == "list"
-      return recipients["list"]
-    else
-      return []
-    end
+    data = JSON.parse(self.decrypt(:recipients))
+    self.class.recipients_list(data)
   end
 
   def generate_messages_chunked
