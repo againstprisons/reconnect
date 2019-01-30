@@ -244,6 +244,10 @@
 :'system/debugging/flash/type/warning': "Warning"
 :'system/debugging/flash/type/error': "Error"
 :'system/debugging/flash/message': "This is a test of flash type <%= type %>."
+:'system/debugging/email/title': "Send test email"
+:'system/debugging/email/content': "This will send a test email to you (at <%= address %>) with a text part, an HTML part, and a text file attachment."
+:'system/debugging/email/submit': "Send test email"
+:'system/debugging/email/success': "Successfully sent a test email to <%= address %> with queue ID <%= queue_id %>."
 :'system/debugging/routes/title': "Registered application routes"
 
 # Miscellaneous things

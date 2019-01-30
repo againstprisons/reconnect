@@ -1,6 +1,7 @@
 class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers::ApplicationController
   add_route :get, "/"
   add_route :post, "/flash", :method => :test_flash
+  add_route :post, "/email", :method => :test_email
   add_route :get, "/routes", :method => :routes
 
   def index
@@ -17,15 +18,44 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
   end
 
   def test_flash
-    type = request.params["type"]&.strip&.downcase
-    if type.nil?
-      flash :error, t(:required_field_missing)
-      return redirect to("/system/debugging")
-    end
-
+    type = request.params["type"]&.strip&.downcase || 'success'
     flash type.to_sym, t(:'system/debugging/flash/message', :type => type.inspect)
 
-    return redirect to("/system/debugging")
+    return redirect back
+  end
+
+  def test_email
+    address = current_user.email
+
+    subject = "Debug test email"
+    content_text = "This is a test email for debugging purposes."
+    content_html = "<p>This is a test email for debugging purposes.</p>"
+    attachments = JSON.dump([
+      {
+        "filename" => "test_attachment.txt",
+        "content" => "This is a test attachment text file.\n",
+      },
+    ])
+
+    recipients = JSON.dump({
+      "mode" => "list",
+      "list" => [
+        address,
+      ],
+    })
+
+    queue_entry = ReConnect::Models::EmailQueue.new
+    queue_entry.save
+    queue_entry.queue_status = 'queued'
+    queue_entry.encrypt(:recipients, recipients)
+    queue_entry.encrypt(:subject, subject)
+    queue_entry.encrypt(:content_text, content_text)
+    queue_entry.encrypt(:content_html, content_html)
+    queue_entry.encrypt(:attachments, attachments)
+    queue_entry.save
+
+    flash :success, t(:'system/debugging/email/success', :address => address, :queue_id => queue_entry.id)
+    return redirect back
   end
 
   def routes

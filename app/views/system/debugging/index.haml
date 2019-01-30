@@ -31,4 +31,16 @@
       %option{:value => 'error'}= t(:'system/debugging/flash/type/error')
 
     %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-comment
       = t(:'system/debugging/flash/submit')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/email'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/debugging/email/title')
+
+    %p
+      = t(:'system/debugging/email/content', :address => current_user.email)
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-envelope
+      = t(:'system/debugging/email/submit')
