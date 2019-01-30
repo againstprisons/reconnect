@@ -24,11 +24,7 @@ module ReConnect
     },
     "email-smtp-host" => {
       :type => :text,
-      :default => 'user:password@localhost',
-    },
-    "email-smtp-tls" => {
-      :type => 'text',
-      :default => 'no',
+      :default => 'logger',
     },
     "email-subject-prefix" => {
       :type => 'text',

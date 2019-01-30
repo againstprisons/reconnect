@@ -5,6 +5,7 @@ require 'yaml'
 require 'sequel'
 require 'mail'
 require 'haml'
+require 'addressable'
 
 module ReConnect
   @@root = File.expand_path("../..", __FILE__)
@@ -139,10 +140,49 @@ module ReConnect
 
       @app_config[key] = cfg.value
       @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
+
+      self.app_config_refresh_mail if key == 'email-smtp-host'
     end
 
     @app_config_refresh_pending = []
     keys
+  end
+
+  def self.app_config_refresh_mail
+    entry = @app_config["email-smtp-host"]&.strip
+    return if entry.nil? || entry == ""
+    
+    if entry == 'logger'
+      return Mail.defaults do
+        delivery_method :logger
+      end
+    end
+
+    uri = nil
+    begin
+      uri = Addressable::URI.parse(entry)
+    rescue => e
+      puts "app_config_refresh_mail: Failed to parse email-smtp-host URI: #{e.class.name}: #{e}"
+      puts e.traceback if e.respond_to?(:traceback)
+      return
+    end
+
+    opts = {
+      :address => uri.host,
+      :port => uri.port,
+
+      :enable_starttls_auto => uri.query_values ? uri.query_values["starttls"] == 'yes' : false,
+      :enable_tls => uri.query_values ? uri.query_values["tls"] == 'yes' : false,
+      :openssl_verify_mode => uri.query_values ? uri.query_values["verify_mode"]&.strip&.upcase || 'PEER' : 'PEER',
+
+      :authentication => uri.query_values ? uri.query_values["authentication"]&.strip&.downcase || 'plain' : 'plain',
+      :user_name => Addressable::URI.unencode(uri.user || ''),
+      :password => Addressable::URI.unencode(uri.password || ''),
+    }
+
+    Mail.defaults do
+      delivery_method :smtp, opts
+    end
   end
 
   def self.site_load_config
