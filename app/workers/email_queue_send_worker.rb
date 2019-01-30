@@ -3,6 +3,7 @@ class ReConnect::Workers::EmailQueueSendWorker
 
   def perform
     ReConnect.initialize if ReConnect.app.nil?
+    ReConnect.app_config_refresh(true)
 
     messages = ReConnect::Models::EmailQueue.where(:queue_status => 'queued')
     logger.info("Queued message count: #{messages.count}")

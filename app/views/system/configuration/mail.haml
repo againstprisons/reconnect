@@ -1,0 +1,68 @@
+.system-admin-configuration-mail
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/configuration'}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  %form.pure-form.pure-form-stacked{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    .form-wrapped
+      %h1= t(:'system/configuration/mail/prefs/title')
+
+      %label{:for => "from_email"}= t(:'system/configuration/mail/prefs/from_email')
+      %input#from_email{:name => 'from_email', :type => 'email', :required => true, :placeholder => t(:'system/configuration/mail/prefs/from_email'), :value => entries["email-from"][:value]}
+
+      %label{:for => "subject_prefix"}= t(:'system/configuration/mail/prefs/subject_prefix')
+      %select#subject_prefix{:name => 'subject_prefix'}
+        %option{:value => "none", :selected => entries["email-subject-prefix"][:value] == "none"}
+          = t(:'system/configuration/mail/prefs/subject_prefix/none')
+        %option{:value => "org-name", :selected => entries["email-subject-prefix"][:value] == "org-name"}
+          = t(:'system/configuration/mail/prefs/subject_prefix/org_name', :org_name => org_name)
+        %option{:value => "org-name-brackets", :selected => entries["email-subject-prefix"][:value] == "org-name-brackets"}
+          = t(:'system/configuration/mail/prefs/subject_prefix/org_name_brackets', :org_name => org_name)
+        %option{:value => "site-name", :selected => entries["email-subject-prefix"][:value] == "site-name"}
+          = t(:'system/configuration/mail/prefs/subject_prefix/site_name', :site_name => site_name)
+        %option{:value => "site-name-brackets", :selected => entries["email-subject-prefix"][:value] == "site-name-brackets"}
+          = t(:'system/configuration/mail/prefs/subject_prefix/site_name_brackets', :site_name => site_name)
+
+    .form-wrapped
+      %h1= t(:'system/configuration/mail/smtp/title')
+
+      %label{:for => 'smtp_address'}= t(:'system/configuration/mail/smtp/address')
+      %input#smtp_address{:name => 'smtp_address', :type => 'text', :value => smtp_uri[:address]}
+
+      %label{:for => 'smtp_port'}= t(:'system/configuration/mail/smtp/port')
+      %input#smtp_port{:name => 'smtp_port', :type => 'number', :value => smtp_uri[:port]}
+
+      %label{:for => 'smtp_authentication'}= t(:'system/configuration/mail/smtp/authentication')
+      %input#smtp_authentication{:name => 'smtp_authentication', :type => 'text', :value => smtp_uri[:authentication]}
+
+      %label{:for => 'smtp_username'}= t(:'system/configuration/mail/smtp/username')
+      %input#smtp_username{:name => 'smtp_username', :type => 'text', :value => smtp_uri[:username]}
+
+      %label{:for => 'smtp_password'}= t(:'system/configuration/mail/smtp/password')
+      %input#smtp_password{:name => 'smtp_password', :type => 'password', :value => smtp_uri[:password]}
+
+      %label{:for => 'smtp_starttls'}
+        %input#smtp_starttls{:name => 'smtp_starttls', :type => 'checkbox', :checked => smtp_uri[:enable_starttls_auto]}
+        = t(:'system/configuration/mail/smtp/starttls')
+
+      %label{:for => 'smtp_tls'}
+        %input#smtp_tls{:name => 'smtp_tls', :type => 'checkbox', :checked => smtp_uri[:enable_tls]}
+        = t(:'system/configuration/mail/smtp/tls')
+
+      %label{:for => 'smtp_verify'}= t(:'system/configuration/mail/smtp/verify_mode')
+      %select#smtp_verify{:name => 'smtp_verify_mode'}
+        %option{:value => 'none'}
+          = t(:'system/configuration/mail/smtp/verify_mode/none')
+        %option{:value => 'peel'}
+          = t(:'system/configuration/mail/smtp/verify_mode/peer')
+
+    .form-wrapped
+      %h1= t(:'save_changes')
+
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-pencil
+        = t(:'save_changes')

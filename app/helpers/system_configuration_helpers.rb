@@ -18,4 +18,25 @@ module ReConnect::Helpers::SystemConfigurationHelpers
       ]
     end.to_h
   end
+
+  def config_mail_entries
+    keys = [
+      "email-from",
+      "email-smtp-host",
+      "email-subject-prefix",
+    ]
+
+    keys.map do |key|
+      e = ReConnect::Models::Config.where(:key => key).first
+      next nil unless e
+
+      [
+        e.key,
+        {
+          :type => e.type,
+          :value => e.value,
+        }
+      ]
+    end.compact.to_h
+  end
 end

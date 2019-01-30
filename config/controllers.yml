@@ -47,6 +47,8 @@ controllers:
     controller: SystemUserViewController
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
+  - path: /system/configuration/mail
+    controller: SystemConfigurationMailController
   - path: /system/configuration/keys
     controller: SystemConfigurationKeysController
   - path: /system/configuration
