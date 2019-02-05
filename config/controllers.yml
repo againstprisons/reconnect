@@ -45,6 +45,7 @@ controllers:
     controller: SystemUserEditProfileController
   - path: /system/user/:id
     controller: SystemUserViewController
+
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
   - path: /system/configuration/mail
@@ -53,6 +54,7 @@ controllers:
     controller: SystemConfigurationKeysController
   - path: /system/configuration
     controller: SystemConfigurationController
+
   - path: /system/debugging
     controller: SystemDebuggingController
   - path: /system
@@ -61,6 +63,8 @@ controllers:
   - path: /language
     controller: LanguageController
 
+  - path: /filedl
+    controller: FileDownloadController
   - path: /static
     controller: StaticController
   - path: /

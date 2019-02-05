@@ -19,6 +19,7 @@ gem 'sanitize', '~> 5.0.0'
 gem 'memoist', '~> 0.16.0'
 gem 'sidekiq', '~> 5.2.5'
 gem 'sidekiq-scheduler', '~> 3.0.0'
+gem 'mimemagic', '~> 0.3.3'
 
 group :development do
   gem 'sqlite3', '~> 1.3.13'
