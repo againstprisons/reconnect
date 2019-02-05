@@ -19,17 +19,6 @@ module ReConnect::Helpers::LanguageHelpers
     text = default_lang_entry[translation_key] if !text && default_lang_entry
     return "##MISSING(#{translation_key.to_s})##" unless text
 
-    erb = ERB.new(text)
-
-    data = OpenStruct.new
-    values.keys.each do |key|
-      data.send("#{key}=".to_sym, values[key])
-    end
-
-    b = data.instance_eval do
-      binding
-    end
-
-    erb.result(b)
+    erb(text, :locals => values)
   end
 end
