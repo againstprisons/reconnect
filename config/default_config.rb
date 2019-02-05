@@ -27,8 +27,12 @@ module ReConnect
       :default => 'logger',
     },
     "email-subject-prefix" => {
-      :type => 'text',
+      :type => :text,
       :default => 'site-name-brackets',
+    },
+    "file-storage-dir" => {
+      :type => :text,
+      :default => '@SITEDIR@/files/',
     }
   }
 

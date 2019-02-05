@@ -143,8 +143,10 @@ module ReConnect
       end
 
       @app_config[key] = cfg.value
+      @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
       @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
 
+      self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
     end
 
@@ -186,6 +188,12 @@ module ReConnect
 
     Mail.defaults do
       delivery_method :smtp, opts
+    end
+  end
+
+  def self.app_config_refresh_file_storage_dir
+    unless Dir.exist?(@app_config["file-storage-dir"])
+      Dir.mkdir(@app_config["file-storage-dir"])
     end
   end
 
