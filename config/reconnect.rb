@@ -86,13 +86,17 @@ module ReConnect
     @database.extension(:pagination)
     ReConnect::Models.load_models unless opts[:no_load_models]
 
-    # load config files (including site config)
-    self.load_config
-
-    # load config from database
     @app_config = {}
-    @app_config_refresh_pending = ReConnect::APP_CONFIG_ENTRIES.keys
-    self.app_config_refresh unless opts[:no_load_configs] || opts[:no_load_models]
+    @app_config_refresh_pending = []
+
+    unless opts[:no_load_configs]
+      # load config files (including site config)
+      self.load_config 
+
+      # load config from database
+      @app_config_refresh_pending = ReConnect::APP_CONFIG_ENTRIES.keys
+      self.app_config_refresh unless opts[:no_load_models]
+    end
 
     @app = ReConnect::Application.new
   end

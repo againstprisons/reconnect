@@ -10,6 +10,8 @@ end
 namespace :db do
   desc "Run database migrations"
   task :migrate, [:version] do |t, args|
+    do_setup
+
     Sequel.extension(:migration)
 
     migration_dir = File.expand_path("../migrations", __FILE__)
