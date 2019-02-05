@@ -14,6 +14,11 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/files
+    controller: SystemFilesController
+  - path: /system/files/:id
+    controller: SystemFilesInspectController
+
   - path: /system/penpal
     controller: SystemPenpalController
   - path: /system/penpal/create

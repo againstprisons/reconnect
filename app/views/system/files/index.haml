@@ -1,0 +1,26 @@
+.system-admin-debugging-files
+  %h1= t(:'system/files/title')
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/files/inspect-redir'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/files/inspect/section_title')
+
+        %label{:for => 'dl_id'}= t(:'file_id')
+        %input#dl_id{:name => 'id', :type => 'text', :placeholder => t(:'file_id'), :required => true}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-file
+          = t(:'system/files/inspect/submit')
+
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/files/upload', :enctype => 'multipart/form-data'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/files/upload/title')
+
+        %input#ul_file{:name => 'file', :type => 'file', :required => true}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-upload
+          = t(:'system/files/upload/submit')

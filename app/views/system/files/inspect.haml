@@ -1,0 +1,40 @@
+.system-admin-debugging-files-inspect
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/files'}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  .form-wrapped
+    %h1= t(:'system/files/inspect/info/title')
+
+    %ul
+      %li
+        %strong= t(:'system/files/inspect/info/row_id')
+        %span= file.id
+      %li
+        %strong= t(:'system/files/inspect/info/file_id')
+        %span= file.file_id
+      %li
+        %strong= t(:'system/files/inspect/info/creation')
+        %span= file.creation.strftime("%Y-%m-%d %H:%M:%S")
+      %li
+        %strong= t(:'system/files/inspect/info/file_hash')
+        %span= file.file_hash
+      %li
+        %strong= t(:'system/files/inspect/info/mime_type')
+        %span= file.mime_type
+      %li
+        %strong= t(:'system/files/inspect/info/original_fn')
+        %span= file.original_fn
+
+  .form-wrapped
+    %h1= t(:'system/files/inspect/actions/title')
+
+    %a.pure-button.button.button-primary{:href => "/system/files/#{file.file_id}/download"}
+      %i.fa.fa-download
+      = t(:'system/files/inspect/actions/download')
+
+    %a.pure-button.button.button-error{:href => "/system/files/#{file.file_id}/delete"}
+      %i.fa.fa-trash
+      = t(:'system/files/inspect/actions/delete')

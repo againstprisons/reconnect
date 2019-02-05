@@ -59,4 +59,9 @@ class ReConnect::Models::File < Sequel::Model
 
     ReConnect::Crypto.decrypt("file", self.file_id, nil, data)
   end
+
+  def delete!
+    File.unlink(self.abspath)
+    self.delete
+  end
 end

@@ -17,6 +17,11 @@
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/penpal'}
                 = t :'system/penpal/title'
 
+          - if has_role?("system:files:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/files"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/files'}
+                = t :'system/files/title'
+
           - if has_role?("system:configuration:access")
             %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/configuration"))].compact}
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/configuration'}
