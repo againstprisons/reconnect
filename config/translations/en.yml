@@ -258,6 +258,7 @@
 :'system/configuration/quick_toggle/signups/is_disabled': "Signups are disabled."
 :'system/debugging/title': "Debugging"
 :'system/debugging/session': "Session info"
+:'system/debugging/app_config': "Application config"
 :'system/debugging/flash/title': "Test flashes"
 :'system/debugging/flash/submit': "Perform flash"
 :'system/debugging/flash/type': "Flash type"

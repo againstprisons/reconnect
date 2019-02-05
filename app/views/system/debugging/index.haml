@@ -20,6 +20,21 @@
             %code.code-line
               &= session[skey].inspect
 
+  .form-wrapped
+    %h1= t(:'system/debugging/app_config')
+
+    %ul.block-list
+      - app_config.keys.each do |skey|
+        %li
+          .y-margin-large
+            %code.code-line
+              &= skey.inspect
+
+            = "=>"
+
+            %code.code-line
+              &= app_config[skey].inspect
+
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/flash'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/debugging/flash/title')

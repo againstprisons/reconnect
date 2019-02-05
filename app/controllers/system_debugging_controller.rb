@@ -9,10 +9,12 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
     return halt 404 unless has_role?("system:debugging")
 
     @title = t(:'system/debugging/title')
+    @app_config = ReConnect.app_config
 
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/debugging/index', :layout => false, :locals => {
-        :title => @title
+        :title => @title,
+        :app_config => @app_config,
       })
     end
   end
