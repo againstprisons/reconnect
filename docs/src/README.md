@@ -3,12 +3,15 @@
 re:connect is a penpal network automation platform, designed and built for the
 [Prisoner Correspondence Network][pcn].
 
-This documentation covers the internals of re:connect, and is intended for
-developers who wish to contribute to the project.
+This documentation acts as both a reference for administrators of a re:connect
+installation, as well as a reference for developers contributing to re:connect.
+
+For developers, the [*Internals*](./internals/README.md) section contains
+information about the internal components of re:connect.
 
 ## License
 
-Both re:connect itself, and this documentation, is released under the
+Both re:connect itself, and this documentation, are released under the
 [MIT License][license].
 
 [pcn]: https://pcn.nz
