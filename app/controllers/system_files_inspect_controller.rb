@@ -30,12 +30,7 @@ class ReConnect::Controllers::SystemFilesInspectController < ReConnect::Controll
     @file = ReConnect::Models::File.where(:file_id => fid).first
     return halt 404 unless @file
 
-    @token = ReConnect::Models::Token.generate
-    @token.expiry = Time.now + (60 * 60) # expire in an hour
-    @token.user_id = current_user.id
-    @token.use = "file_download"
-    @token.extra_data = @file.file_id
-    @token.save
+    @token = @file.generate_download_token(current_user)
 
     return redirect to("/filedl/#{@file.file_id}/#{@token.token}")
   end

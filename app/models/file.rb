@@ -40,6 +40,19 @@ class ReConnect::Models::File < Sequel::Model
     obj
   end
 
+  def generate_download_token(user)
+    user = user.id if user.respond_to?(:id)
+
+    token = ReConnect::Models::Token.generate
+    token.expiry = Time.now + (60 * 60) # expire in an hour
+    token.user_id = user
+    token.use = "file_download"
+    token.extra_data = self.file_id
+    token.save
+
+    token
+  end
+
   def generate_fn
     mime = MimeMagic.new(self.mime_type)
     ext = mime.extensions.first
