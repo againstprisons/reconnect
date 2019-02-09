@@ -3,10 +3,13 @@ pages:
   image: rust:1.32
 
   before_script:
-    - cargo install mdbook
+    - mkdir -p ./cargo_target
+    - env CARGO_TARGET_DIR=./cargo_target cargo install mdbook --force
+
   cache:
+    key: "pages-cargo"
     paths:
-      - /usr/local/cargo
+      - ./cargo_target/
 
   script: 
     - mdbook build -d ../public ./docs
