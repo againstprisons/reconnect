@@ -1,0 +1,18 @@
+pages:
+  stage: deploy
+  image: rust:1.32
+
+  before_script:
+    - cargo install mdbook
+  cache:
+    paths:
+      - /usr/local/cargo
+
+  script: 
+    - mdbook build -d ../public ./docs
+  artifacts:
+    paths:
+      - public
+
+  only:
+    - master
