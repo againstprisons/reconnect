@@ -1,0 +1,11 @@
+.auth-reset-request
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    %h1= t(:'auth/reset/title')
+    %p= t(:'auth/reset/enter_email')
+
+    %label{:for => "email"}= t(:'email_address')
+    %input#email{:name => 'email', :type => 'email', :placeholder => t(:'email_address'), :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}= t(:'auth/reset/title')

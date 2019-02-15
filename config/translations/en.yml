@@ -64,6 +64,11 @@
 :'auth/signup/password_confirm_incorrect': "Please enter the same password in both fields."
 :'auth/signup/success': "Your sign up was successful. Welcome to <%= site_name %>!"
 :'auth/reset/title': "Reset password"
+:'auth/reset/enter_email': "To reset your password, please enter your email address."
+:'auth/reset/sent': "If a user account exists with that email address, you will receive an email shortly with instructions to reset your password."
+:'auth/reset/enter_new_password': "Please enter a new password."
+:'auth/reset/password_confirm_incorrect': "Please enter the same password in both fields."
+:'auth/reset/success': "Your password has been successfully reset. You can now log in."
 :'auth/user_disabled/title': "Account disabled"
 :'auth/user_disabled/content': "Sorry, your user account has been disabled. The following reason was given:"
 

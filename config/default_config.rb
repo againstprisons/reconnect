@@ -10,6 +10,10 @@ module ReConnect
       :type => :text,
       :default => "Example Organisation",
     },
+    "base-url" => {
+      :type => :text,
+      :default => "https://localhost",
+    },
     "display-version" => {
       :type => :bool,
       :default => false,

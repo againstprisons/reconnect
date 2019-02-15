@@ -2,6 +2,8 @@ preload:
   - ApplicationController
 
 controllers:
+  - path: /auth/reset
+    controller: AuthPasswordResetController
   - path: /auth/signup
     controller: AuthSignupController
   - path: /auth/logout

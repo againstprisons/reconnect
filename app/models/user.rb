@@ -1,3 +1,5 @@
+require 'addressable'
+
 class ReConnect::Models::User < Sequel::Model
   one_to_many :user_roles
   one_to_many :tokens
@@ -9,6 +11,30 @@ class ReConnect::Models::User < Sequel::Model
 
   def password_correct?(pw)
     ReConnect::Crypto.password_verify(self.password_hash, pw)
+  end
+
+  def password_reset!
+    token = ReConnect::Models::Token.generate
+    token.use = "password_reset"
+    token.expiry = Time.now + (60 * 60) # 1 hour
+    token.user_id = self.id
+    token.save
+
+    url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+    url += "/auth/reset/#{token.token}"
+
+    data = {
+      :email_address => self.email,
+      :reset_link => url.to_s,
+    }
+
+    email = ReConnect::Models::EmailQueue.new_from_template("password_reset", data)
+    email.queue_status = "queued"
+    email.encrypt(:subject, "Password reset") # TODO: translation
+    email.encrypt(:recipients, JSON.dump({"mode" => "list", "list" => [self.email]}))
+    email.save
+
+    [token, email]
   end
 
   def login!
