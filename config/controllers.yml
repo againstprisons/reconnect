@@ -60,6 +60,8 @@ controllers:
   - path: /system/configuration
     controller: SystemConfigurationController
 
+  - path: /system/debugging/emailpreview
+    controller: SystemDebuggingEmailTemplatePreviewController
   - path: /system/debugging
     controller: SystemDebuggingController
   - path: /system
