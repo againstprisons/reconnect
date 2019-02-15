@@ -10,3 +10,4 @@
   - [Miscellaneous options](./app-config/misc.md)
 - [Internals](./internals/index.md)
   - [File uploads](./internals/file-uploads.md)
+  - [Email queueing and templates](./internals/email-queue.md)
