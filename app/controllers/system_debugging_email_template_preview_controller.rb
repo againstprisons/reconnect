@@ -45,6 +45,7 @@ class ReConnect::Controllers::SystemDebuggingEmailTemplatePreviewController < Re
       haml(:'system/debugging/emailpreview', :layout => false, :locals => {
         :title => @title,
         :filename => filename,
+        :type => type,
         :data => data,
         :output => output,
       })

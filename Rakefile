@@ -4,7 +4,7 @@ ReConnect.initialize :no_load_models => true, :no_load_configs => true, :no_chec
 def do_setup
   ReConnect::Models.load_models
   ReConnect.load_config
-  ReConnect.app_config_refresh
+  ReConnect.app_config_refresh(true)
 end
 
 namespace :db do

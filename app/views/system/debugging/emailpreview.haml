@@ -5,8 +5,13 @@
     %h1
       &= filename
 
-    .rich-text-container
-      = output
+    - if type == "txt"
+      %pre
+        &= output
+
+    - else
+      .rich-text-container
+        = output
 
   .form-wrapped
     %h1= t(:'system/debugging/emailpreview/data_section_title')
