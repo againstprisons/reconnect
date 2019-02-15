@@ -111,7 +111,7 @@
 :'system/user/auth_options/password_reset': "Send password reset email"
 :'system/user/auth_options/password_reset/confirm': "Are you sure? Check this box to confirm you want to send a password reset email to this user."
 :'system/user/auth_options/password_reset/confirm_not_checked': "Refusing to email a password reset as the confirm box was not checked."
-:'system/user/auth_options/password_reset/success': "Sent a password reset to <%= name %> at email <%= email %>."
+:'system/user/auth_options/password_reset/success': "Sent a password reset to <%= name %> at email <%= email %>. Email is queued with ID <%= queue_id %>."
 :'system/user/auth_options/invalidate': "Invalidate all session tokens"
 :'system/user/auth_options/invalidate/confirm': "Are you sure? Check this box to confirm you want to invalidate all session tokens for this user."
 :'system/user/auth_options/invalidate/confirm_not_checked': "Refusing to invalidate session tokens as the confirm box was not checked."

@@ -36,10 +36,10 @@ class ReConnect::Controllers::SystemUserAuthenticationController < ReConnect::Co
         return redirect request.path
       end
 
-      # TODO: password reset
+      data = @user.password_reset!
+      queue_id = data.last.id
 
-      #@user.send_password_reset!
-      flash :success, t(:'system/user/auth_options/password_reset/success', :name => @name, :email => @email)
+      flash :success, t(:'system/user/auth_options/password_reset/success', :name => @name, :email => @email, :queue_id => queue_id)
 
     elsif action == "invalidate"
       unless request.params["confirm"]&.strip&.downcase == "on"
