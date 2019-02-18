@@ -4,7 +4,7 @@ module ReConnect::Helpers::UserHelpers
 
     t = ReConnect::Models::Token.where(token: session[:token], :use => 'session').first
     return nil unless t
-    return nil unless t.valid
+    return nil unless t.check_validity!
 
     t
   end

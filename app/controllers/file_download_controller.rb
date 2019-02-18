@@ -5,12 +5,9 @@ class ReConnect::Controllers::FileDownloadController < ReConnect::Controllers::A
     return halt 404 unless logged_in?
     @user = current_user
 
-    @token = ReConnect::Models::Token.where(:token => token).first
+    @token = ReConnect::Models::Token.where(:token => token, :use => 'file_download', :user_id => current_user.id).first
     return halt 404 unless @token
-    return halt 404 unless @token.valid
-    return halt 404 unless @token.use == "file_download"
-    return halt 404 unless @token.user_id == current_user.id
-    return halt 404 if @token.check_expiry!
+    return halt 404 unless @token.check_validity!
 
     @file = ReConnect::Models::File.where(:file_id => fid).first
     return halt 404 unless @file

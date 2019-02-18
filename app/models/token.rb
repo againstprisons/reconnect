@@ -5,15 +5,15 @@ class ReConnect::Models::Token < Sequel::Model
     self.new(token: ReConnect::Crypto.generate_token, valid: true, creation: Time.now, expiry: nil)
   end
 
-  def check_expiry!
-    return unless self.expiry
+  def check_validity!
+    return false unless self.valid
 
-    if Time.now >= self.expiry
-      self.invalidate!
-      return true
+    if self.expiry && Time.now >= self.expiry
+      self.invalidate! if self.valid
+      return false
     end
 
-    return false
+    return true
   end
 
   def invalidate!
