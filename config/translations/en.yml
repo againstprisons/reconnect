@@ -66,6 +66,7 @@
 :'auth/reset/title': "Reset password"
 :'auth/reset/enter_email': "To reset your password, please enter your email address."
 :'auth/reset/sent': "If a user account exists with that email address, you will receive an email shortly with instructions to reset your password."
+:'auth/reset/expired': "The password reset link you're using has expired. You can request another from the <a href=\"/auth/reset\">password reset page</a>."
 :'auth/reset/enter_new_password': "Please enter a new password."
 :'auth/reset/password_confirm_incorrect': "Please enter the same password in both fields."
 :'auth/reset/success': "Your password has been successfully reset. You can now log in."

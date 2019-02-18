@@ -35,12 +35,24 @@ class ReConnect::Controllers::AuthPasswordResetController < ReConnect::Controlle
     @title = t(:'auth/reset/title')
 
     @token = ReConnect::Models::Token.where(:token => token).first
-    return 404 unless @token
-    return 404 unless @token.valid
-    return 404 if @token.check_expiry!
+    return halt 404 unless @token
+
+    # check validity and expiry
+    unless @token.check_validity!
+      # return a page saying the token has expired if that's what has happened
+      if @token.expiry && Time.now >= @token.expiry
+        return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
+          haml(:'auth/reset/expired', :layout => false, :locals => {
+            :title => @title,
+          })
+        end
+      end
+
+      return halt 404
+    end
 
     @user = ReConnect::Models::User[@token.user_id]
-    return 404 unless @user
+    return halt 404 unless @user
 
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
