@@ -7,10 +7,21 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     @title = t(:'auth/signup/title')
 
-    unless signups_enabled?
+    @invite = request.params["invite"]&.strip&.downcase
+    @invite = ReConnect::Models::Token.where(:token => @invite, :use => 'invite').first if @invite
+    @invite.check_validity! if @invite
+    @invite_data = {
+      :token => @invite,
+      :short => @invite ? @invite.token[0..7] : nil,
+      :valid => @invite ? @invite.valid : false,
+      :expired => @invite && @invite.expiry && Time.now >= @invite.expiry,
+    }
+
+    unless signups_enabled? || @invite
       return haml(:'auth/layout', :locals => {:title => @title}) do
         haml(:'auth/signup_disabled', :layout => false, :locals => {
           :title => @title,
+          :invite => @invite_data,
         })
       end
     end
@@ -19,6 +30,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       return haml(:'auth/layout', :locals => {:title => @title}) do
         haml(:'auth/signup', :layout => false, :locals => {
           :title => @title,
+          :invite => @invite_data,
         })
       end
     end
@@ -59,6 +71,14 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user.password = password
     user.save
 
+    # invalidate the invite if we're using one
+    if @invite
+      @invite.user_id = user.id
+      @invite.invalidate!
+      @invite.save
+    end
+
+    # log the user in
     token = user.login!
     session[:token] = token.token
 

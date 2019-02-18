@@ -1,2 +1,6 @@
 .auth-signup.auth-signup-disabled
-  = t(:'auth/signup/disabled', :site_name => site_name)
+  - if invite[:token] && invite[:expired]
+    = t(:'auth/signup/disabled/invite_expired')
+
+  - else
+    = t(:'auth/signup/disabled', :site_name => site_name)

@@ -1,4 +1,15 @@
 .auth-signup
+  - if invite[:token]
+    %p.y-margin{:style => 'text-align:center'}
+      - if invite[:expired]
+        = t(:'auth/signup/invite/expired')
+
+      - elsif !invite[:valid]
+        = t(:'auth/signup/invite/invalid')
+
+      - else
+        = t(:'auth/signup/invite/ok', :short => invite[:short])
+
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
 
