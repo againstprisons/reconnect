@@ -23,16 +23,16 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       end
     end
 
-    required = [
-      !request.params["email"].nil?,
-      request.params["email"] != "",
-      !request.params["password"].nil?,
-      request.params["password"] != "",
-      !request.params["password_confirm"].nil?,
-      request.params["password_confirm"] != "",
+    errs = [
+      request.params["email"].nil?,
+      request.params["email"]&.strip.empty?,
+      request.params["password"].nil?,
+      request.params["password"].empty?,
+      request.params["password_confirm"].nil?,
+      request.params["password_confirm"].empty?,
     ]
 
-    unless required.all?
+    if errs.any?
       flash :error, t(:required_field_missing)
       return redirect request.path
     end

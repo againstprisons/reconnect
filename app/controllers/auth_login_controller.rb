@@ -15,14 +15,14 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
       end
     end
 
-    required = [
-      !request.params["email"].nil?,
-      request.params["email"] != "",
-      !request.params["password"].nil?,
-      request.params["password"] != "",
+    errs = [
+      request.params["email"].nil?,
+      request.params["email"]&.strip.empty?,
+      request.params["password"].nil?,
+      request.params["password"].empty?,
     ]
 
-    unless required.all?
+    if errs.any?
       flash :error, t(:required_field_missing)
       return redirect request.path
     end
