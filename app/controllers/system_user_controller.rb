@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::App
   add_route :get, "/"
   add_route :post, "/by-id", :method => :by_id
   add_route :post, "/by-email", :method => :by_email
+  add_route :post, "/create-invite", :method => :create_invite
 
   def index
     return halt 404 unless logged_in?
@@ -52,5 +53,28 @@ class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::App
     end
 
     redirect to("/system/user/#{user.id}")
+  end
+
+  def create_invite
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:user:access")
+
+    # TODO: parse expiry from request.params["expiry"]
+    expiry = Time.now + (60 * 60 * 24) # 1 day
+
+    # create token
+    token = ReConnect::Models::Token.generate
+    token.use = "invite"
+    token.expiry = expiry
+    token.save
+
+    # create invite url
+    url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+    url += "/auth/signup"
+    url.query_values = {"invite" => token.token}
+
+    # flash and return
+    flash :success, t(:'system/user/create_invite/success', :link => url.to_s)
+    return redirect back
   end
 end
