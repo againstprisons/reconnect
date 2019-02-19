@@ -13,3 +13,7 @@
 
       %button.pure-button.button.button-primary{:type => 'submit'}
         = t(:'auth/login/title')
+
+      .auth-twofactor-options
+        %a{:href => to('/auth/twofactor/recovery')}
+          = t(:'auth/login/twofactor/actions/use_recovery')

@@ -3,6 +3,8 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
   add_route :post, "/"
   add_route :get, "/twofactor", :method => :twofactor
   add_route :post, "/twofactor", :method => :twofactor
+  add_route :get, "/twofactor/recovery", :method => :twofactor_recovery
+  add_route :post, "/twofactor/recovery", :method => :twofactor_recovery
 
   def index
     return redirect "/" if logged_in?
@@ -110,5 +112,57 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
     after_login = session.delete(:after_login)
     return redirect after_login if after_login
     redirect to("/")
+  end
+
+  def twofactor_recovery
+    return redirect "/" if logged_in?
+
+    uid = session[:twofactor_uid]
+    return redirect to("/auth") unless uid
+
+    user = ReConnect::Models::User[uid]
+    return redirect to("/auth") unless user
+    return redirect to("/auth") unless user.totp_enabled
+    return redirect to("/auth") if user.totp_secret.nil?
+
+    @title = t(:'auth/login/twofactor/recovery/title')
+
+    if request.get?
+      return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
+        haml(:'auth/login/twofactor_recovery', :layout => false, :locals => {
+          :title => @title,
+        })
+      end
+    end
+
+    # check recovery code
+    code = request.params["code"]&.strip&.downcase
+    if code.nil? || code.empty?
+      flash :error, t(:'auth/login/twofactor/recovery/invalid_code')
+      return redirect request.path
+    end
+
+    code = code.split(" ").join
+    token = ReConnect::Models::Token.where(:user_id => user.id, :token => code, :use => "twofactor_recovery").first
+    if token.nil? || !token.check_validity!()
+      flash :error, t(:'auth/login/twofactor/recovery/invalid_code')
+      return redirect request.path
+    end
+
+    # code is okay
+    token.invalidate!
+
+    # if we get here, user has successfully logged in
+    session.delete(:twofactor_uid)
+    token = user.login!
+    session[:token] = token.token
+
+    if user.preferred_language
+      lang = user.decrypt(:preferred_language)
+      session[:lang] = lang
+    end
+
+    flash :success, t(:'auth/login/twofactor/recovery/success', :site_name => site_name)
+    redirect to("/account/twofactor")
   end
 end
