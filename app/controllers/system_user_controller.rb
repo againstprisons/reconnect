@@ -1,3 +1,5 @@
+require 'chronic'
+
 class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::ApplicationController
   add_route :get, "/"
   add_route :post, "/by-id", :method => :by_id
@@ -59,8 +61,17 @@ class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::App
     return halt 404 unless logged_in?
     return halt 404 unless has_role?("system:user:access")
 
-    # TODO: parse expiry from request.params["expiry"]
-    expiry = Time.now + (60 * 60 * 24) # 1 day
+    # parse expiry
+    expiry_s = request.params["expiry"]&.strip&.downcase
+    expiry_s = "in 1 day" if expiry_s.nil?
+    expiry = Chronic.parse(expiry_s)
+    expiry = Chronic.parse("in #{expiry_s}") if expiry.nil?
+    expiry = Chronic.parse("in #{expiry_s} minutes") if expiry.nil?
+    expiry = Chronic.parse("#{expiry_s} minutes") if expiry.nil?
+    if expiry.nil?
+      flash :error, t(:'system/user/create_invite/expiry_error')
+      return redirect back
+    end
 
     # create token
     token = ReConnect::Models::Token.generate
@@ -74,7 +85,11 @@ class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::App
     url.query_values = {"invite" => token.token}
 
     # flash and return
-    flash :success, t(:'system/user/create_invite/success', :link => url.to_s)
+    flash :success, t(:'system/user/create_invite/success', {
+      :link => url.to_s,
+      :expiry => expiry.strftime("%Y-%m-%d %H:%M:%S"),
+      :expiry_relative => pretty_time(expiry),
+    })
     return redirect back
   end
 end

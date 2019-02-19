@@ -32,7 +32,7 @@
         %h1= t(:'system/user/create_invite/title')
 
         %label{:for => "invite_expiry"}= t(:'system/user/create_invite/expiry')
-        %input#invite_expiry{:name => 'expiry', :type => 'text', :value => '1 day', :placeholder => t(:'system/user/create_invite/expiry'), :disabled => true}
+        %input#invite_expiry{:name => 'expiry', :type => 'text', :value => 'in 1 day', :placeholder => t(:'system/user/create_invite/expiry')}
 
         %button.pure-button.button.button-primary{:type => 'submit'}
           %i.fa.fa-id-badge
