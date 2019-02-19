@@ -12,6 +12,14 @@
         = t(:'account/twofactor/totp/new_device')
 
     .form-wrapped
+      %h1= t(:'account/twofactor/recovery/title')
+      %p= t(:'account/twofactor/recovery/content')
+
+      %a.pure-button.button.button-primary{:href => '/account/twofactor/recovery'}
+        %i.fa.fa-list
+        = t(:'account/twofactor/recovery/submit')
+
+    .form-wrapped
       %h1= t(:'account/twofactor/remove/title')
 
       - if has_roles

@@ -7,6 +7,8 @@ class ReConnect::Controllers::AccountTwoFactorController < ReConnect::Controller
   add_route :post, "/totp", :method => :totp
   add_route :get, "/disable", :method => :disable
   add_route :post, "/disable", :method => :disable
+  add_route :get, "/recovery", :method => :recovery
+  add_route :post, "/recovery/regen", :method => :recovery_regen
 
   def index
     unless logged_in?
@@ -124,5 +126,63 @@ class ReConnect::Controllers::AccountTwoFactorController < ReConnect::Controller
 
     flash :success, t(:'account/twofactor/remove/form/success')
     return redirect "/account/twofactor"
+  end
+
+  def recovery
+    unless logged_in?
+      session[:after_login] = request.path
+      flash :error, t(:must_log_in)
+      return redirect to("/auth")
+    end
+
+    @title = t(:'account/twofactor/recovery/view/title')
+    @user = current_user
+    @codes = ReConnect::Models::Token.where(:user_id => @user.id, :use => 'twofactor_recovery', :valid => true).map do |t|
+      t.token.split("").each_slice(4).map(&:join).join(" ")
+    end
+
+    if request.params["dl"]&.strip&.downcase.to_i == 1
+      output = [
+        "Two-factor authentication recovery codes for: #{@user.email}",
+        80.times.map{"="}.join(),
+        @codes.map{|x| "- #{x}"}
+      ].flatten.join("\n")
+
+      content_type "text/plain"
+      attachment "recovery_codes.txt"
+      return output
+    end
+
+    haml(:'account/layout', :locals => {:title => @title}) do
+      haml(:'account/twofactor/recovery', :layout => false, :locals => {
+        :title => @title,
+        :codes => @codes,
+      })
+    end
+  end
+
+  def recovery_regen
+    unless logged_in?
+      session[:after_login] = "/account/twofactor/recovery"
+      flash :error, t(:must_log_in)
+      return redirect to("/auth")
+    end
+
+    @user = current_user
+
+    # delete existing codes
+    ReConnect::Models::Token.where(:user_id => @user.id, :use => 'twofactor_recovery', :valid => true).delete
+
+    # generate new codes
+    10.times.each do 
+      token = ReConnect::Models::Token.generate
+      token.user_id = @user.id
+      token.use = "twofactor_recovery"
+      token.token = token.token[0..11]
+      token.save
+    end
+
+    flash :success, t(:'account/twofactor/recovery/regen/success')
+    return redirect "/account/twofactor/recovery"
   end
 end
