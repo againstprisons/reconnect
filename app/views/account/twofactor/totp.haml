@@ -1,0 +1,22 @@
+.account-settings-twofactor-totp
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= title
+
+    %p
+      = t(:'account/twofactor/totp/setup/get_app')
+
+    %p
+      = t(:'account/twofactor/totp/setup/scan_qr_or_enter_secret', :secret => secret)
+
+    .account-settings-twofactor-totp-qr{:style => 'text-align:center'}
+      %img{:src => svg, :style => 'max-width:75%;width:350px;height:auto'}
+
+    %p
+      = t(:'account/twofactor/totp/setup/enter_code_below')
+
+    %label{:for => 'totp'}= t(:'account/twofactor/totp/setup/code')
+    %input#totp{:name => 'code', :type => 'number', :required => true, :placeholder => t(:'account/twofactor/totp/setup/code')}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'account/twofactor/totp/setup/submit')

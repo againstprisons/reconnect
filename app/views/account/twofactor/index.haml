@@ -1,5 +1,34 @@
-.account-settings-index
+.account-settings-twofactor-index
   %h1= title
 
-  %p
-    Two-factor authentication is not currently available.
+  - if totp_enabled
+    .form-wrapped
+      %h1= t(:'account/twofactor/totp/title')
+      %p
+        = t(:'account/twofactor/totp/enabled')
+
+      %a.pure-button.button.button-primary{:href => '/account/twofactor/totp'}
+        %i.fa.fa-mobile
+        = t(:'account/twofactor/totp/new_device')
+
+    .form-wrapped
+      %h1= t(:'account/twofactor/remove/title')
+
+      - if has_roles
+        .message.message-warning
+          = t(:'account/twofactor/remove/cannot_disable_have_roles')
+
+      - else
+        %p= t(:'account/twofactor/remove/content')
+
+        %a.pure-button.button.button-error{:href => '/account/twofactor/disable'}
+          %i.fa.fa-times
+          = t(:'account/twofactor/remove/submit')
+
+  - else
+    %p= t(:'account/twofactor/disabled')
+    %p= t(:'account/twofactor/disabled/click_to_set_up')
+
+    %a.pure-button.button.button-primary{:href => '/account/twofactor/totp'}
+      %i.fa.fa-lock
+      = t(:'account/twofactor/disabled/enable')

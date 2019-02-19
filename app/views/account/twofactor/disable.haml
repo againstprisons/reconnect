@@ -1,0 +1,17 @@
+.account-settings-twofactor-disable
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= title
+
+    %p= t(:'account/twofactor/remove/form/content')
+
+    %label{:for => 'confirm'}
+      %input#confirm{:name => 'confirm', :type => 'checkbox', :required => true}
+      = t(:'account/twofactor/remove/form/confirm')
+
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-times
+      = t(:'account/twofactor/remove/form/submit')
+
+    %a.pure-button.button.button-primary{:href => '/account/twofactor'}
+      = t(:'account/twofactor/remove/form/cancel')

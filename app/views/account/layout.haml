@@ -7,7 +7,7 @@
             %a.pure-menu-link.sidebar-menu-link{:href => '/account'}
               = t :'account/title'
 
-          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current?("/account/twofactor"))].compact}
+          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/account/twofactor"))].compact}
             %a.pure-menu-link.sidebar-menu-link{:href => '/account/twofactor'}
               = t :'account/twofactor'
 
