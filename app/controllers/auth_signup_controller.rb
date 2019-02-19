@@ -17,7 +17,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       :expired => @invite && @invite.expiry && Time.now >= @invite.expiry,
     }
 
-    unless signups_enabled? || @invite
+    unless signups_enabled? || (@invite && @invite.valid)
       return haml(:'auth/layout', :locals => {:title => @title}) do
         haml(:'auth/signup_disabled', :layout => false, :locals => {
           :title => @title,
