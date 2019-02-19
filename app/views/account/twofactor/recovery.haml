@@ -17,10 +17,16 @@
         = t(:'account/twofactor/recovery/view/preamble')
 
       %ul.twofactor-recovery-codes
-        - codes.each do |token|
+        - codes.each do |t|
           %li
             %span.y-margin-large{:style => 'display:block'}
-              %code.code-line= token
+              - if t[:valid]
+                %code.code-line
+                  = t[:token]
+              - else
+                %code.code-line
+                  %s= t[:token]
+                %span= t(:'account/twofactor/recovery/view/code_used')
 
       %a.pure-button.button.button-primary{:href => "/account/twofactor/recovery?dl=1"}
         %i.fa.fa-download

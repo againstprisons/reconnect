@@ -104,6 +104,7 @@
 :'account/twofactor/recovery/view/title': "Recovery codes"
 :'account/twofactor/recovery/view/preamble': "You should print, or otherwise note down, these recovery codes. Keep these recovery codes in a safe place, as if you lose access to your two-factor authentication application or security keys, you will need one of these codes to regain access to your account."
 :'account/twofactor/recovery/view/no_codes': "You do not have any two-factor authentication recovery codes. Click the button below to generate a new set of codes."
+:'account/twofactor/recovery/view/code_used': "(code used)"
 :'account/twofactor/recovery/view/download': "Download recovery codes"
 :'account/twofactor/recovery/regen/submit': "Generate a new set of recovery codes"
 :'account/twofactor/recovery/regen/success': "Successfully generated a new set of recovery codes. You should download or print these codes now."

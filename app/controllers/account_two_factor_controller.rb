@@ -137,8 +137,11 @@ class ReConnect::Controllers::AccountTwoFactorController < ReConnect::Controller
 
     @title = t(:'account/twofactor/recovery/view/title')
     @user = current_user
-    @codes = ReConnect::Models::Token.where(:user_id => @user.id, :use => 'twofactor_recovery', :valid => true).map do |t|
-      t.token.split("").each_slice(4).map(&:join).join(" ")
+    @codes = ReConnect::Models::Token.where(:user_id => @user.id, :use => 'twofactor_recovery').map do |t|
+      {
+        :token => t.token.split("").each_slice(4).map(&:join).join(" "),
+        :valid => t.check_validity!,
+      }
     end
 
     if request.params["dl"]&.strip&.downcase.to_i == 1
