@@ -9,7 +9,7 @@ module ReConnect::Helpers::FlashHelpers
     return "" unless session[:flash].is_a?(Array)
 
     session.delete(:flash).map do |f|
-      haml(:flash, :locals => {
+      haml(:flash, :layout => false, :locals => {
         :type => f[:type].to_s,
         :message => f[:message],
       }).to_s
