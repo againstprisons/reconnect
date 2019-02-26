@@ -49,18 +49,16 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     out = ""
     case ReConnect.app_config["email-subject-prefix"]
     when "none"
-      out = text
+      return text
     when "org-name"
-      out = "#{ReConnect.app_config["org-name"]}: #{text}"
+      return "#{ReConnect.app_config["org-name"]}: #{text}"
     when "org-name-brackets"
-      out = "[#{ReConnect.app_config["org-name"]}] #{text}"
+      return "[#{ReConnect.app_config["org-name"]}] #{text}"
     when "site-name"
-      out = "#{ReConnect.app_config["site-name"]}: #{text}"
+      return "#{ReConnect.app_config["site-name"]}: #{text}"
     else # site-name-brackets
-      out = "[#{ReConnect.app_config["site-name"]}] #{text}"
+      return "[#{ReConnect.app_config["site-name"]}] #{text}"
     end
-
-    return out.force_encoding("UTF-8")
   end
 
   def self.recipients_list(data)
@@ -115,6 +113,7 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
 
       unless this.content_text.nil?
         text_part do
+          content_type 'text/plain; charset=UTF-8'
           body this.decrypt(:content_text) 
         end
       end

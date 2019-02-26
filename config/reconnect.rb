@@ -51,6 +51,10 @@ module ReConnect
     ENV["RACK_ENV"] ||= "production"
     ENV["APP_ENV"] ||= ENV["RACK_ENV"]
 
+    # Encoding things
+    Encoding.default_internal = Encoding::UTF_8
+    Encoding.default_external = Encoding::UTF_8
+
     # Load crypto early for keyderiv check
     require File.join(ReConnect.root, 'app', 'crypto')
 
@@ -142,7 +146,7 @@ module ReConnect
         end
       end
 
-      @app_config[key] = cfg.value
+      @app_config[key] = cfg.value.force_encoding(Encoding::UTF_8)
       @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
       @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
 

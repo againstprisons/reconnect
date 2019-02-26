@@ -53,16 +53,19 @@ module ReConnect::Crypto
 
     memoize :get_encryption_key
 
-    def decrypt(table, column, row, data)
+    def decrypt(table, column, row, data, opts = {})
       return "" unless data
 
+      encoding = opts[:encoding] || Encoding::UTF_8
       data = ReConnect::Utils.hex_to_bin(data)
       key = self.get_encryption_key(table, column, row)
       box = RbNaCl::SecretBox.new(ReConnect::Utils.hex_to_bin(key))
 
       nonce = data[0..(box.nonce_bytes - 1)]
       data = data[(box.nonce_bytes)..(data.length)]
-      return box.decrypt(nonce, data)
+      decrypted = box.decrypt(nonce, data)
+
+      return decrypted.force_encoding(encoding)
     end
 
     def encrypt(table, column, row, data)
