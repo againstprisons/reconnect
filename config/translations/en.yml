@@ -330,7 +330,7 @@
 :'system/debugging/flash/type/success': "Success"
 :'system/debugging/flash/type/warning': "Warning"
 :'system/debugging/flash/type/error': "Error"
-:'system/debugging/flash/message': "This is a test of flash type <%= type %>."
+:'system/debugging/flash/message': "This is a test of flash type <%= type %>. Unicode test: Ãā 🐈"
 :'system/debugging/email/title': "Send test email"
 :'system/debugging/email/content': "This will send a test email to you (at <%= address %>) with a text part, an HTML part, and a text file attachment."
 :'system/debugging/email/submit': "Send test email"
