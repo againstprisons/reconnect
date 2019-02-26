@@ -37,7 +37,7 @@
               = t(:'system/user/actions/jump_to_penpal')
 
         - if has_role?("system:user:roles")
-          %a.pure-button.button{:href => "/system/user/#{user.id}/roles", :disabled => true}
+          %a.pure-button.button{:href => "/system/user/#{user.id}/roles"}
             %i.fa.fa-list-alt
             = t(:'system/user/actions/roles')
 

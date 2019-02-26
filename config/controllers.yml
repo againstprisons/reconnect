@@ -50,6 +50,10 @@ controllers:
     controller: SystemUserAuthenticationController
   - path: /system/user/:id/edit-profile
     controller: SystemUserEditProfileController
+  - path: /system/user/:id/roles
+    controller: SystemUserRolesController
+  - path: /system/user/:id/roles/adv
+    controller: SystemUserRolesAdvancedController
   - path: /system/user/:id
     controller: SystemUserViewController
 

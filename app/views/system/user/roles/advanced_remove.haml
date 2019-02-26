@@ -1,0 +1,17 @@
+.system-admin-user-roles-advanced-remove
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %h1= title
+
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %input{:type => 'hidden', :name => 'do_remove', :value => '1'}
+
+    %p
+      = t(:'system/user/roles/advanced/remove_role/content', :role => role.role, :role_id => role.id, :user_name => user_name, :user_id => user.id)
+
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-trash
+      = t(:'system/user/roles/advanced/remove_role/submit')
+
+    %a.pure-button.button{:href => url("/system/user/#{user.id}/roles/adv")}
+      %i.fa.fa-chevron-left
+      = t(:'system/user/roles/advanced/remove_role/abandon')

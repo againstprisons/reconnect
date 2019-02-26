@@ -1,0 +1,50 @@
+.system-admin-user-roles-advanced
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/user/#{user.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .system-admin-user-roles-advanced-current.form-wrapped.x-margin
+        %h1= t(:'system/user/roles/advanced/current_roles/section_title', :count => user_roles.count)
+
+        - if user_roles.count.positive?
+          %ul.block-list
+            - user_roles.each do |r|
+              %li
+                .block-form
+                  %a.block-button.pure-button.button.button-error{:href => url("/system/user/#{user.id}/roles/adv/remove/#{r[:user_role_id].to_i}")}
+                    %i.fa.fa-trash
+                    = t(:'system/user/roles/advanced/current_roles/remove')
+
+                %code.code-line= r[:role]
+
+                %span.dotted-underline{:title => t(:'system/user/roles/advanced/current_roles/role_id', :id => r[:user_role_id])}
+                  %i.fa.fa-ellipsis-v
+
+        - else
+          .message.message-warning
+            = t(:'system/user/roles/advanced/current_roles/no_roles')
+
+    .pure-u-1.pure-u-md-1-2
+      .system-admin-user-roles-advanced-add.form-wrapped.x-margin
+        %h1= t(:'system/user/roles/advanced/add_role/section_title')
+
+        - if user_totp_enabled
+          %form.pure-form.pure-form-stacked{:method => "POST", :action => url("/system/user/#{user.id}/roles/adv/add")}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+            -# TODO: these have `:disabled => true` set until adding new roles is supported
+
+            %label{:for => "role_to_add"}= t(:'system/user/roles/advanced/add_role/role_to_add')
+            %input#role_to_add{:name => 'role', :type => 'text', :placeholder => t(:'system/user/roles/advanced/add_role/role_to_add'), :disabled => true}
+
+            %button.pure-button.button.button-success{:type => 'submit', :disabled => true}
+              %i.fa.fa-plus
+              = t(:'system/user/roles/advanced/add_role/submit')
+
+        - else
+          .message.message-error
+            = t(:'system/user/roles/advanced/no_twofactor')
