@@ -2,6 +2,8 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
   add_route :get, "/"
   add_route :get, "/remove/:role_id", :method => :remove
   add_route :post, "/remove/:role_id", :method => :remove
+  add_route :get, "/add", :method => :add
+  add_route :post, "/add", :method => :add
 
   def index(uid)
     return halt 404 unless logged_in?
@@ -68,6 +70,49 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
     flash :success, t(:'system/user/roles/advanced/remove_role/success', {
       :role => @role_desc,
       :role_id => @role_id,
+      :user_name => @name,
+      :user_id => @user.id,
+    })
+
+    return redirect to("/system/user/#{@user.id}/roles/adv")
+  end
+
+  def add(uid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:user:roles")
+    return redirect to("/system/user/#{uid}/roles/adv") if request.get?
+
+    @user = ReConnect::Models::User[uid.to_i]
+    return halt 404 unless @user
+    @name = @user.decrypt(:name)
+
+    # enforce 2fa
+    @totp_enabled = @user.totp_enabled && !@user.totp_secret.nil?
+    unless @totp_enabled
+      flash :error, t(:'system/user/roles/advanced/add_role/no_twofactor')
+      return redirect to("/system/user/#{@user.id}/roles/adv")
+    end
+
+    # validity checking on role
+    role = request.params["role"]&.strip&.downcase
+    if role.nil? || role.empty?
+      flash :error, t(:'system/user/roles/advanced/add_role/no_role_provided')
+      return redirect to("/system/user/#{@user.id}/roles/adv")
+    end
+
+    # error if role already exists
+    if ReConnect::Models::UserRole.where(:user_id => @user.id, :role => role).count.positive?
+      flash :error, t(:'system/user/roles/advanced/add_role/role_exists')
+      return redirect to("/system/user/#{@user.id}/roles/adv")
+    end
+
+    # save new role
+    @role = ReConnect::Models::UserRole.new(:user_id => @user.id, :role => role)
+    @role.save
+
+    flash :success, t(:'system/user/roles/advanced/add_role/success', {
+      :role => @role.role,
+      :role_id => @role.id,
       :user_name => @name,
       :user_id => @user.id,
     })

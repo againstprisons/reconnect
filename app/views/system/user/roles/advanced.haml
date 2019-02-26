@@ -1,6 +1,8 @@
 .system-admin-user-roles-advanced
   %h1= title
 
+  -# TODO: Change this to point to /system/user/:uid/roles once that's added.
+  -# Right now, doing that will just redirect back to this page!
   %a.pure-button.button{:href => "/system/user/#{user.id}"}
     %i.fa.fa-chevron-left
     = t(:'back')
@@ -36,12 +38,10 @@
           %form.pure-form.pure-form-stacked{:method => "POST", :action => url("/system/user/#{user.id}/roles/adv/add")}
             %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
 
-            -# TODO: these have `:disabled => true` set until adding new roles is supported
-
             %label{:for => "role_to_add"}= t(:'system/user/roles/advanced/add_role/role_to_add')
-            %input#role_to_add{:name => 'role', :type => 'text', :placeholder => t(:'system/user/roles/advanced/add_role/role_to_add'), :disabled => true}
+            %input#role_to_add{:name => 'role', :type => 'text', :placeholder => t(:'system/user/roles/advanced/add_role/role_to_add'), :required => true}
 
-            %button.pure-button.button.button-success{:type => 'submit', :disabled => true}
+            %button.pure-button.button.button-success{:type => 'submit'}
               %i.fa.fa-plus
               = t(:'system/user/roles/advanced/add_role/submit')
 
