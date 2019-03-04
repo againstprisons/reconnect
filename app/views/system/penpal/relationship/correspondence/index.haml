@@ -1,0 +1,35 @@
+.system-admin-penpal-relationship-correspondence
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}"}
+    %i.fa.fa-chevron-left
+    = t(:'system/penpal/relationship/correspondence/back')
+
+  %a.pure-button.button.button-success{:href => "/system/penpal/relationship/#{relationship.id}/correspondence/create"}
+    %i.fa.fa-plus
+    = t(:'system/penpal/relationship/correspondence/create_action')
+
+  .form-wrapped
+    %h1= t(:'system/penpal/relationship/correspondence/existing/section_title')
+
+    - if correspondence.length.positive?
+      %ul.block-list
+        - correspondence.each do |c|
+          %li
+            - if c[:receiving_is_incarcerated] && !c[:actioned]
+              %span.bubble
+                %strong= t(:'system/penpal/relationship/correspondence/existing/is_new')
+
+            %span
+              = t(:'system/penpal/relationship/correspondence/existing/link_text', :from => c[:sending_penpal_name], :to => c[:receiving_penpal_name], :date => c[:creation])
+
+            %a.block-button.pure-button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence/#{c[:id]}"}
+              %i.fa.fa-list
+              = t(:'system/penpal/relationship/correspondence/existing/actions/view')
+
+            %span.dotted-underline{:title => "Correspondence ID #{c[:id]}"}
+              %i.fa.fa-ellipsis-v
+
+    - else
+      .message.message-warning
+        = t(:'system/penpal/relationship/correspondence/existing/none_to_display')

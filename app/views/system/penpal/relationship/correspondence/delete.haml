@@ -1,0 +1,20 @@
+.system-admin-penpal-relationship-delete
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/penpal/relationship/correspondence/delete/section_title')
+
+    %p= t(:'system/penpal/relationship/correspondence/delete/content', :one_name => penpal_one_name, :two_name => penpal_two_name)
+
+    %label{:for => 'confirm'}
+      %input#confirm{:type => 'checkbox', :name => 'confirm', :required => true}
+      = t(:'system/penpal/relationship/correspondence/delete/confirm')
+
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-trash
+      = t(:'system/penpal/relationship/correspondence/delete/submit')

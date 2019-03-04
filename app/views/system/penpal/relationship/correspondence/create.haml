@@ -1,0 +1,23 @@
+.system-admin-penpal-relationship-correspondence-create
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :enctype => 'multipart/form-data'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/penpal/relationship/correspondence/create/section_title')
+
+    %label{:for => "direction"}= t(:'system/penpal/relationship/correspondence/create/direction')
+    %select#direction{:name => 'direction'}
+      %option{:value => "1to2"}
+        = t(:'system/penpal/relationship/correspondence/create/direction_text', :one_name => penpal_one_name, :two_name => penpal_two_name)
+      %option{:value => "2to1"}
+        = t(:'system/penpal/relationship/correspondence/create/direction_text', :one_name => penpal_two_name, :two_name => penpal_one_name)
+
+    %label{:for => "ul_file"}= t(:'system/penpal/relationship/correspondence/create/form_file')
+    %input#ul_file{:name => 'file', :type => 'file', :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'system/penpal/relationship/correspondence/create/submit')
