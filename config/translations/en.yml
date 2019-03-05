@@ -2,7 +2,7 @@
 
 # Languages
 :'language/change': "Change language"
-:'lanugage/invalid': "The chosen language was not found."
+:'language/invalid': "The chosen language was not found."
 
 # Generic actions
 :'back': "Back"
@@ -50,6 +50,35 @@
 
 # Index
 :'index/title': "Home"
+:'index/new_correspondence/title': "New correspondence"
+:'index/new_correspondence/no_new': "No new correspondence!"
+:'index/new_correspondence/link_text': "From <strong><%= name %></strong> (at <%= date.strftime('%Y-%m-%d %H:%M:%S') %>)"
+:'index/penpals/title': "Your penpals"
+
+# Penpal
+:'penpal/view/title': "Your penpal: <%= name %>"
+:'penpal/view/correspondence/section_title': "Correspondence"
+:'penpal/view/correspondence/link_text/new': "(new!)"
+:'penpal/view/correspondence/link_text/sent': "<%= date.strftime('%Y-%m-%d %H:%M') %> - Sent by you"
+:'penpal/view/correspondence/link_text/received': "<%= date.strftime('%Y-%m-%d %H:%M') %> - Received"
+:'penpal/view/correspondence/no_correspondence': "No correspondence with this penpal."
+:'penpal/view/correspondence/actions/create': "Send correspondence to this penpal"
+:'penpal/view/correspondence/create/title': "Send correspondence to <%= name %>"
+:'penpal/view/correspondence/create/section_title': "Upload correspondence"
+:'penpal/view/correspondence/create/file': "File to send (in PDF format)"
+:'penpal/view/correspondence/create/submit': "Send"
+:'penpal/view/correspondence/create/success': "Your correspondence has been uploaded!"
+:'penpal/view/correspondence/create/error/no_file': "No file was provided!"
+:'penpal/view/correspondence/create/error/upload_error': "An error occurred while uploading the file, please try again."
+:'penpal/view/correspondence/single/title': "Correspondence with <%= name %>"
+:'penpal/view/correspondence/single/back_to_list': "See all correspondence with this penpal"
+:'penpal/view/correspondence/single/content/sent': "You sent this correspondence to <%= name %> at <%= date.strftime('%Y-%m-%d %H:%M') %>."
+:'penpal/view/correspondence/single/content/received': "You received this correspondence from <%= name %> at <%= date.strftime('%Y-%m-%d %H:%M') %>."
+:'penpal/view/correspondence/single/download': "Download correspondence"
+:'penpal/view/correspondence/single/mark/read': "Mark as read"
+:'penpal/view/correspondence/single/mark/read/success': "Marked this correspondence as read."
+:'penpal/view/correspondence/single/mark/unread': "Mark as unread"
+:'penpal/view/correspondence/single/mark/unread/success': "Marked this correspondence as unread."
 
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"

@@ -24,31 +24,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
     return halt 404 unless @correspondence.sending_penpal == @penpal_one.id || @correspondence.receiving_penpal == @penpal_one.id
     return halt 404 unless @correspondence.sending_penpal == @penpal_two.id || @correspondence.receiving_penpal == @penpal_two.id
 
-    @correspondence_d = [@correspondence].map do |c|
-      next if c.nil?
-
-      sending = @penpal_one.id == c.sending_penpal ? @penpal_one : @penpal_two
-      receiving = @penpal_one.id == c.receiving_penpal ? @penpal_one : @penpal_two
-
-      actioned = !(c.actioning_user.nil?)
-      actioning_user = ReConnect::Models::User[c.actioning_user]
-      actioning_user_name = actioned ? actioning_user.decrypt(:name) : nil
-
-      {
-        :id => c.id,
-        :creation => c.creation,
-
-        :sending_penpal => sending,
-        :sending_penpal_name => sending.get_name,
-        :receiving_penpal => receiving,
-        :receiving_penpal_name => receiving.get_name,
-        :receiving_is_incarcerated => receiving.is_incarcerated,
-
-        :actioned => actioned,
-        :actioning_user => actioning_user,
-        :actioning_user_name => actioning_user_name,
-      }
-    end.first
+    @correspondence_d = [@correspondence].map{|x| x.get_data}.first
 
     @title = t(:'system/penpal/relationship/correspondence/view/title', :id => @correspondence.id)
 

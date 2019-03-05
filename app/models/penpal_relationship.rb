@@ -1,4 +1,13 @@
 class ReConnect::Models::PenpalRelationship < Sequel::Model
+  def self.find_for_single_penpal(pp)
+    pp = pp.id if pp.respond_to?(:id)
+
+    one_ds = self.where(:penpal_one => pp)
+    two_ds = self.where(:penpal_two => pp)
+
+    [one_ds.all, two_ds.all].flatten.compact
+  end
+
   def self.find_for_penpals(a, b)
     a = a.id if a.respond_to?(:id)
     b = b.id if b.respond_to?(:id)

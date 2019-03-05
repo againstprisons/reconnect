@@ -17,25 +17,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceController <
 
     @title = t(:'system/penpal/relationship/correspondence/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
 
-    @correspondence = ReConnect::Models::Correspondence.find_for_relationship(@relationship).map do |c|
-      next if c.nil?
-
-      sending = @penpal_one.id == c.sending_penpal ? @penpal_one : @penpal_two
-      receiving = @penpal_one.id == c.receiving_penpal ? @penpal_one : @penpal_two
-
-      {
-        :id => c.id,
-        :creation => c.creation,
-
-        :sending_penpal => sending,
-        :sending_penpal_name => sending.get_name,
-        :receiving_penpal => receiving,
-        :receiving_penpal_name => receiving.get_name,
-
-        :receiving_is_incarcerated => receiving.is_incarcerated,
-        :actioned => !(c.actioning_user.nil?),
-      }
-    end
+    @correspondence = ReConnect::Models::Correspondence.find_for_relationship(@relationship).map{|x| x.get_data}.compact
 
     return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/penpal/relationship/correspondence/index', :layout => false, :locals => {

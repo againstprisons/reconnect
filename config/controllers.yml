@@ -11,6 +11,11 @@ controllers:
   - path: /auth
     controller: AuthLoginController
 
+  - path: /penpal/:ppid/correspondence/:cid
+    controller: PenpalCorrespondenceController
+  - path: /penpal/:ppid
+    controller: PenpalController
+
   - path: /account/twofactor
     controller: AccountTwoFactorController
   - path: /account

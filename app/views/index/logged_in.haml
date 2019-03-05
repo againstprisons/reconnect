@@ -1,0 +1,30 @@
+.index-logged-in
+  %h1= title
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'index/penpals/title')
+
+        - if penpals.length.positive?
+          %ul.block-list
+            - penpals.each do |pp|
+              %li
+                %a{:href => url("/penpal/#{pp[:id]}")}
+                  = pp[:name]
+        - else
+          none
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'index/new_correspondence/title')
+
+        - if new_received.length.positive?
+          %ul.block-list
+            - new_received.each do |c|
+              %li
+                %a{:href => url("/penpal/#{c[:sending_penpal].id}/correspondence/#{c[:id]}")}
+                  = t(:'index/new_correspondence/link_text', :name => c[:sending_penpal_name], :date => c[:creation])
+
+        - else
+          = t(:'index/new_correspondence/no_new')
