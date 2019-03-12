@@ -54,6 +54,7 @@
 :'index/new_correspondence/no_new': "No new correspondence!"
 :'index/new_correspondence/link_text': "From <strong><%= name %></strong> (at <%= date.strftime('%Y-%m-%d %H:%M:%S') %>)"
 :'index/penpals/title': "Your penpals"
+:'index/penpals/no_penpals': "You do not have any penpals."
 
 # Penpal
 :'penpal/view/title': "Your penpal: <%= name %>"

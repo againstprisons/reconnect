@@ -13,7 +13,7 @@
                 %a{:href => url("/penpal/#{pp[:id]}")}
                   = pp[:name]
         - else
-          none
+          = t(:'index/penpals/no_penpals')
 
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
