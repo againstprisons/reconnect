@@ -66,6 +66,7 @@
 :'penpal/view/correspondence/actions/create': "Send correspondence to this penpal"
 :'penpal/view/correspondence/create/title': "Send correspondence to <%= name %>"
 :'penpal/view/correspondence/create/section_title': "Upload correspondence"
+:'penpal/view/correspondence/create/back_to_list': "See all correspondence with this penpal"
 :'penpal/view/correspondence/create/file': "File to send (in PDF format)"
 :'penpal/view/correspondence/create/submit': "Send"
 :'penpal/view/correspondence/create/success': "Your correspondence has been uploaded!"

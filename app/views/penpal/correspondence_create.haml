@@ -1,0 +1,22 @@
+.penpal-view-correspondence
+  %h1= title
+
+  - if back != url("/penpal/#{penpal.id}")
+    %a.pure-button.button{:href => back}
+      %i.fa.fa-chevron-left
+      = t(:'back')
+
+  %a.pure-button.button{:href => url("/penpal/#{penpal.id}")}
+    %i.fa.fa-list
+    = t(:'penpal/view/correspondence/create/back_to_list')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :enctype => 'multipart/form-data'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'penpal/view/correspondence/create/section_title')
+
+    %label{:for => 'ul_file'}= t(:'penpal/view/correspondence/create/file')
+    %input#ul_file{:name => 'file', :type => 'file', :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-upload
+      = t(:'penpal/view/correspondence/create/submit')
