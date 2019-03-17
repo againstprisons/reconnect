@@ -5,16 +5,31 @@
     %i.fa.fa-chevron-left
     = t :back
 
-  %ul.block-list
-    - entries.each do |k, v|
-      %li
-        - if has_role?("system:configuration:edit")
-          %a.block-button.pure-button.button{:href => v[:edit_link], :title => t(:edit)}
-            %i.fa.fa-pencil
+  .form-wrapped
+    %h1= t(:'system/configuration/key_value/keys/section_title')
 
-        %span
-          %strong= k
-          = "(#{v[:type]}): "
+    %ul.block-list
+      - entries.each do |k, v|
+        %li
+          - if has_role?("system:configuration:edit")
+            .block-form
+              %a.block-button.pure-button.button{:href => v[:edit_link], :title => t(:edit)}
+                %i.fa.fa-pencil
 
-        %code.code-line
-          &= v[:value_truncated]
+          %span
+            %strong= k
+            = "(#{v[:type]}): "
+
+          %code.code-line
+            &= v[:value_truncated]
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "GET", :action => url("/system/configuration/keys/new-key")}
+    %h1= t(:'system/configuration/key_value/new_key/section_title')
+
+    %label{:for => 'key_name'}= t(:'system/configuration/key_value/new_key/key_name')
+    %input#key_name{:name => 'key', :type => 'text', :required => true, :placeholder => t(:'system/configuration/key_value/new_key/key_name')}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-plus
+      = t(:'system/configuration/key_value/new_key/submit')
+

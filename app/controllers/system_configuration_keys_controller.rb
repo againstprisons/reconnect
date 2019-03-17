@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
   include ReConnect::Helpers::SystemConfigurationHelpers
 
   add_route :get, "/"
+  add_route :get, "/new-key", :method => :new_key
   add_route :get, "/:key", :method => :key_edit
   add_route :post, "/:key", :method => :key_edit
   add_route :post, "/:key/delete", :method => :key_delete
@@ -19,6 +20,13 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
         :entries => @entries,
       })
     end
+  end
+
+  def new_key
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:configuration:access") || has_role?("system:configuration:edit")
+
+    return redirect to("/system/configuration/keys/#{request.params["key"]}")
   end
 
   def key_edit(key)
