@@ -202,7 +202,7 @@ module ReConnect
   end
 
   def self.site_load_config
-    site_dir = ENV["SITE_CONFIG_DIR"]
+    site_dir = ENV["SITE_DIR"]
     return if site_dir.nil?
     return unless Dir.exist?(site_dir)
 
