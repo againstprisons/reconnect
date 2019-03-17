@@ -73,8 +73,10 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     cfg.save
 
     # push key name to the list of pending refreshes
-    unless %w[maintenance].include?(key)
-      ReConnect.app_config_refresh_pending << key
+    if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
+      unless ReConnect.app_config_refresh_pending.include?(key)
+        ReConnect.app_config_refresh_pending << key
+      end
     end
 
     # clear signup pending if we're back at the cached state

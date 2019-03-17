@@ -98,8 +98,7 @@ module ReConnect
       self.load_config 
 
       # load config from database
-      @app_config_refresh_pending = ReConnect::APP_CONFIG_ENTRIES.keys
-      self.app_config_refresh unless opts[:no_load_models]
+      self.app_config_refresh(true) unless opts[:no_load_models]
     end
 
     @app = ReConnect::Application.new

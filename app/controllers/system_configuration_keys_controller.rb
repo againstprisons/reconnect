@@ -70,9 +70,10 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     entry.save
 
     # push key name to the list of pending refreshes
-    ReConnect.app_config_refresh_pending ||= []
-    unless %w[maintenance].include?(key)
-      ReConnect.app_config_refresh_pending << key
+    if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
+      unless ReConnect.app_config_refresh_pending.include?(key)
+        ReConnect.app_config_refresh_pending << key
+      end
     end
 
     flash :success, t(:'system/configuration/key_value/edit_key/success', :key => key)
@@ -99,8 +100,10 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     entry.delete
 
     # push key name to the list of pending refreshes
-    unless %w[maintenance].include?(key)
-      ReConnect.app_config_refresh_pending << key
+    if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
+      unless ReConnect.app_config_refresh_pending.include?(key)
+        ReConnect.app_config_refresh_pending << key
+      end
     end
 
     flash :success, t(:'system/configuration/key_value/edit_key/delete/success', :key => key)

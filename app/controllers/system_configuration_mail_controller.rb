@@ -77,7 +77,9 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       email_from_cfg.value = @from_email
       email_from_cfg.save
 
-      ReConnect.app_config_refresh_pending << "email-from"
+      unless ReConnect.app_config_refresh_pending.include?("email-from")
+        ReConnect.app_config_refresh_pending << "email-from"
+      end
     end
 
     if @entries["email-subject-prefix"][:value] != @subject_prefix
@@ -85,7 +87,9 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       subject_prefix_cfg.value = @subject_prefix
       subject_prefix_cfg.save
 
-      ReConnect.app_config_refresh_pending << "email-subject-prefix"
+      unless ReConnect.app_config_refresh_pending.include?("email-subject-prefix")
+        ReConnect.app_config_refresh_pending << "email-subject-prefix"
+      end
     end
 
     if @entries["email-smtp-host"][:value] != @smtp_uri_s
@@ -93,7 +97,9 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       smtp_cfg.value = @smtp_uri_s
       smtp_cfg.save
 
-      ReConnect.app_config_refresh_pending << "email-smtp-host"
+      unless ReConnect.app_config_refresh_pending.include?("email-smtp-host")
+        ReConnect.app_config_refresh_pending << "email-smtp-host"
+      end
     end
 
     flash :success, t(:'system/configuration/mail/success')

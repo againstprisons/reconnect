@@ -48,14 +48,20 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
     if site_name != old_site_name
       site_name_cfg.value = site_name
       site_name_cfg.save
-      ReConnect.app_config_refresh_pending << "site-name"
+
+      unless ReConnect.app_config_refresh_pending.include?("site-name")
+        ReConnect.app_config_refresh_pending << "site-name"
+      end
     end
 
     # push org-name to refresh list if it's changed
     if org_name != old_org_name
       org_name_cfg.value = org_name
       org_name_cfg.save
-      ReConnect.app_config_refresh_pending << "org-name"
+
+      unless ReConnect.app_config_refresh_pending.include?("org-name")
+        ReConnect.app_config_refresh_pending << "org-name"
+      end
     end
 
     flash :success, t(:'system/configuration/site_org_name/success')
