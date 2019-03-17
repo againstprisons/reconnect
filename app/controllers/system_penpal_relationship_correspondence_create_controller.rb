@@ -72,6 +72,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     end
 
     c.save
+    c.send_alert!
 
     flash :success, t(:'system/penpal/relationship/correspondence/create/success', :id => c.id)
     return redirect to("/system/penpal/relationship/#{@relationship.id}/correspondence/#{c.id}")

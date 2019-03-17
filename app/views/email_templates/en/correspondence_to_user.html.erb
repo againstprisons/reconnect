@@ -1,0 +1,20 @@
+<p>Hello,</p>
+
+<p>
+  You have new correspondence from your penpal,
+  <strong><%= penpal_sending[:name] %></strong>.
+</p>
+
+<p>
+  <a href="<%= link_to_correspondence %>">
+    You can view this new correspondence, and reply to it, by clicking here
+  </a>,
+
+  or by visiting the following link in your browser:
+  <%= link_to_correspondence %>
+</p>
+
+<p>Thanks for being a penpal!</p>
+
+<hr>
+<p><%= site_name %> - <%= org_name %></p>

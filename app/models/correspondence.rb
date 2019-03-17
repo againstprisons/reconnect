@@ -34,6 +34,60 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     }
   end
 
+  def send_alert!
+    penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
+    penpal_receiving = ReConnect::Models::Penpal[self.receiving_penpal]
+    relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
+    return unless relationship
+
+    if penpal_receiving.is_incarcerated
+      template = "correspondence_to_incarcerated"
+
+      url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+      url += "/system/penpal/relationship/#{relationship.id}/correspondence/#{self.id}"
+
+      recipients = JSON.dump({
+        "mode" => "roles",
+        "roles" => [
+          "site:penpal_alert_emails",
+        ]
+      })
+    else
+      user_receiving = ReConnect::Models::User[penpal_receiving.user_id]
+      return unless user_receiving
+
+      template = "correspondence_to_user"
+
+      url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+      url += "/penpal/#{penpal_sending.id}/correspondence/#{self.id}"
+
+      recipients = JSON.dump({
+        "mode" => "list",
+        "list" => [
+          user_receiving.email,
+        ]
+      })
+    end
+
+    data = {
+      :link_to_correspondence => url.to_s,
+      :penpal_sending => {
+        :id => penpal_sending.id,
+        :name => penpal_sending.get_name,
+      },
+      :penpal_receiving => {
+        :id => penpal_receiving.id,
+        :name => penpal_receiving.get_name,
+      }
+    }
+
+    email = ReConnect::Models::EmailQueue.new_from_template(template, data)
+    email.queue_status = "queued"
+    email.encrypt(:subject, "New correspondence") # TODO: translation
+    email.encrypt(:recipients, recipients)
+    email.save
+  end
+
   def delete!
     ReConnect::Models::File.where(:file_id => self.file_id).first&.delete!
     self.delete

@@ -1,0 +1,20 @@
+<p>Hello,</p>
+
+<p>New correspondence has been uploaded to <%= site_name %>, between the following penpals:</p>
+
+<p>
+  <strong><%= penpal_sending[:name] %></strong> (ID <%= penpal_sending[:id] %>)
+  and
+  <strong><%= penpal_receiving[:name] %></strong> (ID <%= penpal_receiving[:id] %>)
+</p>
+
+<p>
+  <a href="<%= link_to_correspondence %>">
+    This correspondence can be viewed by clicking here
+  </a>,
+  
+  or by visiting the following link in your browser:
+  <%= link_to_correspondence %>
+</p>
+
+<p>This is an automated email from <%= site_name %>.</p>
