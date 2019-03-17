@@ -22,7 +22,7 @@ class ReConnect::Models::PenpalRelationship < Sequel::Model
   end
 
   def delete!
-    # TODO: delete correspondence for this relationship?
+    ReConnect::Models::Correspondence.find_for_relationship(self).map(&:delete)
 
     self.delete
   end
