@@ -71,7 +71,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user.password = password
     user.save
 
-    penpal = ReConnect::Models::Penpal.new(user_id: user.id)
+    penpal = ReConnect::Models::Penpal.new_for_user(user)
     penpal.save
 
     # invalidate the invite if we're using one
