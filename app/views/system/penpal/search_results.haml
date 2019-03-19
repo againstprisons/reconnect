@@ -1,0 +1,16 @@
+.system-admin-penpal-search-results
+  %h1= title
+
+  %a.pure-button.button{:href => url('/system/penpal')}
+    %i.fa.fa-chevron-left
+    = t(:'new_search')
+
+  %p
+    = t(:'system/penpal/search/results/count', :count => penpals.count)
+
+  %ul.block-list
+    - penpals.each do |pp|
+      %li
+        %a{:href => pp[:link]}
+          %strong= pp[:name]
+          %span= "(id #{pp[:id]})"

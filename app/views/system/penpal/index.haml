@@ -19,13 +19,18 @@
           = t(:search)
 
     .pure-u-1.pure-u-md-1-2
-      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/penpal/by-name'}
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/penpal/search'}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-        %h1= t(:'system/penpal/find_by_name')
+        %h1= t(:'system/penpal/search/title')
 
-        %label{:for => 'penpal_name'}= t(:'name')
-        %input#user_email{:type => 'text', :name => 'name', :required => true, :placeholder => t(:'name'), :disabled => true}
+        %label{:for => "penpal_search_type"}= t(:'system/penpal/search/type')
+        %select#penpal_search_type{:name => 'type', :required => true}
+          %option{:value => 'name'}= t(:'system/penpal/search/type/name')
+          %option{:value => 'prisoner_number'}= t(:'system/penpal/search/type/prisoner_number')
 
-        %button.pure-button.button.button-primary{:type => 'submit', :disabled => true}
+        %label{:for => 'penpal_search_term'}= t(:'search_term')
+        %input#penpal_search_term{:type => 'text', :name => 'search', :required => true, :placeholder => t(:'search_term')}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
           %i.fa.fa-search
           = t(:search)
