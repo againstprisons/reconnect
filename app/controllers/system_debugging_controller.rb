@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
   add_route :get, "/"
   add_route :post, "/flash", :method => :test_flash
   add_route :post, "/email", :method => :test_email
+  add_route :post, "/filter-refresh", :method => :filter_refresh
   add_route :get, "/routes", :method => :routes
 
   def index
@@ -87,5 +88,15 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
         :routes => @routes,
       })
     end
+  end
+
+  def filter_refresh
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:debugging")
+
+    ReConnect::Workers::FilterRefreshWorker.perform_async
+    flash :success, t(:'system/debugging/filter_refresh/success')
+
+    return redirect back
   end
 end

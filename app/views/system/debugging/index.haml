@@ -59,3 +59,14 @@
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-envelope
       = t(:'system/debugging/email/submit')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/filter-refresh'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/debugging/filter_refresh/title')
+
+    %p
+      = t(:'system/debugging/filter_refresh/content')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-list
+      = t(:'system/debugging/filter_refresh/submit')

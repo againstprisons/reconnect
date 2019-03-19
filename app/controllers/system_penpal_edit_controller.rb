@@ -50,6 +50,9 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
     @penpal.save
 
+    ReConnect::Models::PenpalFilter.clear_filters_for(@penpal)
+    ReConnect::Models::PenpalFilter.create_filters_for(@penpal)
+
     flash :success, t(:'system/penpal/edit/success')
     return redirect request.path
   end

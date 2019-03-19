@@ -37,8 +37,16 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
     user.encrypt(:name, new_name.strip)
     user.save
 
-    flash :success, t(:'account/change_name/success')
+    # refresh penpal filter for this user's penpal object, if they have one
+    unless user.penpal_id.nil?
+      penpal = ReConnect::Models::Penpal[user.penpal_id]
+      if penpal
+        ReConnect::Models::PenpalFilter.clear_filters_for(penpal)
+        ReConnect::Models::PenpalFilter.create_filters_for(penpal)
+      end
+    end
 
+    flash :success, t(:'account/change_name/success')
     return redirect to("/account")
   end
 
