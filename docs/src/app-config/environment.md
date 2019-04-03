@@ -18,8 +18,8 @@ Changing this value will invalidate all existing sessions.
 
 ## Site directory
 
-The `SITE_CONFIG_DIR` environment variable sets the directory used for per-site
-configuration and data storage. 
+The `SITE_DIR` environment variable sets the directory used for per-site
+configuration and data storage.
 
 If a file named `config.rb` exists in this directory, it is loaded at
 application initialization time.
