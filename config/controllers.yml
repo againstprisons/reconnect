@@ -83,6 +83,9 @@ controllers:
     controller: SystemDebuggingEmailTemplatePreviewController
   - path: /system/debugging
     controller: SystemDebuggingController
+
+  - path: /system/jobqueue
+    controller: SystemJobQueueController
   - path: /system
     controller: SystemIndexController
 

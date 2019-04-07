@@ -1,0 +1,17 @@
+.system-admin-job-queue-index
+  %h1= title
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => url("/system/jobqueue/queue")}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/job_queue/section_title')
+
+    %label{:for => 'job_name'}= t(:'system/job_queue/job_name')
+    %select#job_name{:name => 'job_name', :required => true}
+      - jobs.each do |k, v|
+        %option{:value => k.to_s}= k.to_s
+
+    %label{:for => 'job_data'}= t(:'system/job_queue/job_data')
+    %input#job_data{:name => 'job_data', :required => false, :type => 'text', :value => '[]'}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'system/job_queue/submit')

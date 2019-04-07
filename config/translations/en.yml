@@ -469,6 +469,15 @@
 :'system/files/delete/submit': "Delete file"
 :'system/files/delete/success': "Successfully deleted the file with ID <%= id %>."
 :'system/files/delete/confirm_not_checked': "Refusing to delete the file as the confirm box was not checked."
+:'system/job_queue/title': "Job queue"
+:'system/job_queue/section_title': "Queue a job"
+:'system/job_queue/job_name': "Job name"
+:'system/job_queue/job_data': "Data for job (as a JSON array)"
+:'system/job_queue/submit': "Submit job"
+:'system/job_queue/warnings/no_data_using_empty': "No job data provided, using an empty array"
+:'system/job_queue/errors/invalid_job': "Invalid job name."
+:'system/job_queue/invalid_data': "Invalid job data. The job data must be a JSON array."
+:'system/job_queue/success': "Successfully queued job <%= job_name %> with job ID <%= job_id %>."
 
 # Miscellaneous things
 :'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://github.com/peopleagainstprisons/reconnect\">re:connect</a>"
