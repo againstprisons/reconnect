@@ -71,8 +71,10 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user.password = password
     user.save
 
+    # create penpal and generate filters
     penpal = ReConnect::Models::Penpal.new_for_user(user)
     penpal.save
+    ReConnect::Models::PenpalFilter.create_filters_for(penpal)
 
     # invalidate the invite if we're using one
     if @invite
