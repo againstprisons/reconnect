@@ -51,7 +51,15 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
       changed = true
     end
 
-    @user.save if changed
+    if changed
+      @user.save
+
+      penpal = ReConnect::Models::Penpal[@user.penpal_id]
+      if penpal
+        ReConnect::Models::PenpalFilter.clear_filters_for(penpal)
+        ReConnect::Models::PenpalFilter.create_filters_for(penpal)
+      end
+    end
 
     flash :success, t(:'system/user/edit_profile/success')
     return redirect request.path
