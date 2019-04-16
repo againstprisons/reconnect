@@ -6,7 +6,7 @@ directly through `ReConnect::Models::Config` objects (when interacting with the
 application console).
 
 Some configuration is done through environment variables - these are documented
-below in the [Environment variables](./app-config/environment.md) section.
+below in the [Environment variables](./environment.md) section.
 
 ## Note on in-database configuration value substitutions
 
