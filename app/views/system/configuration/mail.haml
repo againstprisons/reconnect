@@ -55,9 +55,9 @@
 
       %label{:for => 'smtp_verify'}= t(:'system/configuration/mail/smtp/verify_mode')
       %select#smtp_verify{:name => 'smtp_verify_mode'}
-        %option{:value => 'NONE', :selected => smtp_uri[:verify_mode] == "NONE"}
+        %option{:value => 'NONE', :selected => smtp_uri[:openssl_verify_mode] == "NONE"}
           = t(:'system/configuration/mail/smtp/verify_mode/none')
-        %option{:value => 'PEER', :selected => smtp_uri[:verify_mode] == "PEER"}
+        %option{:value => 'PEER', :selected => smtp_uri[:openssl_verify_mode] == "PEER"}
           = t(:'system/configuration/mail/smtp/verify_mode/peer')
 
     .form-wrapped
