@@ -129,7 +129,7 @@ module ReConnect
   end
 
   def self.app_config_refresh(force = false)
-    return unless force || @app_config_refresh_pending.count.positive?
+    return [] unless force || @app_config_refresh_pending.count.positive?
     keys = []
 
     ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
@@ -153,15 +153,16 @@ module ReConnect
       self.app_config_refresh_mail if key == 'email-smtp-host'
     end
 
-    @app_config_refresh_pending = []
+    @app_config_refresh_pending.clear
+
     keys
   end
 
   def self.app_config_refresh_mail
     entry = @app_config["email-smtp-host"]&.strip
     return if entry.nil? || entry == ""
-    
-    if entry == 'logger'
+
+    if entry&.strip&.downcase == 'logger'
       return Mail.defaults do
         delivery_method :logger
       end
