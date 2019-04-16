@@ -480,4 +480,4 @@
 :'system/job_queue/success': "Successfully queued job <%= job_name %> with job ID <%= job_id %>."
 
 # Miscellaneous things
-:'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://github.com/peopleagainstprisons/reconnect\">re:connect</a>"
+:'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://gitlab.com/againstprisons/reconnect\">re:connect</a>"
