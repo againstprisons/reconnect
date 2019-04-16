@@ -54,9 +54,9 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       smtp_uri.host = request.params["smtp_address"]&.strip&.downcase || 'localhost'
       smtp_uri.port = (request.params["smtp_port"]&.strip || '587').to_i
 
-      user = Addressable::URI.encode(request.params["smtp_username"]&.strip&.downcase)
+      user = Addressable::URI.encode(request.params["smtp_username"]&.strip&.downcase).gsub("@", "%40")
       smtp_uri.user = user unless user.nil? || user == ""
-      password = Addressable::URI.encode(request.params["smtp_password"]&.strip&.downcase)
+      password = Addressable::URI.encode(request.params["smtp_password"]&.strip)
       smtp_uri.password = password unless password.nil? || password == ""
 
       smtp_uri.query_values = {

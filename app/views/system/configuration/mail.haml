@@ -40,7 +40,7 @@
       %input#smtp_authentication{:name => 'smtp_authentication', :type => 'text', :value => smtp_uri[:authentication]}
 
       %label{:for => 'smtp_username'}= t(:'system/configuration/mail/smtp/username')
-      %input#smtp_username{:name => 'smtp_username', :type => 'text', :value => smtp_uri[:username]}
+      %input#smtp_username{:name => 'smtp_username', :type => 'text', :value => smtp_uri[:user_name]}
 
       %label{:for => 'smtp_password'}= t(:'system/configuration/mail/smtp/password')
       %input#smtp_password{:name => 'smtp_password', :type => 'password', :value => smtp_uri[:password]}
@@ -55,9 +55,9 @@
 
       %label{:for => 'smtp_verify'}= t(:'system/configuration/mail/smtp/verify_mode')
       %select#smtp_verify{:name => 'smtp_verify_mode'}
-        %option{:value => 'none'}
+        %option{:value => 'NONE', :selected => smtp_uri[:verify_mode] == "NONE"}
           = t(:'system/configuration/mail/smtp/verify_mode/none')
-        %option{:value => 'peer'}
+        %option{:value => 'PEER', :selected => smtp_uri[:verify_mode] == "PEER"}
           = t(:'system/configuration/mail/smtp/verify_mode/peer')
 
     .form-wrapped
