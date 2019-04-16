@@ -1,9 +1,5 @@
 Sequel.migration do
   change do
-    alter_table :users do
-      add_foreign_key :penpal_id, :penpals, null: true
-    end
-
     create_table :penpals do
       primary_key :id
 
@@ -14,6 +10,10 @@ Sequel.migration do
       String :address, null: true
       String :prisoner_number, null: true
       String :name, null: true
+    end
+
+    alter_table :users do
+      add_foreign_key :penpal_id, :penpals, null: true
     end
 
     create_table :penpal_relationships do
