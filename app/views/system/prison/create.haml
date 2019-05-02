@@ -1,0 +1,25 @@
+#system-admin-prison-create
+  %h1= title
+
+  %a.pure-button.button{:href => "/system/prison"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/prison/create/section_title')
+
+    %label{:for => 'prison_name'}= t(:'system/prison/create/name')
+    %input#prison_name{:type => 'text', :name => 'name', :required => true}
+
+    %label{:for => 'prison_address'}= t(:'system/prison/create/address')
+    %textarea#prison_address{:name => 'address'}
+
+    %label{:for => 'prison_email'}= t(:'system/prison/create/email')
+    %input#prison_email{:type => 'email', :name => 'email', :required => true}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t(:'system/prison/create/submit')
+
+
