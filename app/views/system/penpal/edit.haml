@@ -19,9 +19,11 @@
     %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
     %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number'), :value => pp_data[:prisoner_number]}
 
-    %label{:for => "edit_address"}= t(:'address')
-    %textarea#edit_address{:name => 'address', :required => false, :placeholder => t(:'address')}
-      &= pp_data[:address]
+    %label{:for => "edit_prison"}= t(:'prison')
+    %select#edit_prison{:name => 'prison', :required => true}
+      %option{:value => '0', :selected => !(pp_data.key?(:prison))}= t(:'unknown_prison')
+      - prisons.each do |p|
+        %option{:value => p[:id], :selected => pp_data.key?(:prison) ? pp_data[:prison][:id] == p[:id] : false}= p[:name]
 
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-pencil

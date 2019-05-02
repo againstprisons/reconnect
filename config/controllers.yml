@@ -28,6 +28,11 @@ controllers:
   - path: /system/files/:id
     controller: SystemFilesInspectController
 
+  - path: /system/prison/:pid
+    controller: SystemPrisonEditController
+  - path: /system/prison
+    controller: SystemPrisonController
+
   - path: /system/penpal
     controller: SystemPenpalController
   - path: /system/penpal/create

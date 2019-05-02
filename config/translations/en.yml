@@ -34,6 +34,8 @@
 :'is_incarcerated': "Is incarcerated?"
 :'file': "File"
 :'file_id': "File ID"
+:'prison': "Prison"
+:'unknown_prison': "Unknown prison"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -170,6 +172,8 @@
 # System settings
 :'system/title': "System admin"
 :'system/index/title': "System admin home"
+
+# System user info
 :'system/user/title': "User info"
 :'system/user/create_invite/title': "Create an invite code"
 :'system/user/create_invite/expiry': "Invite expiry (eg. \"in 2 hours\", or a date)"
@@ -233,6 +237,8 @@
 :'system/user/roles/advanced/remove_role/submit': "Confirm removing role"
 :'system/user/roles/advanced/remove_role/abandon': "Cancel and return to role list"
 :'system/user/roles/advanced/remove_role/success': "Successfully removed role <%= role %> (UserRole ID <%= role_id %>) from user <%= user_name %> (user ID <%= user_id %>)."
+
+# System penpal management
 :'system/penpal/title': "Penpal info"
 :'system/penpal/copy_link_notification': "Current copied penpal link: <%= name %> (id <%= id %>)"
 :'system/penpal/copy_link_notification/clear': "Clear copied link"
@@ -356,6 +362,28 @@
 :'system/penpal/associate/remove_association/submit': "Remove user association"
 :'system/penpal/associate/remove_association/not_removing_no_association': "Can't remove a non-existent association!"
 :'system/penpal/associate/remove_association/success': "Successfully removed user association for this penpal object."
+
+# Prison management
+:'system/prison/title': "Prisons"
+:'system/prison/actions/create': "Create prison entry"
+:'system/prison/actions/edit': "Edit"
+:'system/prison/edit/title': "Edit prison <%= name %>"
+:'system/prison/edit/section_title': "Edit prison"
+:'system/prison/edit/name': "Prison name"
+:'system/prison/edit/address': "Prison postal address"
+:'system/prison/edit/email': "Prison email address"
+:'system/prison/edit/submit': "Save prison data"
+:'system/prison/edit/success': "Successfully saved this prison's data."
+:'system/prison/edit/actions/section_title': "Actions"
+:'system/prison/edit/actions/list_penpals': "List penpals in this prison"
+:'system/prison/delete/section_title': "Delete prison"
+:'system/prison/delete/confirm': "Are you sure? Check this box to confirm you wish to delete this prison."
+:'system/prison/delete/submit': "Delete this prison"
+:'system/prison/delete/confirm_not_checked': "Refusing to delete this prison as the confirm box was not checked."
+:'system/prison/delete/refusing_as_penpals_exist': "Refusing to delete this prison as there are still <%= count %> penpals associated with this prison."
+:'system/prison/delete/success': "Successfully deleted prison <%= name %> (ID <%= id %>)."
+
+# System configuration
 :'system/configuration/title': "Configuration"
 :'system/configuration/key_value/title': "Edit config by key/value"
 :'system/configuration/key_value/back_to_list': "Back to key/value list"
@@ -420,6 +448,8 @@
 :'system/configuration/quick_toggle/maintenance/is_disabled': "Maintenance mode is disabled."
 :'system/configuration/quick_toggle/signups/is_enabled': "Signups are enabled."
 :'system/configuration/quick_toggle/signups/is_disabled': "Signups are disabled."
+
+# Debugging
 :'system/debugging/title': "Debugging"
 :'system/debugging/session': "Session info"
 :'system/debugging/app_config': "Application config"
@@ -443,6 +473,8 @@
 :'system/debugging/emailpreview/template_does_not_exist': "The requested template does not exist. (generated filename: <%= filename %>)"
 :'system/debugging/emailpreview/invalid_data': "An error occurred while parsing the template data: <%= message %>"
 :'system/debugging/routes/title': "Registered application routes"
+
+# System file info
 :'system/files/title': "File info"
 :'system/files/upload/title': "Upload a file"
 :'system/files/upload/submit': "Upload"
@@ -469,6 +501,8 @@
 :'system/files/delete/submit': "Delete file"
 :'system/files/delete/success': "Successfully deleted the file with ID <%= id %>."
 :'system/files/delete/confirm_not_checked': "Refusing to delete the file as the confirm box was not checked."
+
+# System job queue
 :'system/job_queue/title': "Job queue"
 :'system/job_queue/section_title': "Queue a job"
 :'system/job_queue/job_name': "Job name"

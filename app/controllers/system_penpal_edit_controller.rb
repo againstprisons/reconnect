@@ -12,6 +12,12 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     return halt 404 unless @penpal
     @name = @penpal.get_name
     @pp_data = penpal_view_data(@penpal)
+    @prisons = ReConnect::Models::Prison.all.map do |p|
+      {
+        :id => p.id,
+        :name => p.decrypt(:name),
+      }
+    end
 
     @user = nil
     @user = @penpal.user unless @penpal.user_id.nil?
@@ -31,22 +37,32 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
           :pp_data => @pp_data,
           :name => @name,
           :user => @user,
+          :prisons => @prisons,
         })
       end
     end
 
     pp_name = request.params["name"]&.strip
-    pp_prisoner_number = request.params["prisoner_number"]&.strip
-    pp_address = request.params["address"]&.strip
-
     if pp_name.nil? || pp_name == ""
       flash :error, t(:'system/penpal/edit/name_required')
       return redirect request.path
     end
-
     @penpal.encrypt(:name, pp_name)
+
+    pp_prisoner_number = request.params["prisoner_number"]&.strip
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
-    @penpal.encrypt(:address, pp_address)
+
+    #pp_address = request.params["address"]&.strip
+    #@penpal.encrypt(:address, pp_address)
+
+    pp_prison = request.params["prison"]&.strip&.downcase.to_i
+    if pp_prison.nil? || pp_prison.zero?
+      pp_prison = nil
+    else
+      pp_prison = ReConnect::Models::Prison[pp_prison]&.id
+    end
+    @penpal.encrypt(:prison_id, pp_prison)
+
     @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
     @penpal.save
 

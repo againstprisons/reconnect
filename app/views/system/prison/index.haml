@@ -1,0 +1,16 @@
+#system-admin-prison-index
+  %h1= title
+
+  -#%a.pure-button.button.button-success{:href => "/system/prison/create"}
+    %i.fa.fa-plus
+    = t(:'system/prison/actions/create')
+
+  %ul#system-admin-prison-list.block-list
+    - prisons.each do |p|
+      %li
+        .block-form
+          %a.pure-button.button.block-button{:href => "/system/prison/#{p[:id]}"}
+            %i.fa.fa-pencil
+            = t(:'system/prison/actions/edit')
+
+        %strong= p[:name]

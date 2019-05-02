@@ -87,15 +87,23 @@ class ReConnect::Models::PenpalFilter < Sequel::Model
       filters << self.new(:penpal_id => penpal.id, :filter_label => "prisoner_number", :filter_value => e)
     end
 
+    # prison
+    prison = penpal.decrypt(:prison_id)&.strip&.downcase.to_i
+    prison = ReConnect::Models::Prison[prison]
+    if prison
+      e = ReConnect::Crypto.index("Penpal", "prison", prison.id.to_s)
+      filters << self.new(:penpal_id => penpal.id, :filter_label => "prison", :filter_value => e)
+    end
+
     filters.map(&:save)
     filters
   end
 
   def self.perform_filter(column, search)
-    s = search.strip.downcase.encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => "")
+    s = search.to_s.strip.downcase.encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => "")
     ReConnect.filter_strip_chars.each {|x| s.gsub!(x, "")}
 
-    e = ReConnect::Crypto.index("Penpal", column.strip.downcase, s)
+    e = ReConnect::Crypto.index("Penpal", column.to_s.strip.downcase, s)
     self.where(:filter_label => column, :filter_value => e)
   end
 end
