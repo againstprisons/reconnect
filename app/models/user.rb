@@ -61,6 +61,9 @@ class ReConnect::Models::User < Sequel::Model
   end
 
   def delete!
+    self.penpal&.delete!
+    self.penpal_id = nil
+
     self.tokens.map(&:delete)
     self.user_roles.map(&:delete)
 

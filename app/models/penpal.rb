@@ -36,7 +36,12 @@ class ReConnect::Models::Penpal < Sequel::Model
       u = self.user
       u&.penpal_id = nil
       u&.save
+
+      self.user_id = nil
     end
+
+    # clear filters
+    ReConnect::Models::PenpalFilter.clear_filters_for(self)
 
     # bye!
     self.delete
