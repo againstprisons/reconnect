@@ -13,6 +13,9 @@
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
 
+    %label{:for => "name"}= t(:'name')
+    %input#name{:name => 'name', :type => 'text', :placeholder => t(:'name'), :required => true}
+
     %label{:for => "email"}= t(:'email_address')
     %input#email{:name => 'email', :type => 'email', :placeholder => t(:'email_address'), :required => true}
 

@@ -36,6 +36,8 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     end
 
     errs = [
+      request.params["name"].nil?,
+      request.params["name"]&.strip.empty?,
       request.params["email"].nil?,
       request.params["email"]&.strip.empty?,
       request.params["password"].nil?,
@@ -49,6 +51,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       return redirect request.path
     end
 
+    user_name = request.params["name"].strip
     email = request.params["email"].strip.downcase
     password = request.params["password"]
     password_confirm = request.params["password_confirm"]
@@ -70,14 +73,19 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user = ReConnect::Models::User.new(email: email)
     user.password = password
 
+    # save to get an ID
+    user.save
+
+    # save name
+    user.encrypt(:name, user_name)
+    user.save
+
     # create penpal and generate filters
     penpal = ReConnect::Models::Penpal.new_for_user(user)
     penpal.save
     user.penpal_id = penpal.id
-    ReConnect::Models::PenpalFilter.create_filters_for(penpal)
-
-    # save user as we just added penpal info to the user object
     user.save
+    ReConnect::Models::PenpalFilter.create_filters_for(penpal)
 
     # invalidate the invite if we're using one
     if @invite
