@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
   include ReConnect::Helpers::SystemPenpalHelpers
 
   add_route :get, "/"
+  add_route :get, "/email-approve", :method => :email_approve
 
   def index(rid)
     return halt 404 unless logged_in?
@@ -18,6 +19,21 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @penpal_two = penpal_view_data(@penpal_two) if @penpal_two
     @penpal_two_name = @penpal_two&.key?(:name) ? @penpal_two[:name] : "(unknown)"
 
+    @email_approved = {
+      :approved => @relationship.email_approved == true,
+      :by => nil,
+    }
+
+    if @relationship.email_approved_by_id
+      user = ReConnect::Models::User[@relationship.email_approved_by_id]
+      if user
+        @email_approved[:by] = {
+          :id => user.id,
+          :name => user.decrypt(:name),
+        }
+      end
+    end
+
     @title = t(:'system/penpal/relationships/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
 
     return haml(:'system/layout', :locals => {:title => @title}) do
@@ -26,7 +42,40 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
         :relationship => @relationship,
         :penpal_one => @penpal_one,
         :penpal_two => @penpal_two,
+        :email_approved => @email_approved,
       })
     end
+  end
+
+  def email_approve(rid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
+    return halt 404 unless @relationship
+
+    @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
+    @penpal_one = penpal_view_data(@penpal_one) if @penpal_one
+    @penpal_one_name = @penpal_one&.key?(:name) ? @penpal_one[:name] : "(unknown)"
+
+    @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
+    @penpal_two = penpal_view_data(@penpal_two) if @penpal_two
+    @penpal_two_name = @penpal_two&.key?(:name) ? @penpal_two[:name] : "(unknown)"
+
+    approved = @relationship.email_approved == true
+    if approved
+      @relationship.email_approved = false
+      @relationship.email_approved_by_id = nil
+
+      flash :success, t(:'system/penpal/relationships/email_approve/revoke/success')
+    else
+      @relationship.email_approved = true
+      @relationship.email_approved_by_id = current_user.id
+
+      flash :success, t(:'system/penpal/relationships/email_approve/approve/success')
+    end
+
+    @relationship.save
+    return redirect back
   end
 end

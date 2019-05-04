@@ -21,6 +21,23 @@
 
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
+        %h1= t(:'system/penpal/relationships/email_approve/section_title')
+        %p= t(:'system/penpal/relationships/email_approve/content')
+
+        - if email_approved[:approved]
+          - if email_approved[:by]
+            %p= t(:'system/penpal/relationships/email_approve/approved_by', :name => email_approved[:by][:name], :id => email_approved[:by][:id])
+
+          %a.pure-button.button.button-warning{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
+            %i.fa.fa-times
+            = t(:'system/penpal/relationships/email_approve/revoke')
+
+        - else
+          %a.pure-button.button.button-success{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
+            %i.fa.fa-check
+            = t(:'system/penpal/relationships/email_approve/approve')
+
+      .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationships/actions')
 
         %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
