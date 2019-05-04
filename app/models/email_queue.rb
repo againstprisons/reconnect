@@ -109,7 +109,12 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
 
     m = Mail.new do
       from ReConnect.app_config["email-from"]
-      subject this.class.annotate_subject(this.decrypt(:subject))
+
+      if this.annotate_subject
+        subject this.class.annotate_subject(this.decrypt(:subject))
+      else
+        subject this.decrypt(:subject)
+      end
 
       unless this.content_text.nil?
         text_part do
