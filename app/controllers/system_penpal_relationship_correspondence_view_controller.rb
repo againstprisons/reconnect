@@ -2,7 +2,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
   include ReConnect::Helpers::SystemPenpalHelpers
 
   add_route :get, "/"
-  add_route :get, "/mark", :method => :mark
+  add_route :post, "/send", :method => :send_form
   add_route :get, "/download", :method => :download
   add_route :get, "/delete", :method => :delete
   add_route :post, "/delete", :method => :delete
@@ -26,6 +26,10 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     @correspondence_d = [@correspondence].map{|x| x.get_data}.first
 
+    @send_form_url = request.path.to_s + "/send"
+    @download_form_url = request.path.to_s + "/download"
+    @delete_form_url = request.path.to_s + "/delete"
+
     @title = t(:'system/penpal/relationship/correspondence/view/title', :id => @correspondence.id)
 
     return haml(:'system/layout', :locals => {:title => @title}) do
@@ -38,11 +42,14 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
         :penpal_two_d => penpal_view_data(@penpal_two),
         :correspondence => @correspondence,
         :correspondence_d => @correspondence_d,
+        :send_form_url => @send_form_url,
+        :download_form_url => @download_form_url,
+        :delete_form_url => @delete_form_url,
       })
     end
   end
 
-  def mark(rid, cid)
+  def send_form(rid, cid)
     return halt 404 unless logged_in?
     return halt 404 unless has_role?("system:penpal:access")
 
@@ -61,20 +68,45 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     receiving = @penpal_one.id == @correspondence.receiving_penpal ? @penpal_one : @penpal_two
     unless receiving.is_incarcerated
-      flash :error, t(:'system/penpal/relationship/correspondence/view/actions/mark/can_not_mark_outside')
+      flash :error, t(:'system/penpal/relationship/correspondence/view/actions/send/can_not_mark_outside')
       return redirect back
     end
 
-    if @correspondence.actioning_user.nil?
+    if @correspondence.sent != "no"
+      flash :error, t(:'system/penpal/relationship/correspondence/view/actions/send/already_sent')
+      return redirect back
+    end
+
+    method = request.params["send_method"]&.strip&.downcase
+    case method
+    when "post"
       @correspondence.actioning_user = current_user.id
-      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/mark/marked')
+      @correspondence.sent = "post"
+      @correspondence.save
+
+      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/send/via_post/success')
+
+    when "email"
+      # check the receiving penpal is incarcerated and that their prison has an email address`
+      prison = ReConnect::Models::Prison[receiving.decrypt(:prison_id).to_i]
+      if prison.nil? || prison.email_address.nil?
+        flash :error, t(:'system/penpal/relationship/correspondence/view/actions/send/via_email/invalid_prison')
+        return redirect back
+      end
+
+      @correspondence.send_email_to_prison!(true)
+      @correspondence.actioning_user = current_user.id
+      @correspondence.sent = "email"
+      @correspondence.save
+
+      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/send/via_email/success')
+
     else
-      @correspondence.actioning_user = nil
-      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/mark/unmarked')
+      flash :error, t(:'system/penpal/relationship/correspondence/view/actions/send/invalid_method')
+      return redirect back
     end
 
     @correspondence.save
-
     return redirect back
   end
 
