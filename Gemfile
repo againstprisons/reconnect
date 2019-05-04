@@ -22,6 +22,7 @@ gem 'sidekiq', '~> 5.2.5'
 gem 'sidekiq-scheduler', '~> 3.0.0'
 gem 'mimemagic', '~> 0.3.3'
 gem 'chronic', '~> 0.10.2'
+gem 'reverse_markdown', '~> 1.1.0'
 
 group :development do
   gem 'sqlite3', '~> 1.3.13'
