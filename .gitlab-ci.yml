@@ -1,3 +1,13 @@
+bundle-audit:
+  image: ruby:2.6-alpine
+
+  before_script:
+    - gem install bundler-audit
+    - bundle audit update
+
+  script:
+    - bundle audit check
+
 pages:
   stage: deploy
   image: rust:1.32
