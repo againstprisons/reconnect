@@ -26,6 +26,14 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
 
     @correspondence_d = [@correspondence].map{|x| x.get_data(@current_penpal)}.first
 
+    @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
+    return halt 404 unless @file
+    @file_d = {
+      :mime_type => @file.mime_type,
+      :display_html => @file.mime_type == 'text/html',
+      :html_content => @file.mime_type == 'text/html' ? @file.decrypt_file : nil,
+    }
+
     haml :'penpal/correspondence', :locals => {
       :title => @title,
       :penpal => @penpal,
@@ -33,6 +41,8 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
       :relationship => @relationship,
       :correspondence => @correspondence,
       :correspondence_d => @correspondence_d,
+      :file => @file,
+      :file_d => @file_d,
     }
   end
 

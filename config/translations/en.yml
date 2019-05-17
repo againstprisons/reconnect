@@ -80,6 +80,7 @@
 :'penpal/view/correspondence/single/content/sent': "You sent this correspondence to <%= name %> at <%= date.strftime('%Y-%m-%d %H:%M') %>."
 :'penpal/view/correspondence/single/content/received': "You received this correspondence from <%= name %> at <%= date.strftime('%Y-%m-%d %H:%M') %>."
 :'penpal/view/correspondence/single/download': "Download correspondence"
+:'penpal/view/correspondence/single/content_view': "Correspondence content"
 :'penpal/view/correspondence/single/mark/read': "Mark as read"
 :'penpal/view/correspondence/single/mark/read/success': "Marked this correspondence as read."
 :'penpal/view/correspondence/single/mark/unread': "Mark as unread"

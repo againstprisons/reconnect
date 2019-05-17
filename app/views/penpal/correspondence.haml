@@ -18,9 +18,10 @@
       - else
         = t(:'penpal/view/correspondence/single/content/received', :name => penpal.get_name, :date => correspondence_d[:creation])
 
-    %a.pure-button.button.button-primary{:href => url("/penpal/#{penpal.id}/correspondence/#{correspondence_d[:id]}/download")}
-      %i.fa.fa-download
-      = t(:'penpal/view/correspondence/single/download')
+    - unless file_d[:display_html]
+      %a.pure-button.button.button-primary{:href => url("/penpal/#{penpal.id}/correspondence/#{correspondence_d[:id]}/download")}
+        %i.fa.fa-download
+        = t(:'penpal/view/correspondence/single/download')
 
     - if !correspondence_d[:this_user_sent]
       - if correspondence_d[:actioned]
@@ -32,3 +33,10 @@
         %a.pure-button.button.button-success{:href => url("/penpal/#{penpal.id}/correspondence/#{correspondence_d[:id]}/mark")}
           %i.fa.fa-check
           = t(:'penpal/view/correspondence/single/mark/read')
+
+  - if file_d[:display_html]
+    .form-wrapped
+      %h1= t(:'penpal/view/correspondence/single/content_view')
+
+      .correspondence-html.rich-text-container
+        = file_d[:html_content]
