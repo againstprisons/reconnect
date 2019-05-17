@@ -4,14 +4,14 @@
   "description": "A penpal network management system",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/peopleagainstprisons/reconnect.git"
+    "url": "git+https://gitlab.com/againstprisons/reconnect.git"
   },
   "author": "People Against Prisons Aotearoa",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/peopleagainstprisons/reconnect/issues"
+    "url": "https://gitlab.com/againstprisons/reconnect/issues"
   },
-  "homepage": "https://github.com/peopleagainstprisons/reconnect#readme",
+  "homepage": "https://gitlab.com/againstprisons/reconnect#readme",
   "dependencies": {
     "font-awesome": "^4.7.0",
     "purecss": "^1.0.0"
