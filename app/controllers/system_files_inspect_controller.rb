@@ -3,6 +3,7 @@ class ReConnect::Controllers::SystemFilesInspectController < ReConnect::Controll
   add_route :get, "/download", :method => :download
   add_route :get, "/delete", :method => :delete
   add_route :post, "/delete", :method => :delete
+  add_route :post, "/mime-type", :method => :mime_type
 
   def index(fid)
     return halt 404 unless logged_in?
@@ -63,5 +64,25 @@ class ReConnect::Controllers::SystemFilesInspectController < ReConnect::Controll
 
     flash :error, t(:'system/files/delete/confirm_not_checked')
     redirect request.path
+  end
+
+  def mime_type(fid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:files:inspect")
+
+    @file = ReConnect::Models::File.where(:file_id => fid).first
+    return halt 404 unless @file
+
+    mime = request.params["mime"]&.strip&.downcase
+    if mime.empty?
+      mime = nil
+    end
+
+    old = @file.mime_type
+    @file.mime_type = mime
+    @file.save
+
+    flash :success, t(:'system/files/inspect/mime_type/success', :old => old, :new => mime)
+    return redirect to("/system/files/#{@file.file_id}")
   end
 end

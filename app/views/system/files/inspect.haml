@@ -28,13 +28,28 @@
         %strong= t(:'system/files/inspect/info/original_fn')
         %span= file.original_fn
 
-  .form-wrapped
-    %h1= t(:'system/files/inspect/actions/title')
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/files/inspect/actions/title')
 
-    %a.pure-button.button.button-primary{:href => "/system/files/#{file.file_id}/download"}
-      %i.fa.fa-download
-      = t(:'system/files/inspect/actions/download')
+        %a.pure-button.button.button-primary{:href => "/system/files/#{file.file_id}/download"}
+          %i.fa.fa-download
+          = t(:'system/files/inspect/actions/download')
 
-    %a.pure-button.button.button-error{:href => "/system/files/#{file.file_id}/delete"}
-      %i.fa.fa-trash
-      = t(:'system/files/inspect/actions/delete')
+        %a.pure-button.button.button-error{:href => "/system/files/#{file.file_id}/delete"}
+          %i.fa.fa-trash
+          = t(:'system/files/inspect/actions/delete')
+
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => to("/system/files/#{file.file_id}/mime-type")}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/files/inspect/mime_type/section_title')
+
+        %label{:for => 'mime_type_change'}= t(:'system/files/inspect/mime_type/mime_type')
+        %input#mime_type_change{:name => 'mime', :type => 'text'}
+
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-pencil
+          = t(:'system/files/inspect/mime_type/submit')
+
