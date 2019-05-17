@@ -59,3 +59,11 @@
         %a.pure-button.button.button-error{:href => delete_form_url}
           %i.fa.fa-trash
           = t(:'system/penpal/relationship/correspondence/view/actions/delete')
+
+  - if settings.development?
+    .page-footer
+      &= "file id #{correspondence.file_id.inspect}"
+      &middot;
+      &= "sent #{correspondence.sent.inspect}"
+      &middot;
+      &= "actioning user #{correspondence.actioning_user.inspect}"
