@@ -60,6 +60,14 @@
           %i.fa.fa-trash
           = t(:'system/penpal/relationship/correspondence/view/actions/delete')
 
+    - if file_d[:display_html]
+      .pure-u-1
+        .form-wrapped.x-margin
+          %h1= t(:'system/penpal/relationship/correspondence/view/content_view')
+
+          .correspondence-html.rich-text-container
+            = file_d[:html_content]
+
   - if settings.development?
     .page-footer.y-margin-large
       debug:

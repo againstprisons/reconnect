@@ -26,6 +26,14 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     @correspondence_d = [@correspondence].map{|x| x.get_data}.first
 
+    @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
+    return halt 404 unless @file
+    @file_d = {
+      :mime_type => @file.mime_type,
+      :display_html => @file.mime_type == 'text/html',
+      :html_content => @file.mime_type == 'text/html' ? @file.decrypt_file : nil,
+    }
+
     @send_form_url = request.path.to_s + "/send"
     @download_form_url = request.path.to_s + "/download"
     @delete_form_url = request.path.to_s + "/delete"
@@ -42,6 +50,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
         :penpal_two_d => penpal_view_data(@penpal_two),
         :correspondence => @correspondence,
         :correspondence_d => @correspondence_d,
+        :file => @file,
+        :file_d => @file_d,
         :send_form_url => @send_form_url,
         :download_form_url => @download_form_url,
         :delete_form_url => @delete_form_url,

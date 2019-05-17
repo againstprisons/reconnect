@@ -333,6 +333,7 @@
 :'system/penpal/relationship/correspondence/create/success': "The correspondence was created with ID <%= id %>."
 :'system/penpal/relationship/correspondence/view/title': "Viewing correspondence <%= id %>"
 :'system/penpal/relationship/correspondence/view/section_title': "Correspondence details"
+:'system/penpal/relationship/correspondence/view/content_view': "Correspondence content"
 :'system/penpal/relationship/correspondence/view/from': "From: <%= name %>"
 :'system/penpal/relationship/correspondence/view/to': "To: <%= name %>"
 :'system/penpal/relationship/correspondence/view/uploaded': "Uploaded: <%= date.strftime('%Y-%m-%d %H:%M:%S') %>"
