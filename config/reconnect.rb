@@ -48,8 +48,8 @@ module ReConnect
 
   def self.initialize(opts = {})
     # Set our environment if it's not already set
+    ENV["APP_ENV"] = nil
     ENV["RACK_ENV"] ||= "production"
-    ENV["APP_ENV"] ||= ENV["RACK_ENV"]
 
     # Encoding things
     Encoding.default_internal = Encoding::UTF_8
