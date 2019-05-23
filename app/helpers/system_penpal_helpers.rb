@@ -12,7 +12,8 @@ module ReConnect::Helpers::SystemPenpalHelpers
     name = name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     name = "(unknown)" if name.nil? || name&.strip&.empty?
     data[:name] = name
-    data[:display_fields] << [t(:'name'), name]
+    data[:display_fields] << [t(:'name/first'), name_a.first]
+    data[:display_fields] << [t(:'name/last'), name_a.last]
 
     # user ID
     data[:user_id] = pp.user ? pp.user.id : nil
