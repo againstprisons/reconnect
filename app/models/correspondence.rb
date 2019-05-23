@@ -67,7 +67,12 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
 
   def send_alert!
     penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
+    penpal_sending_name = penpal_sending.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    penpal_sending_name = "(unknown)" if penpal_sending_name.nil? || penpal_sending_name&.strip&.empty?
     penpal_receiving = ReConnect::Models::Penpal[self.receiving_penpal]
+    penpal_receiving_name = penpal_receiving.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    penpal_receiving_name = "(unknown)" if penpal_receiving_name.nil? || penpal_receiving_name&.strip&.empty?
+
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
     return unless relationship
 
@@ -108,11 +113,11 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       :link_to_correspondence => url.to_s,
       :penpal_sending => {
         :id => penpal_sending.id,
-        :name => penpal_sending.get_name,
+        :name => penpal_sending_name,
       },
       :penpal_receiving => {
         :id => penpal_receiving.id,
-        :name => penpal_receiving.get_name,
+        :name => penpal_receiving_name,
       }
     }
 
@@ -156,9 +161,12 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     # construct plain-text version of the HTML contents using reverse-markdown
     text_part = ReverseMarkdown.convert(html_part, :unknown_tags => :bypass)
 
+    penpal_receiving_name = penpal_receiving.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    penpal_receiving_name = "(unknown)" if penpal_receiving_name.nil? || penpal_receiving_name&.strip&.empty?
+
     # subject has to be "#{prisoner_name}, #{prisoner_number}"
     subject = [
-      penpal_receiving.get_name,
+      penpal_receiving_name,
       ", ",
       penpal_receiving.decrypt(:prisoner_number) || 'unknown prisoner number',
     ].join("")
