@@ -18,13 +18,13 @@ Sequel.migration do
 
   down do
     alter_table :penpals do
-      add_column :name, String, null:true
+      add_column :name, String, null: true
       drop_column :first_name
       drop_column :last_name
     end
 
     alter_table :users do
-      add_column :name, String, null:true
+      add_column :name, String, null: true
       drop_column :first_name
       drop_column :last_name
     end
