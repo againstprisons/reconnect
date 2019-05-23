@@ -40,3 +40,23 @@
 
       .correspondence-html.rich-text-container
         = file_d[:html_content]
+
+  - if settings.development?
+    .page-footer.y-margin-large
+      debug:
+
+      &= "file id #{correspondence.file_id.inspect}"
+      - if correspondence.file_id
+        %a{:href => to("/system/files/#{correspondence.file_id}")}
+          %i.fa.fa-link
+
+      &middot;
+
+      &= "sent #{correspondence.sent.inspect}"
+
+      &middot;
+
+      &= "actioning user #{correspondence.actioning_user.inspect}"
+      - if correspondence.actioning_user
+        %a{:href => to("/system/user/#{correspondence.actioning_user}")}
+          %i.fa.fa-link
