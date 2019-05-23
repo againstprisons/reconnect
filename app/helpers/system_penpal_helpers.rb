@@ -52,6 +52,7 @@ module ReConnect::Helpers::SystemPenpalHelpers
     end
 
     # incarcerated status
+    data[:is_incarcerated] = pp.is_incarcerated
     data[:display_fields] << [
       t(:'is_incarcerated'),
       data[:is_incarcerated] ? 'yes' : 'no'
