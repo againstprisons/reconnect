@@ -27,6 +27,17 @@
           %li= t(:'system/penpal/relationships/stats/correspondence_count', :count => correspondence[:count])
           %li= t(:'system/penpal/relationships/stats/last_correspondence', :date => correspondence[:last], :relative => pretty_time(correspondence[:last]))
 
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/notes")}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/penpal/relationships/notes/section_title')
+
+        %textarea#relationship_notes{:name => "notes"}
+          &= notes
+
+        %button.pure-button.button{:type => 'submit'}
+          %i.fa.fa-pencil
+          = t(:'system/penpal/relationships/notes/submit')
+
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationships/email_approve/section_title')
         %p= t(:'system/penpal/relationships/email_approve/content')

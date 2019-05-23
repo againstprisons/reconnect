@@ -3,6 +3,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
 
   add_route :get, "/"
   add_route :get, "/email-approve", :method => :email_approve
+  add_route :post, "/notes", :method => :notes
 
   def index(rid)
     return halt 404 unless logged_in?
@@ -35,6 +36,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     end
 
     @correspondence = ReConnect::Models::Correspondence.find_for_relationship(@relationship)
+    @notes = @relationship.decrypt(:notes)
 
     @title = t(:'system/penpal/relationships/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
 
@@ -45,6 +47,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
         :penpal_one => @penpal_one,
         :penpal_two => @penpal_two,
         :email_approved => @email_approved,
+        :notes => @notes,
         :correspondence => {
           :count => @correspondence.count,
           :last => @correspondence.first.creation,
@@ -82,6 +85,26 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     end
 
     @relationship.save
+    return redirect back
+  end
+
+  def notes(rid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
+    return halt 404 unless @relationship
+
+    notes = request.params["notes"]&.strip
+    if notes.nil? || notes.empty?
+      @relationship.notes = nil
+    else
+      @relationship.encrypt(:notes, notes)
+    end
+
+    @relationship.save
+
+    flash :success, t(:'system/penpal/relationships/notes/success')
     return redirect back
   end
 end
