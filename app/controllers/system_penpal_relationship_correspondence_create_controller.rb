@@ -12,9 +12,11 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     return halt 404 unless @relationship
 
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
-    @penpal_one_name = @penpal_one.get_name
+    @penpal_one_name = @penpal_one.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @penpal_one_name = "(unknown)" if @penpal_one_name.nil? || @penpal_one_name&.strip&.empty?
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
-    @penpal_two_name = @penpal_two.get_name
+    @penpal_two_name = @penpal_two.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @penpal_two_name = "(unknown)" if @penpal_two_name.nil? || @penpal_two_name&.strip&.empty?
 
     @title = t(:'system/penpal/relationship/correspondence/create/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
 
