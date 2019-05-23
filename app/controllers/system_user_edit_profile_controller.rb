@@ -9,7 +9,7 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
     @name_a = @user.get_name
-    @name = @name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @email = @user.email
 
     @title = t(:'system/user/edit_profile/title', :name => @name, :id => @user.id)
