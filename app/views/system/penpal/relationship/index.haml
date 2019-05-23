@@ -21,6 +21,13 @@
 
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
+        %h1= t(:'system/penpal/relationships/stats/section_title')
+
+        %ul
+          %li= t(:'system/penpal/relationships/stats/correspondence_count', :count => correspondence[:count])
+          %li= t(:'system/penpal/relationships/stats/last_correspondence', :date => correspondence[:last], :relative => pretty_time(correspondence[:last]))
+
+      .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationships/email_approve/section_title')
         %p= t(:'system/penpal/relationships/email_approve/content')
 

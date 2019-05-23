@@ -34,6 +34,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
       end
     end
 
+    @correspondence = ReConnect::Models::Correspondence.find_for_relationship(@relationship)
+
     @title = t(:'system/penpal/relationships/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
 
     return haml(:'system/layout', :locals => {:title => @title}) do
@@ -43,6 +45,10 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
         :penpal_one => @penpal_one,
         :penpal_two => @penpal_two,
         :email_approved => @email_approved,
+        :correspondence => {
+          :count => @correspondence.count,
+          :last => @correspondence.first.creation,
+        },
       })
     end
   end
