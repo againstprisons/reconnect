@@ -23,24 +23,28 @@ module ReConnect::Route
       b[:controller] == inspect.split("::").last
     end.first
 
-    path = "" if path == "/"
-    full_path = "#{controller_entry[:path]}#{path}"
+    # construct full path to method, removing trailing slash
+    full_path = "#{controller_entry[:path]}#{path.sub(/\/$/, '')}"
 
-    my[:routes] << {
-      :verb => verb,
-      :method => meth,
-      :path => {
-        :full => full_path,
-        :fragment => path,
+    # specify verbs to add routes for. if verb is GET, also add a HEAD
+    [verb, verb == "GET" ? "HEAD" : nil].compact.each do |v|
+      my[:routes] << {
+        :verb => v,
+        :method => meth,
+        :path => {
+          :full => full_path,
+          :fragment => path,
+        }
       }
-    }
 
-    this = self
-    ReConnect::Application.class_eval do
-      route(verb, full_path, {}) do |*args|
-        controller = this.new(self)
-        controller.before() if controller.respond_to?(:before)
-        next controller.send(meth, *args)
+      # lets us refer to the controller class calling this in the below block
+      this = self
+      ReConnect::Application.class_eval do
+        route(v, full_path, {}) do |*args|
+          controller = this.new(self)
+          controller.before() if controller.respond_to?(:before)
+          next controller.send(meth, *args)
+        end
       end
     end
   end
