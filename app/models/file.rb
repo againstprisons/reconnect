@@ -54,10 +54,17 @@ class ReConnect::Models::File < Sequel::Model
   end
 
   def generate_fn
-    mime = MimeMagic.new(self.mime_type)
-    ext = mime.extensions.first
+    if self.mime_type
+      mime = MimeMagic.new(self.mime_type)
+      ext = mime.extensions.first
+    end
 
-    "#{self.creation.strftime("%Y-%m-%d_%H%M%S_%s")}.#{ext}"
+    fn = self.creation.strftime("%Y-%m-%d_%H%M%S_%s")
+    if ext
+      fn += ".#{ext}"
+    end
+
+    fn
   end
 
   def abspath
