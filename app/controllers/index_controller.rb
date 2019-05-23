@@ -34,7 +34,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       sending = ReConnect::Models::Penpal[c.sending_penpal]
       sending_name = sending.get_name.first
       sending_name = "(unknown)" if sending_name.nil? || sending_name&.strip&.empty?
-      receiving_name = @current_penpal.get_name
+      receiving_name = @current_penpal.get_name.first
       receiving_name = "(unknown)" if receiving_name.nil? || receiving_name&.strip&.empty?
 
       {
