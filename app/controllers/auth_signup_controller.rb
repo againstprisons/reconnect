@@ -36,8 +36,10 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     end
 
     errs = [
-      request.params["name"].nil?,
-      request.params["name"]&.strip.empty?,
+      request.params["first_name"].nil?,
+      request.params["first_name"]&.strip.empty?,
+      request.params["last_name"].nil?,
+      request.params["last_name"]&.strip.empty?,
       request.params["email"].nil?,
       request.params["email"]&.strip.empty?,
       request.params["password"].nil?,
@@ -51,7 +53,8 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       return redirect request.path
     end
 
-    user_name = request.params["name"].strip
+    user_first_name = request.params["first_name"]&.strip
+    user_last_name = request.params["last_name"]&.strip
     email = request.params["email"].strip.downcase
     password = request.params["password"]
     password_confirm = request.params["password_confirm"]
@@ -77,7 +80,8 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user.save
 
     # save name
-    user.encrypt(:name, user_name)
+    user.encrypt(:first_name, user_first_name)
+    user.encrypt(:last_name, user_last_name)
     user.save
 
     # create penpal and generate filters

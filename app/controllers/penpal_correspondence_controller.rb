@@ -17,7 +17,10 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
 
-    @title = t(:'penpal/view/correspondence/single/title', :name => @penpal.get_name)
+    @penpal_name = @penpal.get_name.first
+    @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
+
+    @title = t(:'penpal/view/correspondence/single/title', :name => @penpal_name)
 
     @correspondence = ReConnect::Models::Correspondence[cid.to_i]
     return halt 404 unless @correspondence
@@ -37,7 +40,7 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
     haml :'penpal/correspondence', :locals => {
       :title => @title,
       :penpal => @penpal,
-      :penpal_name => @penpal.get_name,
+      :penpal_name => @penpal_name,
       :relationship => @relationship,
       :correspondence => @correspondence,
       :correspondence_d => @correspondence_d,

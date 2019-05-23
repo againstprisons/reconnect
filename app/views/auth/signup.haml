@@ -13,8 +13,15 @@
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
 
-    %label{:for => "name"}= t(:'name')
-    %input#name{:name => 'name', :type => 'text', :placeholder => t(:'name'), :required => true}
+    .pure-g
+      .pure-u-1.pure-u-md-1-2
+        .x-margin
+          %label{:for => "first_name"}= t(:'name/first')
+          %input#first_name{:type => 'text', :name => 'first_name', :required => true, :placeholder => t(:'name/first')}
+      .pure-u-1.pure-u-md-1-2
+        .x-margin
+          %label{:for => "last_name"}= t(:'name/last')
+          %input#last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last')}
 
     %label{:for => "email"}= t(:'email_address')
     %input#email{:name => 'email', :type => 'email', :placeholder => t(:'email_address'), :required => true}

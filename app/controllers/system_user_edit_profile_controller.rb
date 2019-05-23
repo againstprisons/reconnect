@@ -8,7 +8,8 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name_a = @user.get_name
+    @name = @name.map{|x| x == "" ? nil : x}.compact.join(" ")
     @email = @user.email
 
     @title = t(:'system/user/edit_profile/title', :name => @name, :id => @user.id)
@@ -19,23 +20,36 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
           :title => @title,
           :user => @user,
           :user_name => @name,
+          :user_name_a => @name_a,
           :user_email => @email,
         })
       end
     end
 
-    new_name = request.params["name"]&.strip
     new_email = request.params["email"]&.strip&.downcase
+    new_name_first = request.params["first_name"]&.strip
+    new_name_last = request.params["last_name"]&.strip
+    new_name_a = [new_name_first, new_name_last]
 
-    if new_name.nil? || new_name == "" || new_email.nil? || new_email == ""
+    none_of = [
+      new_email.nil?,
+      new_email&.empty?,
+      new_name_first.nil?,
+      new_name_first&.empty?,
+      new_name_last.nil?,
+      new_name_last&.empty?,
+    ]
+
+    if none_of.any?
       flash :error, t(:'required_field_missing')
       return redirect request.path
     end
 
     changed = false
 
-    if @name != new_name
-      @user.encrypt(:name, new_name)
+    if @name_a != new_name_a
+      @user.encrypt(:first_name, new_name_first)
+      @user.encrypt(:last_name, new_name_last)
       changed = true
     end
 

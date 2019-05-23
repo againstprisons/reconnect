@@ -8,7 +8,8 @@ class ReConnect::Controllers::SystemUserAuthenticationController < ReConnect::Co
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name_a = @user.get_name
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
     @email = @user.email
 
     @title = t(:'system/user/auth_options/title', :name => @name, :id => @user.id)

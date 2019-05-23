@@ -7,8 +7,8 @@ class ReConnect::Models::Penpal < Sequel::Model
   end
 
   def get_name
-    return self.user.decrypt(:name) if self.user
-    self.decrypt(:name)
+    return self.user.get_name if self.user
+    [self.decrypt(:first_name), self.decrypt(:last_name)]
   end
 
   def relationship_count
@@ -62,7 +62,7 @@ class ReConnect::Models::PenpalFilter < Sequel::Model
     filters = []
 
     # full name
-    name = penpal.get_name&.to_s&.strip&.downcase
+    name = penpal.get_name&.join(" ")&.to_s&.strip&.downcase
     unless name.nil? || name.empty?
       name = name.encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => "")
 

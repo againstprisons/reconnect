@@ -7,7 +7,6 @@ class ReConnect::Controllers::SystemUserPenpalObjectController < ReConnect::Cont
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
 
     @penpal = @user.penpal
     unless @penpal

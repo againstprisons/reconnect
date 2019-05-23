@@ -1,8 +1,13 @@
 module ReConnect::Helpers::SystemPenpalHelpers
   def penpal_view_data(pp)
+    name_a = pp.get_name
+    name = name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
+    name = "(unknown)" if name.nil? || name&.strip&.empty?
+
     data = {
       :id => pp.id,
-      :name => pp.get_name,
+      :name => name,
+      :name_a => name_a,
       :is_incarcerated => pp.is_incarcerated,
     }
 

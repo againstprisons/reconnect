@@ -13,10 +13,10 @@
   .form-wrapped
     %p
       - if correspondence_d[:this_user_sent]
-        = t(:'penpal/view/correspondence/single/content/sent', :name => penpal.get_name, :date => correspondence_d[:creation])
+        = t(:'penpal/view/correspondence/single/content/sent', :name => penpal_name, :date => correspondence_d[:creation])
 
       - else
-        = t(:'penpal/view/correspondence/single/content/received', :name => penpal.get_name, :date => correspondence_d[:creation])
+        = t(:'penpal/view/correspondence/single/content/received', :name => penpal_name, :date => correspondence_d[:creation])
 
     - unless file_d[:display_html]
       %a.pure-button.button.button-primary{:href => url("/penpal/#{penpal.id}/correspondence/#{correspondence_d[:id]}/download")}

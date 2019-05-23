@@ -18,16 +18,20 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
       end
     end
 
-    new_name = request.params["name"]&.strip
-    if new_name.nil? || new_name == ""
+    pp_first_name = request.params["first_name"]&.strip
+    pp_last_name = request.params["last_name"]&.strip
+    if pp_first_name.nil? || pp_first_name.empty? || pp_last_name.nil? || pp_last_name.empty?
       flash :error, t(:'system/penpal/create/must_provide_name')
       return redirect request.path
     end
 
     @penpal = ReConnect::Models::Penpal.new(:user_id => nil)
     @penpal.save
-    @penpal.encrypt(:name, new_name)
+    @penpal.encrypt(:first_name, pp_first_name)
+    @penpal.encrypt(:last_name, pp_last_name)
     @penpal.save
+
+    ReConnect::Models::PenpalFilter.create_filters_for(@penpal)
 
     flash :success, t(:'system/penpal/create/success')
     return redirect "/system/penpal/#{@penpal.id}"

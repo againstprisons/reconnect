@@ -11,7 +11,8 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name_a = @user.get_name
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @email = @user.email
     @totp_enabled = @user.totp_enabled && !@user.totp_secret.nil?
     @roles = ReConnect::Models::UserRole.where(:user_id => @user.id).all.map do |r|
@@ -27,6 +28,7 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
       haml(:'system/user/roles/advanced', :layout => false, :locals => {
         :title => @title,
         :user => @user,
+        :user_name_a => @name_a,
         :user_name => @name,
         :user_email => @email,
         :user_totp_enabled => @totp_enabled,
@@ -41,7 +43,8 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name_a = @user.get_name
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
 
     @role = ReConnect::Models::UserRole[role_id.to_i]
     return halt 404 unless @role
@@ -84,7 +87,8 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name_a = @user.get_name
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
 
     # enforce 2fa
     @totp_enabled = @user.totp_enabled && !@user.totp_secret.nil?

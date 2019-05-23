@@ -28,6 +28,8 @@
 :'password/new/confirm': "New password (again, to confirm)"
 :'password/change': "Change password"
 :'name': "Name"
+:'name/first': "First name"
+:'name/last': "Last name"
 :'name/change': "Change your name"
 :'prisoner_number': "Prisoner number"
 :'address': "Address"

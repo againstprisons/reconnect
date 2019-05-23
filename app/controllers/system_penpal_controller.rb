@@ -67,9 +67,12 @@ class ReConnect::Controllers::SystemPenpalController < ReConnect::Controllers::A
     end
 
     @penpals = penpals.map do |pp|
+      name = pp.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+      name = "(unknown)" if name.nil? || name&.strip&.empty?\
+
       {
         :id => pp.id,
-        :name => pp.get_name,
+        :name => name,
         :link => url("/system/penpal/#{pp.id}"),
       }
     end

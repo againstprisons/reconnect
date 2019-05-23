@@ -10,8 +10,9 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
     @penpal = ReConnect::Models::Penpal[uid.to_i]
     return halt 404 unless @penpal
-    @name = @penpal.get_name
     @user = @penpal.user
+    @penpal_name_a = @penpal.get_name
+    @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
 
     @pp_data = penpal_view_data(@penpal)
 
@@ -39,13 +40,14 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
       end
     end
 
-    @title = t(:'system/penpal/view/title', :name => @name, :id => @penpal.id)
+    @title = t(:'system/penpal/view/title', :name => @penpal_name, :id => @penpal.id)
     return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/penpal/view', :layout => false, :locals => {
         :title => @title,
         :penpal => @penpal,
         :user => @user,
-        :name => @name,
+        :name => @penpal_name,
+        :name_a => @penpal_name_a,
         :display_fields => @pp_data[:display_fields],
         :relationships => @relationships,
         :copied_link => @copied_link,
@@ -59,7 +61,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
     @penpal = ReConnect::Models::Penpal[uid.to_i]
     return halt 404 unless @penpal
-    @name = @penpal.get_name
+    @name = @penpal.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
 
     session[:copied_penpal_id] = @penpal.id
     flash :success, t(:'system/penpal/actions/copy_link/success', :name => @name, :id => @penpal.id)

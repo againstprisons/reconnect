@@ -29,7 +29,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
       if user
         @email_approved[:by] = {
           :id => user.id,
-          :name => user.decrypt(:name),
+          :name => user.get_name.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)",
         }
       end
     end

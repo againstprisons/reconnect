@@ -11,11 +11,16 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
       return redirect to("/auth")
     end
 
+    @user = current_user
+    @name_a = @user.get_name
+    @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
     @title = t(:'account/title')
 
     haml(:'account/layout', :locals => {:title => @title}) do
       haml(:'account/index', :layout => false, :locals => {
-        :title => @title
+        :title => @title,
+        :name_a => @name_a,
+        :name => @name,
       })
     end
   end
@@ -27,19 +32,22 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
       return redirect to("/auth")
     end
 
-    new_name = request.params["name"]
-    if new_name.nil? || new_name == ""
+    @user = current_user
+
+    first_name = request.params["first_name"]&.strip
+    last_name = request.params["last_name"]&.strip
+    if first_name.nil? || first_name&.empty? || last_name.nil? || last_name&.empty?
       flash :error, t(:'required_field_missing')
       return redirect to("/account")
     end
 
-    user = current_user
-    user.encrypt(:name, new_name.strip)
-    user.save
+    @user.encrypt(:first_name, first_name)
+    @user.encrypt(:last_name, last_name)
+    @user.save
 
     # refresh penpal filter for this user's penpal object, if they have one
-    unless user.penpal_id.nil?
-      penpal = ReConnect::Models::Penpal[user.penpal_id]
+    unless @user.penpal_id.nil?
+      penpal = ReConnect::Models::Penpal[@user.penpal_id]
       if penpal
         ReConnect::Models::PenpalFilter.clear_filters_for(penpal)
         ReConnect::Models::PenpalFilter.create_filters_for(penpal)

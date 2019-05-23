@@ -27,11 +27,9 @@ module ReConnect::Helpers::UserHelpers
     return nil unless logged_in?
     u = current_user
 
-    unless u.name.nil?
-      user_name = u.decrypt(:name)
-      unless user_name.nil? || user_name.strip == ""
-        return "#{user_name} (#{u.email})"
-      end
+    name = u.get_name.map{|x| x == "" ? nil : x}.compact
+    unless name.empty?
+      return "#{name.join(" ")} (#{u.email})"
     end
 
     u.email

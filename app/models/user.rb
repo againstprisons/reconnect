@@ -5,6 +5,10 @@ class ReConnect::Models::User < Sequel::Model
   one_to_many :tokens
   one_to_one :penpal
 
+  def get_name
+    [self.decrypt(:first_name), self.decrypt(:last_name)]
+  end
+
   def password=(pw)
     self.password_hash = ReConnect::Crypto.password_hash(pw)
   end

@@ -7,7 +7,8 @@ class ReConnect::Controllers::SystemUserViewController < ReConnect::Controllers:
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-    @name = @user.decrypt(:name)
+    @name = @user.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @name = "(unknown)" if @name.nil? || @name.empty?
 
     @title = t(:'system/user/view/title', :name => @name, :id => @user.id)
 

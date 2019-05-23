@@ -19,9 +19,12 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
         other = ReConnect::Models::Penpal[pr.penpal_one]
       end
 
+      name = other.get_name.first
+      name = "(unknown)" if name.nil? || name.empty?
+
       {
         :id => other.id,
-        :name => other.get_name,
+        :name => name,
       }
     end.compact
 
@@ -29,15 +32,19 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       next if c.nil?
 
       sending = ReConnect::Models::Penpal[c.sending_penpal]
+      sending_name = sending.get_name.first
+      sending_name = "(unknown)" if sending_name.nil? || sending_name&.strip&.empty?
+      receiving_name = @current_penpal.get_name
+      receiving_name = "(unknown)" if receiving_name.nil? || receiving_name&.strip&.empty?
 
       {
         :id => c.id,
         :creation => c.creation,
 
         :sending_penpal => sending,
-        :sending_penpal_name => sending.get_name,
+        :sending_penpal_name => sending_name,
         :receiving_penpal => @current_penpal,
-        :receiving_penpal_name => @current_penpal.get_name,
+        :receiving_penpal_name => receiving_name,
 
         :actioned => !(c.actioning_user.nil?),
       }
