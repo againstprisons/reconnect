@@ -50,7 +50,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
         :notes => @notes,
         :correspondence => {
           :count => @correspondence.count,
-          :last => @correspondence.first.creation,
+          :last => @correspondence.first&.creation,
         },
       })
     end

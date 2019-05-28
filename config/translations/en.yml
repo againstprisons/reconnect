@@ -293,6 +293,7 @@
 :'system/penpal/relationships/stats/section_title': "Statistics"
 :'system/penpal/relationships/stats/correspondence_count': "<strong>Correspondence count:</strong> <%= count %>"
 :'system/penpal/relationships/stats/last_correspondence': "<strong>Last correspondence:</strong> <%= date.strftime('%Y-%m-%d %H:%M') %> (<%= relative %>)"
+:'system/penpal/relationships/stats/last_correspondence/unknown': "<strong>Last correspondence:</strong> unknown"
 :'system/penpal/relationships/email_approve/section_title': "Email approval"
 :'system/penpal/relationships/email_approve/content': "Approving this relationship for emails into prison means that any future correspondence will automatically be sent into the prison via email, rather than requiring manual intervention."
 :'system/penpal/relationships/email_approve/approved_by': "This relationship has had automatic emails approved by <%= name %> (user ID <%= id %>)."

@@ -25,7 +25,12 @@
 
         %ul
           %li= t(:'system/penpal/relationships/stats/correspondence_count', :count => correspondence[:count])
-          %li= t(:'system/penpal/relationships/stats/last_correspondence', :date => correspondence[:last], :relative => pretty_time(correspondence[:last]))
+          %li
+            - if correspondence[:last]
+              = t(:'system/penpal/relationships/stats/last_correspondence', :date => correspondence[:last], :relative => pretty_time(correspondence[:last]))
+            - else
+              = t(:'system/penpal/relationships/stats/last_correspondence/unknown')
+
 
       %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/notes")}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
