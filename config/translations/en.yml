@@ -176,6 +176,7 @@
 # System settings
 :'system/title': "System admin"
 :'system/index/title': "System admin home"
+:'system/index/stats': "Currently, there are <%= counts[:penpals] %> penpals, with <%= counts[:relationships] %> penpal relationships, and <%= counts[:correspondence] %> correspondence entries."
 
 # System user info
 :'system/user/title': "User info"
