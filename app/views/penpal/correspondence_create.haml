@@ -14,8 +14,10 @@
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'penpal/view/correspondence/create/section_title')
 
-    %label{:for => 'ul_file'}= t(:'penpal/view/correspondence/create/file')
-    %input#ul_file{:name => 'file', :type => 'file', :required => true}
+    %label{:for => "content"}= t(:'penpal/view/correspondence/create/content_label')
+    %textarea#content.rich-editor{:name => "content"}= ""
+
+    .y-margin= ""
 
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-upload

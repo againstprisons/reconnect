@@ -30,24 +30,15 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       }
     end
 
-    unless params[:file]
-      flash :error, t(:'penpal/view/correspondence/create/error/no_file')
+    content = request.params["content"]&.strip
+    if content.nil? || content.empty?
+      flash :error, t(:'system/penpal/correspondence/create/error/no_text')
       return redirect request.path
     end
 
-    # upload the file
-    begin
-      fn = params[:file][:filename]
-      params[:file][:tempfile].rewind
-      data = params[:file][:tempfile].read
-
-      obj = ReConnect::Models::File.upload(data, :filename => fn)
-      obj.save
-
-    rescue => e
-      flash :error, t(:'penpal/view/correspondence/create/error/upload_error')
-      return redirect request.path
-    end
+    obj = ReConnect::Models::File.upload(content, :filename => "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")
+    obj.mime_type = "text/html"
+    obj.save
 
     # create the correspondence
     c = ReConnect::Models::Correspondence.new
