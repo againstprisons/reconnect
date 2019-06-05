@@ -16,6 +16,12 @@ signing of user sessions. This should be set to a sufficiently random string.
 
 Changing this value will invalidate all existing sessions.
 
+## Database
+
+The `DATABASE_URL` environment variable should be set to a connection string
+for your database. For SQlite, this would be something along the lines of
+`sqlite:///home/user/reconnect.sqlite3`.
+
 ## Site directory
 
 The `SITE_DIR` environment variable sets the directory used for per-site
