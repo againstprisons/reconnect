@@ -159,11 +159,21 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       ]
     })
 
-    # get file info for this correspondence, bail if it's not text/html (as it
-    # should be), read in content
+    # get file info for this correspondence, bail if it's not text/html (which
+    # it should be if it's been created by a normal user, since they only have
+    # access to the html editor)
     file = ReConnect::Models::File.where(:file_id => self.file_id).first
     return unless file
+    return unless file.mime_type == "text/html"
+
+    # read in content
     html_part = file.decrypt_file
+
+    # do a sanitize fragment run, just in case. sanitize runs are done on
+    # creation for normal-user-created correspondence entries, but it may not
+    # have been done if this was uploaded by an administrator. doesn't hurt to
+    # do it again!
+    html_part = Sanitize.fragment(html_part, Sanitize::Config::BASIC)
 
     # construct plain-text version of the HTML contents using reverse-markdown
     text_part = ReverseMarkdown.convert(html_part, :unknown_tags => :bypass)
