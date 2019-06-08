@@ -37,6 +37,9 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       return redirect request.path
     end
 
+    # Do a sanitize run
+    content = Sanitize.fragment(content, Sanitize::Config::BASIC)
+
     # Run content filter
     filter = ReConnect.new_content_filter
     matched = filter.do_filter(content)
