@@ -192,6 +192,8 @@ module ReConnect
       :password => Addressable::URI.unencode(uri.password || ''),
     }
 
+    @app_config["email-smtp-host"] = opts
+
     Mail.defaults do
       delivery_method :smtp, opts
     end
