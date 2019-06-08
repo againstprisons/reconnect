@@ -177,6 +177,10 @@
 :'system/title': "System admin"
 :'system/index/title': "System admin home"
 :'system/index/stats': "Currently, there are <%= counts[:penpals] %> penpals, with <%= counts[:relationships] %> penpal relationships, and <%= counts[:correspondence] %> correspondence entries."
+:'system/index/to_action/section_title': "Correspondence requiring admin attention"
+:'system/index/to_action/none': "There is no new correspondence that requires admin attention!"
+:'system/index/to_action/item/text': "<%= date.strftime('%Y-%m-%d %H:%M:%S') %>: From <%= from %> to <%= to %>"
+:'system/index/to_action/item/view': "View"
 
 # System user info
 :'system/user/title': "User info"
