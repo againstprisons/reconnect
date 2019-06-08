@@ -122,11 +122,19 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       :link_to_correspondence => url.to_s,
       :penpal_sending => {
         :id => penpal_sending.id,
-        :name => penpal_sending_name,
+        :name => {
+          :ary => penpal_sending.get_name,
+          :first => penpal_sending.get_name&.first || '(unknown)',
+          :joined => penpal_sending_name,
+        },
       },
       :penpal_receiving => {
         :id => penpal_receiving.id,
-        :name => penpal_receiving_name,
+        :name => {
+          :ary => penpal_receiving.get_name,
+          :first => penpal_receiving.get_name&.first || '(unknown)',
+          :joined => penpal_receiving_name,
+        },
       }
     }
 
