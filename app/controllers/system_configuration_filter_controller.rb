@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
   include ReConnect::Helpers::SystemConfigurationFilterHelpers
 
   add_route :get, "/"
+  add_route :post, "/toggle", :method => :toggle
   add_route :post, "/remove-word", :method => :remove_word
   add_route :post, "/add-word", :method => :add_word
 
@@ -22,12 +23,45 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
       end
     end
 
+    @enabled = ReConnect::Models::Config.where(:key => 'filter-enabled').first
+    @enabled = @enabled.value == 'yes' if @enabled
+    @enabled = true if @enabled.nil?
+
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/configuration/filter', :layout => false, :locals => {
         :title => @title,
+        :enabled => @enabled,
         :words => @words[:val],
       })
     end
+  end
+
+  def toggle
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:configuration:filter")
+
+    # find config entry, creating it if need be
+    m = ReConnect::Models::Config.find_or_create(:key => 'filter-enabled') do |a|
+      a.type = 'bool'
+      a.value = 'yes'
+    end
+
+    # actually toggle
+    m.value = (m.value == 'yes' ? 'no' : 'yes')
+    m.save
+
+    # indicate we need a reload
+    unless ReConnect.app_config_refresh_pending.include?('filter-enabled')
+      ReConnect.app_config_refresh_pending << 'filter-enabled'
+    end
+
+    if m.value == 'yes'
+      flash :success, t(:'system/configuration/filter/toggle/enabled')
+    else
+      flash :success, t(:'system/configuration/filter/toggle/disabled')
+    end
+
+    return redirect back
   end
 
   def remove_word
