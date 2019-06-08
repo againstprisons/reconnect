@@ -16,19 +16,16 @@
       %ul.block-list
         - correspondence.each do |c|
           %li
+            %a.block-button.pure-button{:href => to("/system/penpal/relationship/#{relationship.id}/correspondence/#{c[:id]}")}
+              %i.fa.fa-list
+              = t(:'system/penpal/relationship/correspondence/existing/actions/view')
+
             - if c[:receiving_is_incarcerated] && !c[:actioned]
               %span.bubble
                 %strong= t(:'system/penpal/relationship/correspondence/existing/is_new')
 
             %span
               = t(:'system/penpal/relationship/correspondence/existing/link_text', :from => c[:sending_penpal_name], :to => c[:receiving_penpal_name], :date => c[:creation])
-
-            %a.block-button.pure-button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence/#{c[:id]}"}
-              %i.fa.fa-list
-              = t(:'system/penpal/relationship/correspondence/existing/actions/view')
-
-            %span.dotted-underline{:title => "Correspondence ID #{c[:id]}"}
-              %i.fa.fa-ellipsis-v
 
     - else
       .message.message-warning
