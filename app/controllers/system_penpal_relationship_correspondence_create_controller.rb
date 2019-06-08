@@ -78,12 +78,23 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     c.creating_user = current_user.id
     c.file_id = obj.file_id
 
+    receiving_penpal = nil
     if direction == "1to2"
       c.sending_penpal = @penpal_one.id
       c.receiving_penpal = @penpal_two.id
+      receiving_penpal = @penpal_two
     else
       c.sending_penpal = @penpal_two.id
       c.receiving_penpal = @penpal_one.id
+      receiving_penpal = @penpal_one
+    end
+
+    # if this is inside-to-outside correspondence, set the correspondence
+    # object `sent` flag to "to_outside". this is so that we can easily filter
+    # for outside-to-inside correspondence with the flag set to "no" - which
+    # means they haven't automatically been sent, and require admin attention.
+    if receiving_penpal.is_incarcerated == false
+      c.sent = "to_outside"
     end
 
     c.save
