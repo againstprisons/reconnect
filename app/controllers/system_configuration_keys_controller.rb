@@ -64,13 +64,17 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     end
 
     value = request.params["value"]&.strip
-    if type == "bool" 
+    if type == "bool"
       value = value.downcase
 
       unless %w[yes no].include?(value.downcase)
         flash :error, t(:'system/configuration/key_value/edit_key/value/not_bool')
         return redirect request.path
       end
+    end
+
+    if entry.nil?
+      entry = ReConnect::Models::Config.new(:key => key)
     end
 
     entry.type = type
