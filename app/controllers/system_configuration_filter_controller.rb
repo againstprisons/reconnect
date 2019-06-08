@@ -55,6 +55,11 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
       ReConnect.app_config_refresh_pending << 'filter-enabled'
     end
 
+    # ... unless we don't
+    if ReConnect.app_config["filter-enabled"] == (m.value == 'yes')
+      ReConnect.app_config_refresh_pending.delete("filter-enabled")
+    end
+
     if m.value == 'yes'
       flash :success, t(:'system/configuration/filter/toggle/enabled')
     else
