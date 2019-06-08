@@ -148,7 +148,7 @@ class ReConnect::Controllers::AccountTwoFactorController < ReConnect::Controller
       output = [
         "Two-factor authentication recovery codes for: #{@user.email}",
         80.times.map{"="}.join(),
-        @codes.map{|x| "- #{x}"}
+        @codes.map{|x| "- #{x[:token]}#{x[:valid] ? "" : " (used)"}"}
       ].flatten.join("\n")
 
       content_type "text/plain"
