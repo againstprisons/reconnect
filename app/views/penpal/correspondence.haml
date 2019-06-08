@@ -1,14 +1,9 @@
 .penpal-view-correspondence
   %h1= title
 
-  - if back != url("/penpal/#{penpal.id}")
-    %a.pure-button.button{:href => back}
-      %i.fa.fa-chevron-left
-      = t(:'back')
-
   %a.pure-button.button{:href => url("/penpal/#{penpal.id}")}
-    %i.fa.fa-list
-    = t(:'penpal/view/correspondence/single/back_to_list')
+    %i.fa.fa-chevron-left
+    = t(:'back')
 
   .form-wrapped
     %p
