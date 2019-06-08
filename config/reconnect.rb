@@ -55,6 +55,13 @@ module ReConnect
     Encoding.default_internal = Encoding::UTF_8
     Encoding.default_external = Encoding::UTF_8
 
+    # Do an early environment check
+    %w[SITE_DIR KEYDERIV_URL KEYDERIV_SECRET DATABASE_URL].each do |var|
+      unless ENV.key?(var)
+        raise "Required environment variable #{var} not present, dying."
+      end
+    end
+
     # Load crypto early for keyderiv check
     require File.join(ReConnect.root, 'app', 'crypto')
 
