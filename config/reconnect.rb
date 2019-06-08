@@ -242,6 +242,7 @@ module ReConnect
 
   def self.new_content_filter
     f = ReConnect::ContentFilter.new
+    f.enabled = @app_config["filter-enabled"]
     f.words = @app_config["filter-words"]
 
     f

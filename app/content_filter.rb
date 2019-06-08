@@ -1,13 +1,16 @@
 require 'sanitize'
 
 class ReConnect::ContentFilter
+  attr_accessor :enabled
   attr_accessor :words
 
   def initialize
+    @enabled = true
     @words = []
   end
 
   def do_filter(content)
+    return [] unless @enabled
     matched = []
 
     # Run sanitize on content to strip out all HTML

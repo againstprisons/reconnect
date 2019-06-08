@@ -38,6 +38,10 @@ module ReConnect
       :type => :text,
       :default => '@SITEDIR@/files/',
     },
+    "filter-enabled" => {
+      :type => :bool,
+      :default => true,
+    },
     "filter-words" => {
       :type => :text,
       :default => '[]',
