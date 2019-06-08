@@ -59,17 +59,19 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
     return unless relationship
 
+    sent = false
     if penpal_receiving.is_incarcerated
       if relationship.email_approved
-        self.send_email_to_prison!
-        self.sent = "email"
-        self.save
-      else
-        self.send_alert!
+        out = self.send_email_to_prison!
+        if out.is_a? ReConnect::Models::EmailQueue
+          sent = true
+          self.sent = "email"
+          self.save
+        end
       end
-    else
-      self.send_alert!
     end
+
+    self.send_alert! unless sent
   end
 
   def send_alert!
