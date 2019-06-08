@@ -27,15 +27,31 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
         :penpal => @penpal,
         :penpal_name => @penpal_name,
         :relationship => @relationship,
+        :content => nil,
       }
     end
 
     content = request.params["content"]&.strip
     if content.nil? || content.empty?
-      flash :error, t(:'system/penpal/correspondence/create/error/no_text')
+      flash :error, t(:'penpal/view/correspondence/create/error/no_text')
       return redirect request.path
     end
 
+    # Run content filter
+    filter = ReConnect.new_content_filter
+    matched = filter.do_filter(content)
+    if matched.count.positive?
+      flash :error, t(:'penpal/view/correspondence/create/error/content_filter_matched', :matched => matched)
+      return haml :'penpal/correspondence_create', :locals => {
+        :title => @title,
+        :penpal => @penpal,
+        :penpal_name => @penpal_name,
+        :relationship => @relationship,
+        :content => content,
+      }
+    end
+
+    # Save as file object
     obj = ReConnect::Models::File.upload(content, :filename => "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")
     obj.mime_type = "text/html"
     obj.save

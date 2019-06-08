@@ -15,7 +15,8 @@
     %h1= t(:'penpal/view/correspondence/create/section_title')
 
     %label{:for => "content"}= t(:'penpal/view/correspondence/create/content_label')
-    %textarea#content.rich-editor{:name => "content"}= ""
+    %textarea#content.rich-editor{:name => "content"}
+      &= content || ""
 
     .y-margin= ""
 

@@ -76,6 +76,7 @@
 :'penpal/view/correspondence/create/content_label': "Type your letter:"
 :'penpal/view/correspondence/create/submit': "Send"
 :'penpal/view/correspondence/create/error/no_text': "No text was provided."
+:'penpal/view/correspondence/create/error/content_filter_matched': "Your message contains words that aren't allowed. Please remove the following words: <%= matched.join(', ') %>"
 :'penpal/view/correspondence/create/success': "Your correspondence has been uploaded!"
 :'penpal/view/correspondence/single/title': "Correspondence with <%= name %>"
 :'penpal/view/correspondence/single/back_to_list': "See all correspondence with this penpal"
