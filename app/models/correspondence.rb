@@ -18,6 +18,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     penpal_receiving_name = penpal_receiving.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     penpal_receiving_name = "(unknown)" if penpal_receiving_name.nil? || penpal_receiving_name&.strip&.empty?
 
+    relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
+
     actioned = !(self.actioning_user.nil?)
     actioning_user = ReConnect::Models::User[self.actioning_user]
     actioning_user_name = nil
@@ -33,8 +35,10 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       :id => self.id,
       :creation => self.creation,
 
+      :relationship => relationship,
       :sending_penpal => penpal_sending,
       :sending_penpal_name => penpal_sending_name,
+      :sending_is_incarcerated => penpal_sending.is_incarcerated,
       :receiving_penpal => penpal_receiving,
       :receiving_penpal_name => penpal_receiving_name,
       :receiving_is_incarcerated => penpal_receiving.is_incarcerated,
