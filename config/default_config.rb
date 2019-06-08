@@ -37,6 +37,10 @@ module ReConnect
     "file-storage-dir" => {
       :type => :text,
       :default => '@SITEDIR@/files/',
+    },
+    "filter-words" => {
+      :type => :text,
+      :default => '[]',
     }
   }
 

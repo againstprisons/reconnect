@@ -70,6 +70,7 @@ module ReConnect
     # load core modules
     require File.join(ReConnect.root, 'app', 'route')
     require File.join(ReConnect.root, 'app', 'controllers')
+    require File.join(ReConnect.root, 'app', 'content_filter')
     require File.join(ReConnect.root, 'app', 'helpers')
     require File.join(ReConnect.root, 'app', 'models')
 
@@ -151,6 +152,7 @@ module ReConnect
 
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
+      self.app_config_refresh_filter_words if key == 'filter-words'
     end
 
     @app_config_refresh_pending.clear
@@ -201,6 +203,17 @@ module ReConnect
     end
   end
 
+  def self.app_config_refresh_filter_words
+    begin
+      loaded = JSON.parse(@app_config["filter-words"])
+      @app_config["filter-words"] = loaded
+    rescue => e
+      puts "app_config_refresh_filter_words: Failed to parse JSON: #{e.class.name}: #{e}"
+      puts e.traceback if e.respond_to?(:traceback)
+      return
+    end
+  end
+
   def self.site_load_config
     site_dir = ENV["SITE_DIR"]
     return if site_dir.nil?
@@ -216,5 +229,12 @@ module ReConnect
   def self.site_load_theme(theme_dir)
     return false unless Dir.exist?(theme_dir)
     @theme_dir = theme_dir
+  end
+
+  def self.new_content_filter
+    f = ReConnect::ContentFilter.new
+    f.words = @app_config["filter-words"]
+
+    f
   end
 end
