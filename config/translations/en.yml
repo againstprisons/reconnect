@@ -337,7 +337,7 @@
 :'system/penpal/relationship/correspondence/create/section_title': "Create correspondence"
 :'system/penpal/relationship/correspondence/create/direction': "Correspondence direction"
 :'system/penpal/relationship/correspondence/create/direction_text': "From <%= one_name %>, to <%= two_name %>"
-:'system/penpal/relationship/correspondence/create/form_file': "Correspondence file (PDF format)"
+:'system/penpal/relationship/correspondence/create/form_file': "Correspondence file (PDF, or an HTML fragment)"
 :'system/penpal/relationship/correspondence/create/submit': "Create correspondence"
 :'system/penpal/relationship/correspondence/create/errors/no_file': "No file was provided."
 :'system/penpal/relationship/correspondence/create/errors/upload_failed': "The upload failed, please try again."

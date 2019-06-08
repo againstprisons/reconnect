@@ -52,8 +52,21 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       data = params[:file][:tempfile].read
 
       obj = ReConnect::Models::File.upload(data, :filename => fn)
-      obj.save
 
+      # do a quick check here to see if the data has "<p>" in it. if it does,
+      # assume it's HTML, and set the correct mime type on the file object.
+      # the MimeMagic gem doesn't set the mime type if this is a partial
+      # HTML file ( ie. no doctype or `<html>` ), and as such we need to do
+      # this so that automatic emails into prisons work.
+      #
+      # XXX: this is a huge hack, do proper detection eventually
+      if obj.mime_type.nil? || obj.mime_type.empty?
+        if data.downcase.include?("<p>") && data.downcase.include?("</p>")
+          obj.mime_type = "text/html"
+        end
+      end
+
+      obj.save
     rescue => e
       flash :error, t(:'system/penpal/relationship/correspondence/create/errors/upload_failed')
       return redirect request.path
