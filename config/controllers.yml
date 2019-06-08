@@ -83,6 +83,8 @@ controllers:
     controller: SystemConfigurationMailController
   - path: /system/configuration/keys
     controller: SystemConfigurationKeysController
+  - path: /system/configuration/filter
+    controller: SystemConfigurationFilterController
   - path: /system/configuration
     controller: SystemConfigurationController
 

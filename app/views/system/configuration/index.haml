@@ -2,11 +2,11 @@
   %h1= title
 
   .system-admin-configuration-actions.xy-margin
-    %a.button.pure-button{:href => '/system/configuration/keys'}
+    %a.button.pure-button{:href => to('/system/configuration/keys')}
       %i.fa.fa-pencil
       = t :'system/configuration/key_value/title'
 
-    %form{:method => "POST", :action => '/system/configuration/refresh', :style => 'display:inline-block'}
+    %form{:method => "POST", :action => to('/system/configuration/refresh'), :style => 'display:inline-block'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
       %button.button.pure-button{:type => 'submit', :disabled => ReConnect.app_config_refresh_pending.empty?}
         %i.fa.fa-refresh
@@ -23,7 +23,7 @@
         %ul.block-list
           - quick_toggles.each do |data|
             %li.system-admin-configuration-quick-toggle-entry{:'data-key' => data[:key], :'data-enabled' => data[:enabled] ? 'yes' : 'no'}
-              %form.pure-form.pure-form-stacked.block-form{:method => 'POST', :action => '/system/configuration/toggle'}
+              %form.pure-form.pure-form-stacked.block-form{:method => 'POST', :action => to('/system/configuration/toggle')}
                 %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
                 %input{:type => 'hidden', :name => 'key', :value => data[:key]}
 
@@ -47,10 +47,14 @@
       .form-wrapped.x-margin
         %h1= t(:'system/configuration/site_settings')
 
-        %a.pure-button.button.button-primary{:href => '/system/configuration/site-org-name'}
+        %a.pure-button.button.button-primary{:href => to('/system/configuration/site-org-name')}
           %i.fa.fa-pencil
           = t(:'system/configuration/site_org_name/title')
 
-        %a.pure-button.button.button-primary{:href => '/system/configuration/mail'}
+        %a.pure-button.button.button-primary{:href => to('/system/configuration/mail')}
           %i.fa.fa-envelope
           = t(:'system/configuration/mail/title')
+
+        %a.pure-button.button.button-primary{:href => to('/system/configuration/filter')}
+          %i.fa.fa-filter
+          = t(:'system/configuration/filter/title')
