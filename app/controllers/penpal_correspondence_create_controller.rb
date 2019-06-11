@@ -21,20 +21,26 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     @title = t(:'penpal/view/correspondence/create/title', :name => @penpal_name)
 
-    if request.get?
-      return haml :'penpal/correspondence_create', :locals => {
+    force_compose = request.params["compose"]&.strip&.downcase == "1"
+    content = nil
+    if request.post?
+      content = request.params["content"]&.strip
+      content = nil if content.nil? || content.empty?
+    end
+
+    if request.get? || force_compose
+      return haml :'penpal/correspondence_create/index', :locals => {
         :title => @title,
         :penpal => @penpal,
         :penpal_name => @penpal_name,
         :relationship => @relationship,
-        :content => nil,
+        :content => content,
       }
     end
 
-    content = request.params["content"]&.strip
     if content.nil? || content.empty?
       flash :error, t(:'penpal/view/correspondence/create/error/no_text')
-      return redirect request.path
+      return redirect to("/penpal/#{ppid}/correspondence/create")
     end
 
     # Do a sanitize run
@@ -45,7 +51,19 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     matched = filter.do_filter(content)
     if matched.count.positive?
       flash :error, t(:'penpal/view/correspondence/create/error/content_filter_matched', :matched => matched)
-      return haml :'penpal/correspondence_create', :locals => {
+      return haml :'penpal/correspondence_create/index', :locals => {
+        :title => @title,
+        :penpal => @penpal,
+        :penpal_name => @penpal_name,
+        :relationship => @relationship,
+        :content => content,
+      }
+    end
+
+    # Either show confirmation screen, or submit correspondence
+    confirmed = request.params["confirm"]&.strip&.downcase == "1"
+    unless confirmed
+      return haml :'penpal/correspondence_create/preview', :locals => {
         :title => @title,
         :penpal => @penpal,
         :penpal_name => @penpal_name,
