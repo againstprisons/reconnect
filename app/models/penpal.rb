@@ -29,6 +29,10 @@ class ReConnect::Models::Penpal < Sequel::Model
     # delete relationships
     self.relationships.map(&:delete!)
 
+    # delete correspondence
+    ReConnect::Models::Correspondence.where(:sending_penpal => self.id).delete
+    ReConnect::Models::Correspondence.where(:receiving_penpal => self.id).delete
+
     # remove user association
     unless self.user_id.nil?
       u = self.user
