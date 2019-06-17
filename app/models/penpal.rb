@@ -27,9 +27,7 @@ class ReConnect::Models::Penpal < Sequel::Model
 
   def delete!
     # delete relationships
-    self.relationships.map(&:delete)
-
-    # TODO: delete correspondence
+    self.relationships.map(&:delete!)
 
     # remove user association
     unless self.user_id.nil?
