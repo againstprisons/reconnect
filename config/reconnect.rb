@@ -1,4 +1,4 @@
-require File.expand_path("../setup.rb", __FILE__)
+require File.expand_path(File.join("..", "setup.rb"), __FILE__)
 
 require 'sinatra/base'
 require 'yaml'
@@ -8,7 +8,7 @@ require 'haml'
 require 'addressable'
 
 module ReConnect
-  @@root = File.expand_path("../..", __FILE__)
+  @@root = File.expand_path(File.join("..", ".."), __FILE__)
 
   def self.root
     @@root
@@ -16,6 +16,7 @@ module ReConnect
 
   require File.join(@@root, 'app', 'version')
   require File.join(@@root, 'app', 'utils')
+  require File.join(@@root, 'app', 'server_utils')
   require File.join(@@root, 'app', 'workers')
 
   class << self
@@ -103,7 +104,7 @@ module ReConnect
 
     unless opts[:no_load_configs]
       # load config files (including site config)
-      self.load_config 
+      self.load_config
 
       # load config from database
       self.app_config_refresh(true) unless opts[:no_load_models]
