@@ -8,6 +8,7 @@
   - [Mail preferences](./app-config/mail.md)
   - [Upload handling](./app-config/upload.md)
   - [Content filtering](./app-config/content-filter.md)
+  - [Penpal status options](./app-config/penpal-status.md)
   - [Miscellaneous options](./app-config/misc.md)
 - [Internals](./internals/index.md)
   - [File uploads](./internals/file-uploads.md)
