@@ -39,6 +39,8 @@
 :'prison': "Prison"
 :'unknown_prison': "Unknown prison"
 :'last_correspondence': "Last correspondence"
+:'birthday': "Birthday"
+:'penpal_status': "Penpal status"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."

@@ -26,6 +26,14 @@
     %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
     %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number'), :value => pp_data[:prisoner_number]}
 
+    %label{:for => "edit_birthday"}= t(:'birthday')
+    %input#edit_birthday{:type => 'date', :name => 'birthday', :required => false, :value => pp_data[:birthday]&.strftime("%Y-%m-%d")}
+
+    %label{:for => "edit_penpal_status"}= t(:'penpal_status')
+    %select#edit_penpal_status{:name => 'status', :required => true}
+      - ReConnect.app_config['penpal-statuses'].each do |s|
+        %option{:value => s, :selected => pp_data.key?(:status) ? pp_data[:status] == s : false}= s
+
     %label{:for => "edit_prison"}= t(:'prison')
     %select#edit_prison{:name => 'prison', :required => true}
       %option{:value => '0', :selected => !(pp_data.key?(:prison))}= t(:'unknown_prison')

@@ -60,6 +60,16 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     #pp_address = request.params["address"]&.strip
     #@penpal.encrypt(:address, pp_address)
 
+    pp_birthday = request.params["birthday"]&.strip&.downcase
+    pp_birthday = Chronic.parse(pp_birthday, :guess => true)
+    @penpal.encrypt(:birthday, pp_birthday.strftime("%Y-%m-%d")) if pp_birthday
+
+    pp_status = request.params["status"]&.strip
+    if !(ReConnect.app_config['penpal-statuses'].include?(pp_status))
+      pp_status = ReConnect.app_config['penpal-status-default']
+    end
+    @penpal.encrypt(:status, pp_status)
+
     pp_prison = request.params["prison"]&.strip&.downcase.to_i
     if pp_prison.nil? || pp_prison.zero?
       pp_prison = nil

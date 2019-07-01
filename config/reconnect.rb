@@ -161,6 +161,7 @@ module ReConnect
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
       self.app_config_refresh_filter_words if key == 'filter-words'
+      self.app_config_refresh_penpal_statuses if key == 'penpal-statuses'
     end
 
     @app_config_refresh_pending.clear
@@ -219,6 +220,17 @@ module ReConnect
       @app_config["filter-words"] = loaded
     rescue => e
       puts "app_config_refresh_filter_words: Failed to parse JSON: #{e.class.name}: #{e}"
+      puts e.traceback if e.respond_to?(:traceback)
+      return
+    end
+  end
+
+  def self.app_config_refresh_penpal_statuses
+    begin
+      loaded = JSON.parse(@app_config["penpal-statuses"])
+      @app_config["penpal-statuses"] = loaded
+    rescue => e
+      puts "app_config_refresh_penpal_statuses: Failed to parse JSON: #{e.class.name}: #{e}"
       puts e.traceback if e.respond_to?(:traceback)
       return
     end

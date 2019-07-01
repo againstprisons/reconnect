@@ -59,8 +59,23 @@ module ReConnect::Helpers::SystemPenpalHelpers
       # prisoner number
       prisoner_number = pp.decrypt(:prisoner_number)&.strip
       prisoner_number = "(unknown)" if prisoner_number.nil? || prisoner_number.empty?
-      data[:prisoner_number] = prisoner_number 
+      data[:prisoner_number] = prisoner_number
       data[:display_fields] << [t(:'prisoner_number'), prisoner_number]
+
+      # birthday
+      birthday = pp.decrypt(:birthday)&.strip&.downcase
+      data[:birthday] = Chronic.parse(birthday, :guess => true)
+      if data[:birthday]
+        data[:display_fields] << [t(:'birthday'), data[:birthday].strftime("%Y-%m-%d")]
+      end
+
+      # status
+      status = pp.decrypt(:status)&.strip
+      if !(ReConnect.app_config['penpal-statuses'].include?(status))
+        status = ReConnect.app_config['penpal-status-default']
+      end
+      data[:status] = status
+      data[:display_fields] << [t(:'penpal_status'), status]
 
       # prison info
       begin

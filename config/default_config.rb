@@ -45,7 +45,15 @@ module ReConnect
     "filter-words" => {
       :type => :text,
       :default => '[]',
-    }
+    },
+    "penpal-statuses" => {
+      :type => :text,
+      :default => '["Application pending", "Active", "Unknown"]',
+    },
+    "penpal-status-default" => {
+      :type => :text,
+      :default => "Unknown",
+    },
   }
 
   class Application
