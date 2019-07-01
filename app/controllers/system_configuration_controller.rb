@@ -92,7 +92,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     return halt 404 unless logged_in?
     return halt 404 unless has_role?("system:configuration:refresh")
 
-    unless ReConnect.app_config_refresh_pending
+    unless ReConnect.app_config_refresh_pending || ReConnect::ServerUtils.app_server_has_multiple_workers?
       flash :warning, t(:'system/configuration/refresh_global_config/not_required')
       return redirect to("/system/configuration")
     end
@@ -115,7 +115,13 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
       maint_cfg.save
     end
 
-    flash :success, t(:'system/configuration/refresh_global_config/success', :count => keys.count)
+    if ReConnect::ServerUtils.app_server_has_multiple_workers?
+      flash :success, t(:'system/configuration/refresh_global_config/success_restarting')
+      ReConnect::ServerUtils.app_server_restart!
+    else
+      flash :success, t(:'system/configuration/refresh_global_config/success', :count => keys.count)
+    end
+
     redirect to("/system/configuration")
   end
 end

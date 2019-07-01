@@ -448,6 +448,7 @@
 :'system/configuration/refresh_global_config/disabled': "No refresh is pending"
 :'system/configuration/refresh_global_config/not_required': "Stubbornly refusing to refresh the global configuration as a change is not pending."
 :'system/configuration/refresh_global_config/success': "Successfully refreshed global configuration from database (<%= count %> key<%= count == 1 ? '' : 's' %>)."
+:'system/configuration/refresh_global_config/success_restarting': "The application is running with multiple workers, and an application restart has been triggered to refresh the global configuration."
 :'system/configuration/site_settings': "Site settings"
 :'system/configuration/site_org_name/title': "Change site/organisation name"
 :'system/configuration/site_org_name/site_name': "Site name"

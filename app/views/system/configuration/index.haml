@@ -8,10 +8,10 @@
 
     %form{:method => "POST", :action => to('/system/configuration/refresh'), :style => 'display:inline-block'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      %button.button.pure-button{:type => 'submit', :disabled => ReConnect.app_config_refresh_pending.empty?}
+      %button.button.pure-button{:type => 'submit', :disabled => ReConnect.app_config_refresh_pending.empty? && !ReConnect::ServerUtils.app_server_has_multiple_workers?}
         %i.fa.fa-refresh
-        - if ReConnect.app_config_refresh_pending.count.positive?
-          = t(:'system/configuration/refresh_global_config/title_with_num_keys', :count => ReConnect.app_config_refresh_pending.count)
+        - if ReConnect.app_config_refresh_pending.count.positive? || ReConnect::ServerUtils.app_server_has_multiple_workers?
+          = t :'system/configuration/refresh_global_config/title'
         - else 
           = t :'system/configuration/refresh_global_config/disabled'
 
