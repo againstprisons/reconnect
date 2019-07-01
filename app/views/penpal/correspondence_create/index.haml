@@ -5,16 +5,32 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
-  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :enctype => 'multipart/form-data'}
-    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-    %h1= t(:'penpal/view/correspondence/create/section_title')
+  .pure-g
+    .pure-u-1.pure-u-lg-3-4
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :enctype => 'multipart/form-data'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'penpal/view/correspondence/create/compose/section_title')
 
-    %label{:for => "content"}= t(:'penpal/view/correspondence/create/content_label')
-    %textarea#content.rich-editor{:name => "content"}
-      &= content || ""
+        %label{:for => "content"}= t(:'penpal/view/correspondence/create/compose/content_label')
+        %textarea#content.rich-editor{:name => "content"}
+          &= content || ""
 
-    .y-margin= ""
+        .y-margin= ""
 
-    %button.pure-button.button.button-primary{:type => 'submit'}
-      %i.fa.fa-upload
-      = t(:'penpal/view/correspondence/create/submit')
+        %button.pure-button.button.button-primary{:type => 'submit'}
+          %i.fa.fa-upload
+          = t(:'penpal/view/correspondence/create/compose/submit')
+
+    .pure-u-1.pure-u-lg-1-4
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :enctype => 'multipart/form-data', :action => url("/penpal/#{penpal.id}/correspondence/create/file")}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'penpal/view/correspondence/create/file/section_title')
+        %p= t(:'penpal/view/correspondence/create/file/content')
+
+        %label{:for => "ul_file"}= t(:'penpal/view/correspondence/create/file/file_select')
+        %input#ul_file{:name => 'file', :type => 'file', :required => true, :accept => '.pdf,application/pdf'}
+
+        %button.pure-button.button{:type => 'submit'}
+          %i.fa.fa-upload
+          = t(:'penpal/view/correspondence/create/file/submit')
+

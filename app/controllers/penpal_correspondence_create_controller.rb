@@ -1,6 +1,7 @@
 class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::Controllers::ApplicationController
   add_route :get, "/"
   add_route :post, "/"
+  add_route :post, "/file", :method => :file
 
   def index(ppid)
     unless logged_in?
@@ -39,7 +40,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     end
 
     if content.nil? || content.empty?
-      flash :error, t(:'penpal/view/correspondence/create/error/no_text')
+      flash :error, t(:'penpal/view/correspondence/create/errors/no_text')
       return redirect to("/penpal/#{ppid}/correspondence/create")
     end
 
@@ -50,7 +51,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     filter = ReConnect.new_content_filter
     matched = filter.do_filter(content)
     if matched.count.positive?
-      flash :error, t(:'penpal/view/correspondence/create/error/content_filter_matched', :matched => matched)
+      flash :error, t(:'penpal/view/correspondence/create/errors/content_filter_matched', :matched => matched)
       return haml :'penpal/correspondence_create/index', :locals => {
         :title => @title,
         :penpal => @penpal,
@@ -76,6 +77,55 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     obj = ReConnect::Models::File.upload(content, :filename => "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")
     obj.mime_type = "text/html"
     obj.save
+
+    # create the correspondence
+    c = ReConnect::Models::Correspondence.new
+    c.creation = Time.now
+    c.creating_user = current_user.id
+    c.file_id = obj.file_id
+    c.sending_penpal = @current_penpal.id
+    c.receiving_penpal = @penpal.id
+    c.save
+
+    c.send!
+
+    flash :success, t(:'penpal/view/correspondence/create/success')
+    return redirect to("/penpal/#{@penpal.id}/correspondence/#{c.id}")
+  end
+
+  def file(ppid)
+    unless logged_in?
+      session[:after_login] = request.path
+      flash :error, t(:must_log_in)
+      return redirect to("/auth")
+    end
+
+    @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
+    @penpal = ReConnect::Models::Penpal[ppid.to_i]
+    return halt 404 unless @penpal
+
+    @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
+    return halt 404 unless @relationship
+
+    @penpal_name = @penpal.get_name.first
+    @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
+
+    unless params[:file]
+      flash :error, t(:'penpal/view/correspondence/create/errors/no_file')
+      return redirect to("/penpal/#{ppid}/correspondence/create")
+    end
+
+    # upload the file
+    begin
+      fn = params[:file][:filename]
+      params[:file][:tempfile].rewind
+      data = params[:file][:tempfile].read
+
+      obj = ReConnect::Models::File.upload(data, :filename => fn)
+    rescue
+      flash :error, t(:'penpal/view/correspondence/create/errors/upload_failed')
+      return redirect to("/penpal/#{ppid}/correspondence/create")
+    end
 
     # create the correspondence
     c = ReConnect::Models::Correspondence.new
