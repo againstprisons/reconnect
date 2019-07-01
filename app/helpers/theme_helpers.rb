@@ -1,5 +1,6 @@
 module ReConnect::Helpers::ThemeHelpers 
   def find_template(views, name, engine, &block)
+    folder = nil
     if views.instance_of? Hash
       _, folder = views.detect do |k, v|
         engine == Tilt[k]
@@ -10,11 +11,11 @@ module ReConnect::Helpers::ThemeHelpers
       folder = views
     end
 
-    app_folder = File.join(ReConnect.root, folder)
-
     begin
       raise "no theme dir" unless ReConnect.theme_dir
-      theme_folder = File.join(ReConnect.theme_dir, folder)
+      theme_folder = Pathname.new(folder).each_filename.to_a
+      theme_folder.shift if theme_folder.first == "app"
+      theme_folder = File.join(ReConnect.theme_dir, *theme_folder)
 
       found = false
       Tilt.default_mapping.extensions_for(engine).each do |extension|
@@ -28,7 +29,8 @@ module ReConnect::Helpers::ThemeHelpers
       super(theme_folder, name, engine, &block)
 
     rescue => e
-      super(app_folder, name, engine, &block)
+      folder = File.join(ReConnect.root, folder)
+      super(folder, name, engine, &block)
     end
   end
 end

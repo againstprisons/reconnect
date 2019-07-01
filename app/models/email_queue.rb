@@ -26,7 +26,7 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     html_filename = File.join(lang, "#{template}.html.erb")
     html_theme_path = File.join(ReConnect.theme_dir, "views", "email_templates", html_filename) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
     html_path = File.join(ReConnect.root, "app", "views", "email_templates", html_filename)
-    html_path = text_theme_path if File.exist?(html_theme_path) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
+    html_path = html_theme_path if File.exist?(html_theme_path) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
     html_template = nil
     html_template = Tilt::ERBTemplate.new(html_path) if File.exist?(html_path)
 
