@@ -23,6 +23,10 @@
           %label{:for => "last_name"}= t(:'name/last')
           %input#last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last')}
 
+    - if ReConnect.app_config['signup-age-gate-enabled']
+      %label{:for => "age_verify"}= t(:'auth/signup/age_gate')
+      %input#age_verify{:type => 'date', :name => 'age_verify', :required => true}
+
     %label{:for => "email"}= t(:'email_address')
     %input#email{:name => 'email', :type => 'email', :placeholder => t(:'email_address'), :required => true}
 

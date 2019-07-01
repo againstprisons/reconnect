@@ -162,6 +162,7 @@ module ReConnect
       self.app_config_refresh_mail if key == 'email-smtp-host'
       self.app_config_refresh_filter_words if key == 'filter-words'
       self.app_config_refresh_penpal_statuses if key == 'penpal-statuses'
+      self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
     end
 
     @app_config_refresh_pending.clear
@@ -234,6 +235,17 @@ module ReConnect
       puts e.traceback if e.respond_to?(:traceback)
       return
     end
+  end
+
+  def self.app_config_refresh_signup_age_gate
+    loaded = Chronic.parse(@app_config['signup-age-gate'], :guess => true)
+    if loaded
+      @app_config['signup-age-gate'] = loaded
+      return
+    end
+
+    puts "app_config_refresh_signup_age_gate: failed to parse date, setting default of 18 years"
+    @app_config['signup-age-gate'] = Chronic.parse('18 years ago', :guess => true)
   end
 
   def self.site_load_config

@@ -22,6 +22,14 @@ module ReConnect
       :type => :bool,
       :default => false,
     },
+    "signup-age-gate-enabled" => {
+      :type => :bool,
+      :default => false,
+    },
+    "signup-age-gate" => {
+      :type => :text,
+      :default => '18 years ago',
+    },
     "email-from" => {
       :type => :text,
       :default => 'reconnect@example.com',
