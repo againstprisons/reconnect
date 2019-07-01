@@ -85,6 +85,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
       unless ReConnect.app_config_refresh_pending.include?(key)
         ReConnect.app_config_refresh_pending << key
+        session[:we_changed_app_config] = true
       end
     end
 
@@ -115,6 +116,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
       unless ReConnect.app_config_refresh_pending.include?(key)
         ReConnect.app_config_refresh_pending << key
+        session[:we_changed_app_config] = true
       end
     end
 

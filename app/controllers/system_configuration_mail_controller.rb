@@ -79,6 +79,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
 
       unless ReConnect.app_config_refresh_pending.include?("email-from")
         ReConnect.app_config_refresh_pending << "email-from"
+        session[:we_changed_app_config] = true
       end
     end
 
@@ -89,6 +90,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
 
       unless ReConnect.app_config_refresh_pending.include?("email-subject-prefix")
         ReConnect.app_config_refresh_pending << "email-subject-prefix"
+        session[:we_changed_app_config] = true
       end
     end
 
@@ -99,6 +101,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
 
       unless ReConnect.app_config_refresh_pending.include?("email-smtp-host")
         ReConnect.app_config_refresh_pending << "email-smtp-host"
+        session[:we_changed_app_config] = true
       end
     end
 

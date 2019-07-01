@@ -76,6 +76,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     if ReConnect::APP_CONFIG_ENTRIES.key?(key) && !(%w[maintenance].include?(key))
       unless ReConnect.app_config_refresh_pending.include?(key)
         ReConnect.app_config_refresh_pending << key
+        session[:we_changed_app_config] = true
       end
     end
 
@@ -91,6 +92,8 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
   def refresh
     return halt 404 unless logged_in?
     return halt 404 unless has_role?("system:configuration:refresh")
+
+    session.delete(:we_changed_app_config)
 
     unless ReConnect.app_config_refresh_pending || ReConnect::ServerUtils.app_server_has_multiple_workers?
       flash :warning, t(:'system/configuration/refresh_global_config/not_required')

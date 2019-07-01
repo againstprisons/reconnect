@@ -53,6 +53,7 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
     # indicate we need a reload
     unless ReConnect.app_config_refresh_pending.include?('filter-enabled')
       ReConnect.app_config_refresh_pending << 'filter-enabled'
+      session[:we_changed_app_config] = true
     end
 
     # ... unless we don't
@@ -103,6 +104,7 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
     # indicate we need a reload
     unless ReConnect.app_config_refresh_pending.include?('filter-words')
       ReConnect.app_config_refresh_pending << 'filter-words'
+      session[:we_changed_app_config] = true
     end
 
     flash :success, t(:'system/configuration/filter/words/remove/success', :word => word)
@@ -143,6 +145,7 @@ class ReConnect::Controllers::SystemConfigurationFilterController < ReConnect::C
     # indicate we need a reload
     unless ReConnect.app_config_refresh_pending.include?('filter-words')
       ReConnect.app_config_refresh_pending << 'filter-words'
+      session[:we_changed_app_config] = true
     end
 
     flash :success, t(:'system/configuration/filter/words/add/success', :word => word)

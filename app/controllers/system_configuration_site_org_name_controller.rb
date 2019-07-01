@@ -51,6 +51,7 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
 
       unless ReConnect.app_config_refresh_pending.include?("site-name")
         ReConnect.app_config_refresh_pending << "site-name"
+        session[:we_changed_app_config] = true
       end
     end
 
@@ -61,6 +62,7 @@ class ReConnect::Controllers::SystemConfigurationSiteOrgNameController < ReConne
 
       unless ReConnect.app_config_refresh_pending.include?("org-name")
         ReConnect.app_config_refresh_pending << "org-name"
+        session[:we_changed_app_config] = true
       end
     end
 
