@@ -84,6 +84,8 @@ module ReConnect::Helpers::SystemPenpalHelpers
           data[:prison] = {
             :id => prison.id,
             :name => prison.decrypt(:name),
+            :email_address => prison.decrypt(:email_address),
+            :address => prison.decrypt(:physical_address),
           }
 
           data[:display_fields] << [t(:'prison'), data[:prison][:name]]
