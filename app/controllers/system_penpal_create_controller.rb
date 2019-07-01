@@ -29,6 +29,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     @penpal.save
     @penpal.encrypt(:first_name, pp_first_name)
     @penpal.encrypt(:last_name, pp_last_name)
+    @penpal.encrypt(:status, ReConnect.app_config['penpal-status-default'])
     @penpal.save
 
     ReConnect::Models::PenpalFilter.create_filters_for(@penpal)
