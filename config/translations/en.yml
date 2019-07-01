@@ -41,6 +41,7 @@
 :'last_correspondence': "Last correspondence"
 :'birthday': "Birthday"
 :'penpal_status': "Penpal status"
+:'outside_penpals': "Outside penpals"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -277,6 +278,8 @@
 :'system/penpal/actions/user_association_add': "Add user association"
 :'system/penpal/actions/user_association_remove': "Remove user association"
 :'system/penpal/actions/delete': "Delete penpal"
+:'system/penpal/address_book/title': "Address book"
+:'system/penpal/address_book/totals/section_title': "Total penpal count by status"
 :'system/penpal/view/title': "Viewing penpal <%= name %> (id <%= id %>)"
 :'system/penpal/view/penpal_info': "Penpal info"
 :'system/penpal/view/relationship_count': "Number of relationships"

@@ -37,6 +37,8 @@ controllers:
 
   - path: /system/penpal
     controller: SystemPenpalController
+  - path: /system/penpal/addressbook
+    controller: SystemPenpalAddressBookController
   - path: /system/penpal/create
     controller: SystemPenpalCreateController
   - path: /system/penpal/relationship/create

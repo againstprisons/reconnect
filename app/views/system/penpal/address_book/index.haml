@@ -1,0 +1,71 @@
+.system-admin-penpal-view
+  %h1= title
+
+  %a.pure-button.button{:href => url('/system/penpal')}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  .form-wrapped
+    %h1= t(:'system/penpal/address_book/totals/section_title')
+
+    %div{:style => 'display:flex'}
+      %table.pure-table.pure-table-bordered.pure-table-striped{:style => 'margin:0 auto'}
+        - pp_statuses.each do |status|
+          %tr
+            %td
+              %strong
+                &= status.first
+            %td= status.last.count.to_s
+
+  - pp_statuses.each do |status|
+    - if status.last.count.positive?
+      .form-wrapped
+        %h1
+          &= status.first
+
+        %table.pure-table.pure-table-bordered.pure-table-striped
+          %thead
+            %tr
+              %th= t(:'name')
+              %th= t(:'prisoner_number')
+              %th= t(:'prison')
+              %th= t(:'email_address')
+              %th= t(:'address')
+              %th= t(:'birthday')
+              %th= t(:'last_correspondence')
+              %th= t(:'outside_penpals')
+
+          %tbody
+            - status.last.each do |pp|
+              %tr
+                %td
+                  %a{:href => url("/system/penpal/#{pp[:pp_d][:id]}"), :title => "id #{pp[:pp_d][:id]}"}
+                    &= pp[:pp_d][:name]
+                %td
+                  &= pp[:pp_d][:prisoner_number]
+                %td
+                  %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
+                    &= pp[:pp_d][:prison][:name]
+                %td
+                  &= pp[:pp_d][:prison][:email_address]
+                %td
+                  &= pp[:pp_d][:prison][:address]
+                %td
+                  - if pp[:pp_d][:birthday]
+                    &= pp[:pp_d][:birthday].strftime("%Y-%m-%d")
+                  - else
+                    = '(unknown)'
+                %td
+                  - if pp[:pp_d][:last_correspondence]
+                    &= pp[:pp_d][:last_correspondence][:creation].strftime("%Y-%m-%d %H:%M")
+                    = surround '(', ')' do
+                      &= pretty_time pp[:pp_d][:last_correspondence][:creation]
+                  - else
+                    = '(unknown)'
+                %td
+                  %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
+                    - pp[:relationships].each do |rl|
+                      %li
+                        %a{:href => rl[:link]}
+                          &= rl[:other_party_name]
+

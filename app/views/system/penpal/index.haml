@@ -1,13 +1,17 @@
 .system-admin-penpal-index
   %h1= title
 
-  %a.pure-button.button.button-success{:href => "/system/penpal/create"}
+  %a.pure-button.button.button-success{:href => url("/system/penpal/create")}
     %i.fa.fa-plus
     = t(:'system/penpal/create/submit')
 
+  %a.pure-button.button.button-primary{:href => url("/system/penpal/addressbook")}
+    %i.fa.fa-list
+    = t(:'system/penpal/address_book/title')
+
   .pure-g
     .pure-u-1.pure-u-md-1-2
-      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/penpal/by-id'}
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => url('/system/penpal/by-id')}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
         %h1= t(:'system/penpal/find_by_id')
 
@@ -19,7 +23,7 @@
           = t(:search)
 
     .pure-u-1.pure-u-md-1-2
-      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/penpal/search'}
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => url('/system/penpal/search')}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
         %h1= t(:'system/penpal/search/title')
 
