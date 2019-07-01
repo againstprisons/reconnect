@@ -98,6 +98,18 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       @invite.save
     end
 
+    # send welcome email
+    email_data = {
+      :name => [user_first_name, user_last_name],
+      :email => email,
+    }
+
+    queued_email = ReConnect::Models::EmailQueue.new_from_template("new_user_welcome", email_data)
+    queued_email.queue_status = "queued"
+    queued_email.encrypt(:subject, "Welcome to #{site_name}!") # TODO: translation
+    queued_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [email]}))
+    queued_email.save
+
     # log the user in
     token = user.login!
     session[:token] = token.token
