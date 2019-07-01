@@ -1,5 +1,5 @@
-bundle-audit:
-  image: ruby:2.6-alpine
+bundler-audit:
+  image: ruby:alpine
 
   before_script:
     - gem install bundler-audit
@@ -8,21 +8,24 @@ bundle-audit:
   script:
     - bundle audit check
 
+npm-audit:
+  image: node:alpine
+
+  script:
+    - npm audit
+
 pages:
   stage: deploy
-  image: rust:1.32
+  image: rust:latest
 
   before_script:
-    - mkdir -p ./cargo_target
-    - env CARGO_TARGET_DIR=./cargo_target cargo install mdbook --force
-
-  cache:
-    key: "pages-cargo"
-    paths:
-      - ./cargo_target/
+    - curl -qsSf "https://papa-opensource-assets.ams3.cdn.digitaloceanspaces.com/mdbook_bin.tar.xz" | tar xJf - -C /tmp
+    - chmod +x /tmp/mdbook
+    - /tmp/mdbook --version
 
   script: 
-    - mdbook build -d ../public ./docs
+    - /tmp/mdbook build -d ../public ./docs
+
   artifacts:
     paths:
       - public
