@@ -2,7 +2,7 @@
 - if obj
   .page-header-warning.system-penpal-copied-link-warning
     %p
-      = t(:'system/penpal/copy_link_notification', :name => obj.get_name || '(unknown)', :id => obj.id)
+      = t(:'system/penpal/copy_link_notification', :name => obj.get_name&.join(' ') || '(unknown)', :id => obj.id)
 
       &nbsp;&middot;&nbsp;
 
