@@ -1,3 +1,5 @@
+require 'dotenv/load'
+
 rackup DefaultRackup
 env = ENV['RACK_ENV'] || 'development'
 environment env
