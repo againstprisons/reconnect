@@ -47,13 +47,10 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
       ],
     })
 
-    queue_entry = ReConnect::Models::EmailQueue.new
-    queue_entry.save
+    queue_entry = ReConnect::Models::EmailQueue.new_from_template("debugging_test", {})
     queue_entry.queue_status = 'queued'
     queue_entry.encrypt(:recipients, recipients)
     queue_entry.encrypt(:subject, subject)
-    queue_entry.encrypt(:content_text, content_text)
-    queue_entry.encrypt(:content_html, content_html)
     queue_entry.encrypt(:attachments, attachments)
     queue_entry.save
 
