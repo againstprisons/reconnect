@@ -2,6 +2,8 @@ require 'tilt/erb'
 require 'ostruct'
 
 class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
+  include ReConnect::Helpers::EmailTemplateHelpers
+
   def self.new_from_template(template, data = {})
     # TODO: allow setting language, check if template exists for given language
     # and default to ReConnect.default_language should the template not exist
@@ -10,35 +12,30 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     # add generic data
     data[:site_name] = ReConnect.app_config["site-name"]
     data[:org_name] = ReConnect.app_config["org-name"]
-
-    # convert to ostruct
+    data[:base_url] = ReConnect.app_config["base-url"]
     data = OpenStruct.new(data)
-
-    # get text version template
-    text_filename = File.join(lang, "#{template}.txt.erb")
-    text_theme_path = File.join(ReConnect.theme_dir, "views", "email_templates", text_filename) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
-    text_path = File.join(ReConnect.root, "app", "views", "email_templates", text_filename)
-    text_path = text_theme_path if File.exist?(text_theme_path) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
-    text_template = nil
-    text_template = Tilt::ERBTemplate.new(text_path) if File.exist?(text_path)
-
-    # get html version template
-    html_filename = File.join(lang, "#{template}.html.erb")
-    html_theme_path = File.join(ReConnect.theme_dir, "views", "email_templates", html_filename) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
-    html_path = File.join(ReConnect.root, "app", "views", "email_templates", html_filename)
-    html_path = html_theme_path if File.exist?(html_theme_path) unless ReConnect.theme_dir.nil? || ReConnect.theme_dir.empty? 
-    html_template = nil
-    html_template = Tilt::ERBTemplate.new(html_path) if File.exist?(html_path)
-
-    # render templates
-    text_output = nil
-    text_output = text_template.render(data) if text_template
-    html_output = nil
-    html_output = html_template.render(data) if html_template
 
     # create new EmailQueue instance
     entry = self.new(:queue_status => "preparing")
     entry.save # save to get an ID
+
+    # get templates
+    text_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.txt.erb"))
+    html_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.html.erb"))
+
+    # render templates
+    text_output = text_template.render(data) if text_template
+    html_output = html_template.render(data) if html_template
+
+    # get themeable wrapper templates
+    text_wrapper = entry.new_tilt_template_from_fn("layout.txt.erb")
+    html_wrapper = entry.new_tilt_template_from_fn("layout.html.erb")
+
+    # render wrappers, passing in rendered output from above
+    text_output = text_wrapper.render(data) { text_output } if text_wrapper
+    html_output = html_wrapper.render(data) { html_output } if html_wrapper
+
+    # save data on EmailQueue instance created earlier
     entry.encrypt(:content_text, text_output) if text_output
     entry.encrypt(:content_html, html_output) if html_output
 
@@ -119,7 +116,7 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
       unless this.content_text.nil?
         text_part do
           content_type 'text/plain; charset=UTF-8'
-          body this.decrypt(:content_text) 
+          body this.decrypt(:content_text)
         end
       end
 
