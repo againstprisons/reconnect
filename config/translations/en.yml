@@ -196,6 +196,12 @@
 
 # System user info
 :'system/user/title': "User info"
+:'system/user/create/title': "Create user"
+:'system/user/create/section_title': "User information"
+:'system/user/create/send_reset': "Send a password reset to this user immediately"
+:'system/user/create/submit': "Create user"
+:'system/user/create/errors/email_already_used': "The given email address is already registered."
+:'system/user/create/success': "User successfully created with ID <%= uid %>."
 :'system/user/create_invite/title': "Create an invite code"
 :'system/user/create_invite/expiry': "Invite expiry (eg. \"in 2 hours\", or a date)"
 :'system/user/create_invite/submit': "Create invite"
