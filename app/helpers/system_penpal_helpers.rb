@@ -62,9 +62,11 @@ module ReConnect::Helpers::SystemPenpalHelpers
     if pp.is_incarcerated
       # prisoner number
       prisoner_number = pp.decrypt(:prisoner_number)&.strip
-      prisoner_number = "(unknown)" if prisoner_number.nil? || prisoner_number.empty?
       data[:prisoner_number] = prisoner_number
-      data[:display_fields] << [t(:'prisoner_number'), prisoner_number]
+      data[:display_fields] << [
+        t(:'prisoner_number'),
+        (prisoner_number.nil? || prisoner_number.empty?) ? '(unknown)' : prisoner_number
+      ]
 
       # birthday
       birthday = pp.decrypt(:birthday)&.strip&.downcase
