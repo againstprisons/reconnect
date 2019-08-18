@@ -20,7 +20,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
 
       :enable_starttls_auto => uri.query_values ? uri.query_values["starttls"] == 'yes' : false,
       :enable_tls => uri.query_values ? uri.query_values["tls"] == 'yes' : false,
-      :enable_tls => uri.query_values ? uri.query_values["ssl"] == 'yes' : false,
+      :enable_ssl => uri.query_values ? uri.query_values["ssl"] == 'yes' : false,
       :openssl_verify_mode => uri.query_values ? uri.query_values["verify_mode"]&.strip&.upcase || 'PEER' : 'PEER',
 
       :authentication => uri.query_values ? uri.query_values["authentication"]&.strip&.downcase || 'plain' : 'plain',
