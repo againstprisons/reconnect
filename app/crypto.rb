@@ -69,6 +69,8 @@ module ReConnect::Crypto
     end
 
     def encrypt(table, column, row, data)
+      return nil if data.nil?
+
       key = self.get_encryption_key(table, column, row)
       box = RbNaCl::SecretBox.new(ReConnect::Utils.hex_to_bin(key))
 

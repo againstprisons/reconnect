@@ -10,11 +10,9 @@ class ReConnect::Models::User < Sequel::Model
   end
 
   def get_pseudonym
-    if self.pseudonym
-      self.decrypt(:pseudonym)
-    else
-      self.get_name.first
-    end
+    p = self.decrypt(:pseudonym)
+    return self.get_name.first if p.nil? || p.empty?
+    p
   end
 
   def password=(pw)

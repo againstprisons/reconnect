@@ -13,11 +13,9 @@ class ReConnect::Models::Penpal < Sequel::Model
 
   def get_pseudonym
     return self.user.get_pseudonym if self.user
-    if self.pseudonym
-      self.decrypt(:pseudonym)
-    else
-      self.get_name.first
-    end
+    p = self.decrypt(:pseudonym)
+    return self.get_name.first if p.nil? || p.empty?
+    p
   end
 
   def relationship_count
