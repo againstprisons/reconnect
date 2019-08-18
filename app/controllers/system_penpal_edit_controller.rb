@@ -61,14 +61,10 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
 
     pp_pseudonym = request.params["pseudonym"]&.strip
     pp_pseudonym = nil if pp_pseudonym&.empty?
-
-    if pp_pseudonym
-      @penpal.encrypt(:pseudonym, pp_pseudonym)
-    else
-      @penpal.pseudonym = nil
-    end
+    @penpal.encrypt(:pseudonym, pp_pseudonym)
 
     pp_prisoner_number = request.params["prisoner_number"]&.strip
+    pp_prisoner_number = nil if pp_prisoner_number&.empty?
     pp_prisoner_number = nil if pp_prisoner_number == '(unknown)' # XXX
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
 

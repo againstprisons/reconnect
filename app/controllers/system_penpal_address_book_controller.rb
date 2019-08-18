@@ -19,6 +19,8 @@ class ReConnect::Controllers::SystemPenpalAddressBookController < ReConnect::Con
 
         other_party_name = other_party.get_name
         other_party_name = other_party_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+        other_party_pseudonym = other_party.get_pseudonym
+        other_party_name = "#{other_party_name} (#{other_party_pseudonym})" if other_party_pseudonym
 
         {
           :id => r.id,

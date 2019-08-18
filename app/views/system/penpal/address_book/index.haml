@@ -46,7 +46,10 @@
                   - if pp[:pp_d][:pseudonym]
                     &= pp[:pp_d][:pseudonym]
                 %td
-                  &= pp[:pp_d][:prisoner_number]
+                  - if pp[:pp_d][:prisoner_number]
+                    &= pp[:pp_d][:prisoner_number]
+                  - else
+                    = '(unknown)'
                 %td
                   - if pp[:pp_d][:prison]
                     %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
