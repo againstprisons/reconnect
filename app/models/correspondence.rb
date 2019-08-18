@@ -84,9 +84,13 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
     penpal_sending_name = penpal_sending.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     penpal_sending_name = "(unknown)" if penpal_sending_name.nil? || penpal_sending_name&.strip&.empty?
+    penpal_sending_pseudonym = penpal_sending.get_pseudonym
+    penpal_sending_pseudonym = nil if penpal_sending_pseudonym&.empty?
     penpal_receiving = ReConnect::Models::Penpal[self.receiving_penpal]
     penpal_receiving_name = penpal_receiving.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     penpal_receiving_name = "(unknown)" if penpal_receiving_name.nil? || penpal_receiving_name&.strip&.empty?
+    penpal_receiving_pseudonym = penpal_receiving.get_pseudonym
+    penpal_receiving_pseudonym = nil if penpal_receiving_pseudonym&.empty?
 
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
     return unless relationship
@@ -128,6 +132,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
           :ary => penpal_sending.get_name,
           :first => penpal_sending.get_name&.first || '(unknown)',
           :joined => penpal_sending_name,
+          :pseudonym => penpal_sending_pseudonym,
         },
       },
       :penpal_receiving => {
@@ -136,6 +141,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
           :ary => penpal_receiving.get_name,
           :first => penpal_receiving.get_name&.first || '(unknown)',
           :joined => penpal_receiving_name,
+          :pseudonym => penpal_receiving_pseudonym,
         },
       }
     }
