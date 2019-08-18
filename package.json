@@ -6,8 +6,9 @@
     "type": "git",
     "url": "git+https://gitlab.com/againstprisons/reconnect.git"
   },
+  "private": true,
   "scripts": {
-    "build": "browserify -t [ babelify --presets [ @babel/preset-env ] ] -t uglifyify assets/js/index.js -o public/bundle.js"
+    "build": "webpack"
   },
   "author": "People Against Prisons Aotearoa",
   "license": "MIT",
@@ -16,13 +17,16 @@
   },
   "homepage": "https://gitlab.com/againstprisons/reconnect#readme",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^12.3.1",
+    "font-awesome": "^4.7.0",
+    "purecss": "^1.0.1"
+  },
+  "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@ckeditor/ckeditor5-build-classic": "^12.3.1",
-    "babelify": "^10.0.0",
-    "browserify": "^16.5.0",
-    "font-awesome": "^4.7.0",
-    "purecss": "^1.0.1",
-    "uglifyify": "^5.0.1"
+    "babel-loader": "^8.0.6",
+    "terser-webpack-plugin": "^1.4.1",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
   }
 }
