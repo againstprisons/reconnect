@@ -38,7 +38,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       end
     end
 
-    @from_email = request.params["from_email"]&.strip&.downcase
+    @from_email = request.params["from_email"]&.strip
     if @from_email.nil? || @from_email == ""
       flash :error, t(:'required_field_missing')
       return redirect request.path
