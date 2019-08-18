@@ -2,9 +2,11 @@ Hello,
 
 New correspondence has been uploaded to <%= site_name %>, between the following penpals:
 
-<%= penpal_sending[:name][:joined] %> (ID <%= penpal_sending[:id] %>)
+<%= penpal_sending[:name][:joined] %> <% if penpal_sending[:name][:pseudonym] %>(<%= penpal_sending[:name][:pseudonym] %>) <% end %>(ID <%= penpal_sending[:id] %>)
+
 and
-<%= penpal_receiving[:name][:joined] %> (ID <%= penpal_receiving[:id] %>)
+
+<%= penpal_receiving[:name][:joined] %> <% if penpal_receiving[:name][:pseudonym] %>(<%= penpal_receiving[:name][:pseudonym] %>) <% end %>(ID <%= penpal_receiving[:id] %>)
 
 This correspondence can be viewed at the following link:
 <%= link_to_correspondence %>

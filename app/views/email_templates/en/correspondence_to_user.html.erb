@@ -1,17 +1,17 @@
-<p>Hello,</p>
+<p>Hello <%= penpal_receiving[:name][:first] %>,</p>
 
 <p>
   You have new correspondence from your penpal,
   <strong><%= penpal_sending[:name][:pseudonym] %></strong>.
 </p>
 
-<p>
-  <a href="<%= link_to_correspondence %>">
-    You can view this new correspondence, and reply to it, by clicking here
-  </a>,
+<%= helpers.button[link_to_correspondence, "View new correspondence"] %>
 
-  or by visiting the following link in your browser:
-  <%= link_to_correspondence %>
+<p>
+  If the above link does not work, copy and paste the following link into your
+  browser:
+
+  <a href="<%= link_to_correspondence %>"><%= link_to_correspondence %></a>
 </p>
 
 <p>Thanks for being a penpal!</p>
