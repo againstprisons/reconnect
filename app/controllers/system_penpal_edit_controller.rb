@@ -14,6 +14,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @penpal_pseudonym = @penpal.decrypt(:pseudonym)
     @penpal_pseudonym = nil if @penpal_pseudonym&.empty?
+    @penpal_intro = @penpal.decrypt(:intro)
     @pp_data = penpal_view_data(@penpal)
     @prisons = ReConnect::Models::Prison.all.map do |p|
       {
@@ -41,6 +42,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
           :pseudonym => @penpal_pseudonym,
           :name => @penpal_name,
           :name_a => @penpal_name_a,
+          :intro => @penpal_intro,
           :user => @user,
           :prisons => @prisons,
         })
@@ -69,8 +71,8 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     pp_prisoner_number = request.params["prisoner_number"]&.strip
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
 
-    #pp_address = request.params["address"]&.strip
-    #@penpal.encrypt(:address, pp_address)
+    pp_intro = request.params["intro"]&.strip
+    @penpal.encrypt(:intro, pp_intro)
 
     pp_birthday = request.params["birthday"]&.strip&.downcase
     pp_birthday = Chronic.parse(pp_birthday, :guess => true)

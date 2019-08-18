@@ -45,6 +45,7 @@
 :'outside_penpals': "Outside penpals"
 :'is_advocacy': "Advocacy case?"
 :'correspondence_guide_sent': "Correspondence guide sent?"
+:'penpal_intro': "Penpal introduction"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -299,6 +300,9 @@
 :'system/penpal/address_book/totals/section_title': "Total penpal count by status"
 :'system/penpal/view/title': "Viewing penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
 :'system/penpal/view/penpal_info': "Penpal info"
+:'system/penpal/view/notes/section_title': "Notes on this penpal"
+:'system/penpal/view/notes/submit': "Save notes"
+:'system/penpal/view/notes/success': "Saved notes for this penpal."
 :'system/penpal/view/relationship_count': "Number of relationships"
 :'system/penpal/view/relationships/title': "Penpal relationships"
 :'system/penpal/view/relationships/empty': "There are no relationships for this penpal."

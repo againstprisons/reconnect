@@ -55,6 +55,14 @@
       - prisons.each do |p|
         %option{:value => p[:id], :selected => pp_data.key?(:prison) ? pp_data[:prison][:id] == p[:id] : false}= p[:name]
 
+    %label{:for => "edit_intro"}= t(:'penpal_intro')
+    %textarea#edit_intro.rich-editor{:name => "intro"}
+      &= intro
+
+    .y-margin= ""
+
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-pencil
       = t(:'save_changes')
+
+%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}

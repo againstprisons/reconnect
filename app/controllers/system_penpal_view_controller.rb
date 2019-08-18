@@ -3,6 +3,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
   add_route :get, "/"
   add_route :post, "/copy-link", :method => :copy_link
+  add_route :post, "/notes", :method => :notes
 
   def index(uid)
     return halt 404 unless logged_in?
@@ -16,6 +17,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @penpal_pseudonym = @penpal.get_pseudonym
 
     @pp_data = penpal_view_data(@penpal)
+    @notes = @penpal.decrypt(:notes)&.strip
 
     @relationships = @penpal.relationships.map do |r|
       other_party = r.penpal_one
@@ -51,6 +53,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :name => @penpal_name,
         :name_a => @penpal_name_a,
         :pseudonym => @penpal_pseudonym,
+        :notes => @notes,
         :display_fields => @pp_data[:display_fields],
         :relationships => @relationships,
         :copied_link => @copied_link,
@@ -69,5 +72,25 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     session[:copied_penpal_id] = @penpal.id
     flash :success, t(:'system/penpal/actions/copy_link/success', :name => @name, :id => @penpal.id)
     return redirect "/system/penpal/#{@penpal.id}"
+  end
+
+  def notes(uid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    @penpal = ReConnect::Models::Penpal[uid.to_i]
+    return halt 404 unless @penpal
+
+    notes = request.params["notes"]&.strip
+    if notes.nil? || notes.empty?
+      @penpal.notes = nil
+    else
+      @penpal.encrypt(:notes, notes)
+    end
+
+    @penpal.save
+
+    flash :success, t(:'system/penpal/view/notes/success')
+    return redirect back
   end
 end
