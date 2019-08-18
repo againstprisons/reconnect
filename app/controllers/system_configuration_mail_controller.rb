@@ -20,6 +20,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
 
       :enable_starttls_auto => uri.query_values ? uri.query_values["starttls"] == 'yes' : false,
       :enable_tls => uri.query_values ? uri.query_values["tls"] == 'yes' : false,
+      :enable_tls => uri.query_values ? uri.query_values["ssl"] == 'yes' : false,
       :openssl_verify_mode => uri.query_values ? uri.query_values["verify_mode"]&.strip&.upcase || 'PEER' : 'PEER',
 
       :authentication => uri.query_values ? uri.query_values["authentication"]&.strip&.downcase || 'plain' : 'plain',
@@ -62,6 +63,7 @@ class ReConnect::Controllers::SystemConfigurationMailController < ReConnect::Con
       smtp_uri.query_values = {
         "starttls" => request.params["smtp_starttls"]&.strip&.downcase == "on" ? 'yes' : 'no',
         "tls" => request.params["smtp_tls"]&.strip&.downcase == "on" ? 'yes' : 'no',
+        "ssl" => request.params["smtp_ssl"]&.strip&.downcase == "on" ? 'yes' : 'no',
         "authentication" => request.params["smtp_authentication"]&.strip&.downcase || 'plain',
         "verify_mode" => request.params["smtp_verify_mode"]&.strip&.upcase || 'PEER',
       }

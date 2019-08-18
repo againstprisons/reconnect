@@ -503,6 +503,7 @@
 :'system/configuration/mail/smtp/password': "SMTP password"
 :'system/configuration/mail/smtp/starttls': "Enable STARTTLS"
 :'system/configuration/mail/smtp/tls': "Enable TLS"
+:'system/configuration/mail/smtp/ssl': "Enable SSL"
 :'system/configuration/mail/smtp/verify_mode': "OpenSSL verification mode"
 :'system/configuration/mail/smtp/verify_mode/none': "No verification"
 :'system/configuration/mail/smtp/verify_mode/peer': "Verify peer"

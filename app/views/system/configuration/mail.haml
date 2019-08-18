@@ -12,7 +12,7 @@
       %h1= t(:'system/configuration/mail/prefs/title')
 
       %label{:for => "from_email"}= t(:'system/configuration/mail/prefs/from_email')
-      %input#from_email{:name => 'from_email', :type => 'email', :required => true, :placeholder => t(:'system/configuration/mail/prefs/from_email'), :value => entries["email-from"][:value]}
+      %input#from_email{:name => 'from_email', :type => 'text', :required => true, :placeholder => t(:'system/configuration/mail/prefs/from_email'), :value => entries["email-from"][:value]}
 
       %label{:for => "subject_prefix"}= t(:'system/configuration/mail/prefs/subject_prefix')
       %select#subject_prefix{:name => 'subject_prefix'}
@@ -52,6 +52,10 @@
       %label{:for => 'smtp_tls'}
         %input#smtp_tls{:name => 'smtp_tls', :type => 'checkbox', :checked => smtp_uri[:enable_tls]}
         = t(:'system/configuration/mail/smtp/tls')
+
+      %label{:for => 'smtp_ssl'}
+        %input#smtp_ssl{:name => 'smtp_ssl', :type => 'checkbox', :checked => smtp_uri[:enable_ssl]}
+        = t(:'system/configuration/mail/smtp/ssl')
 
       %label{:for => 'smtp_verify'}= t(:'system/configuration/mail/smtp/verify_mode')
       %select#smtp_verify{:name => 'smtp_verify_mode'}
