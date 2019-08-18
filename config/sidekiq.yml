@@ -2,3 +2,7 @@
   email_queue_send:
     cron: '0 * * * * *'
     class: "ReConnect::Workers::EmailQueueSendWorker"
+
+  status_transitions:
+    cron: '30 0 * * 1'
+    class: "ReConnect::Workers::PenpalStatusTransitionWorker"

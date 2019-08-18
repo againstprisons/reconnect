@@ -162,6 +162,7 @@ module ReConnect
       self.app_config_refresh_mail if key == 'email-smtp-host'
       self.app_config_refresh_filter_words if key == 'filter-words'
       self.app_config_refresh_penpal_statuses if key == 'penpal-statuses'
+      self.app_config_refresh_penpal_status_transitions if key == 'penpal-status-transitions'
       self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
     end
 
@@ -232,6 +233,17 @@ module ReConnect
       @app_config["penpal-statuses"] = loaded
     rescue => e
       puts "app_config_refresh_penpal_statuses: Failed to parse JSON: #{e.class.name}: #{e}"
+      puts e.traceback if e.respond_to?(:traceback)
+      return
+    end
+  end
+
+  def self.app_config_refresh_penpal_status_transitions
+    begin
+      loaded = JSON.parse(@app_config["penpal-status-transitions"])
+      @app_config["penpal-status-transitions"] = loaded
+    rescue => e
+      puts "app_config_refresh_penpal_status_transitions: Failed to parse JSON: #{e.class.name}: #{e}"
       puts e.traceback if e.respond_to?(:traceback)
       return
     end

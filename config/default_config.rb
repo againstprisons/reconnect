@@ -62,6 +62,10 @@ module ReConnect
       :type => :text,
       :default => "Unknown",
     },
+    "penpal-status-transitions" => {
+      :type => :text,
+      :default => '[]',
+    },
   }
 
   class Application
