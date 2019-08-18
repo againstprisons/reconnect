@@ -3,6 +3,7 @@ const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin');
 
 const config = {
+  devtool: 'source-map',
   target: 'web',
   mode: 'production',
 
@@ -38,7 +39,10 @@ const config = {
 
   optimization: {
     minimizer: [
-      new TerserPlugin(),
+      new TerserPlugin({
+        parallel: true,
+        sourceMap: true,
+      }),
     ],
   },
 }

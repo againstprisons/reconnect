@@ -1,13 +1,12 @@
 let loadingMessage = "Loading editor, please wait a moment..."
 let genericErrorMessage = (
   "An error occurred trying to load the editor, " +
-  "your message may not display correctly. " +
-  "Refresh the page to try again."
+  "text you enter here may not display correctly after saving. " +
+  "Refresh the page to try loading the editor again."
 )
 
 let editorMaxTries = 10
 var editors = {}
-var editorTries = 1
 let editorConfig = {
   removePlugins: ['ImagePlugin'],
   toolbar: [
@@ -25,28 +24,22 @@ let editorConfig = {
   ],
 }
 
-export const enableEditors = () => {
+export const enableEditor = (editorElement) => {
+  if (typeof(editorElement) !== "object") return
+
+  if (typeof(editors[editorElement]) === "undefined") {
+    var messageElement = document.createElement('div')
+    editorElement.insertAdjacentElement('beforebegin', messageElement)
+    editors[editorElement] = {
+      messageElement: messageElement,
+      editorTries: 1,
+    }
+  }
+
   const setMessage = (classes, message) => {
-    var baseClasses = 'message js-message'
-    var el = document.getElementById('js-rich_editor-message')
-    if (!el) {
-      el = document.createElement('div')
-      el.id = 'js-rich_editor-message'
-
-      let messageContainer = document.querySelectorAll('label[for="content"]')
-      if (messageContainer.length > 0) {
-        messageContainer[0].insertAdjacentElement('beforebegin', el)
-      } else {
-        let bodyContainer = document.querySelectorAll('.body-container')[0]
-        bodyContainer.prepend(el)
-      }
-    }
-
-    if (classes) {
-      el.className = `${baseClasses} ${classes}`
-    } else {
-      el.className = baseClasses
-    }
+    if (typeof(classes) === "undefined") var classes = ""
+    var el = editors[editorElement].messageElement
+    el.className = `message js-message ${classes}`
 
     if (message) {
       el.style.display = 'block'
@@ -57,37 +50,36 @@ export const enableEditors = () => {
     }
   }
 
-
-  let elements = document.querySelectorAll('.rich-editor')
-  if (elements.length === 0) return;
-
-  console.log(`Trying to load editors: try ${editorTries}`)
+  console.log("Trying to load editor on element", editorElement, "try number", editors[editorElement].editorTries)
   setMessage('message-warning', loadingMessage)
 
   if (typeof(ClassicEditor) === "undefined") {
-    editorTries = editorTries + 1
-    if (editorTries > editorMaxTries) {
-      console.error("Timed out trying to load editors")
+    editors[editorElement].editorTries = editors[editorElement].editorTries + 1
+    if (editors[editorElement].editorTries > editorMaxTries) {
+      console.error("Timed out trying to load editor on element", editorElement)
       setMessage('message-error', genericErrorMessage)
       return
     }
 
-    setTimeout(() => enableEditors(), 1000)
+    setTimeout(() => enableEditor(editorElement), 1000)
     return
   }
 
-  console.log("ClassicEditor loaded, creating editors")
+  console.log("ClassicEditor loaded, creating on element", editorElement)
+  ClassicEditor.create(editorElement, editorConfig)
+    .then((editor) => {
+      editors[editorElement].editorObject = editor
 
-  Array.from(elements).forEach((el) => {
-    var elid = (el.id == "" ? "unknown" : el.id)
-    ClassicEditor.create(el, editorConfig).then((editor) => {
-      editors[elid] = editor
-      setMessage('', undefined)
+      console.log("Editor created on element", editorElement)
+      setMessage(undefined, undefined)
     }).catch((e) => {
-      console.error(`Error while creating editor (id ${elid}): `, e)
+      console.error("Error while creating editor on element", editorElement, "error", e)
       setMessage('message-error', genericErrorMessage)
     })
-  })
 }
 
-enableEditors()
+export const enableAllEditors = () => {
+  Array.from(document.querySelectorAll('.rich-editor')).forEach((el) => {
+    enableEditor(el)
+  })
+}
