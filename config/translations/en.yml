@@ -303,7 +303,7 @@
 :'system/penpal/view/relationships/title': "Penpal relationships"
 :'system/penpal/view/relationships/empty': "There are no relationships for this penpal."
 :'system/penpal/view/relationships/create/title': "Create relationship"
-:'system/penpal/view/relationships/create/from_link': "Create relationship from copied link: <%= name %> (id <%= id %>)"
+:'system/penpal/view/relationships/create/from_link': "Create relationship from copied link: <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
 :'system/penpal/view/relationships/create/from_id': "Create relationship with a given penpal ID"
 :'system/penpal/view/relationships/create/submit': "Create relationship"
 :'system/penpal/edit/title': "Editing penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"

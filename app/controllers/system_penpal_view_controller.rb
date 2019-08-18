@@ -36,7 +36,8 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
       if copied && copied.id != @penpal.id
         @copied_link = {
           :id => copied.id,
-          :name => copied.get_name,
+          :name => copied.get_name&.compact&.join(" "),
+          :pseudonym => copied.get_pseudonym,
         }
       end
     end
