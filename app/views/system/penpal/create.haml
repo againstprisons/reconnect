@@ -3,7 +3,9 @@
 
   %a.pure-button.button{:href => '/system/penpal'}
     %i.fa.fa-chevron-left
-    = t(:'back')
+      = t(:'back')
+
+  %p= t(:'system/penpal/create/only_for_incarcerated', :user_create => to("/system/user/create"))
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
@@ -18,6 +20,20 @@
         .x-margin
           %label{:for => "edit_last_name"}= t(:'name/last')
           %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last')}
+
+    %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
+    %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number')}
+
+    %label{:for => "edit_penpal_status"}= t(:'penpal_status')
+    %select#edit_penpal_status{:name => 'status', :required => true}
+      - ReConnect.app_config['penpal-statuses'].each do |s|
+        %option{:value => s, :selected => s == ReConnect.app_config['penpal-status-default']}= s
+
+    %label{:for => "edit_prison"}= t(:'prison')
+    %select#edit_prison{:name => 'prison', :required => true}
+      %option{:value => '0', :selected => true}= t(:'unknown_prison')
+      - prisons.each do |p|
+        %option{:value => p[:id]}= p[:name]
 
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-plus

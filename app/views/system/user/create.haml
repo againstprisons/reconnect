@@ -5,6 +5,8 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
+  %p= t(:'system/user/create/only_for_outside', :penpal_create => to("/system/penpal/create"))
+
   %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/user/create/section_title')
