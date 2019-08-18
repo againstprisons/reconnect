@@ -20,6 +20,7 @@ class ReConnect::Workers::PenpalDuplicateCheckWorker
       prn = pp.decrypt(:prisoner_number)&.strip&.downcase
       next if prn.nil?
       next if prn.empty?
+      next if prn == '(unknown)'
 
       prisoner_numbers[prn] ||= []
       prisoner_numbers[prn] << pp.id
