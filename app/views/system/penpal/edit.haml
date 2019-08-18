@@ -19,9 +19,21 @@
           %label{:for => "edit_last_name"}= t(:'name/last')
           %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last'), :value => pp_data[:name_a].last}
 
-    %label{:for => "edit_is_incarcerated"}
-      %input#edit_is_incarcerated{:type => 'checkbox', :name => 'is_incarcerated', :checked => pp_data[:is_incarcerated]}
-      = t(:'is_incarcerated')
+    .pure-g
+      .pure-u-1.pure-u-md-1-3
+        %label{:for => "edit_is_incarcerated"}
+          %input#edit_is_incarcerated{:type => 'checkbox', :name => 'is_incarcerated', :checked => pp_data[:is_incarcerated]}
+          = t(:'is_incarcerated')
+
+      .pure-u-1.pure-u-md-1-3
+        %label{:for => "edit_is_advocacy"}
+          %input#edit_is_advocacy{:type => 'checkbox', :name => 'is_advocacy', :checked => pp_data[:is_advocacy]}
+          = t(:'is_advocacy')
+
+      .pure-u-1.pure-u-md-1-3
+        %label{:for => "edit_correspondence_guide_sent"}
+          %input#edit_correspondence_guide_sent{:type => 'checkbox', :name => 'correspondence_guide_sent', :checked => pp_data[:correspondence_guide_sent]}
+          = t(:'correspondence_guide_sent')
 
     %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
     %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number'), :value => pp_data[:prisoner_number]}

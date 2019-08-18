@@ -42,6 +42,8 @@
 :'birthday': "Birthday"
 :'penpal_status': "Penpal status"
 :'outside_penpals': "Outside penpals"
+:'is_advocacy': "Advocacy case?"
+:'correspondence_guide_sent': "Correspondence guide sent?"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."

@@ -79,6 +79,8 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     @penpal.encrypt(:prison_id, pp_prison)
 
     @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
+    @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
+    @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
     @penpal.save
 
     ReConnect::Models::PenpalFilter.clear_filters_for(@penpal)

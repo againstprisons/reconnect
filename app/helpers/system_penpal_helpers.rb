@@ -77,6 +77,14 @@ module ReConnect::Helpers::SystemPenpalHelpers
       data[:status] = status
       data[:display_fields] << [t(:'penpal_status'), status]
 
+      # advocacy
+      data[:is_advocacy] = pp.is_advocacy
+      data[:display_fields] << [t(:'is_advocacy'), pp.is_advocacy ? 'yes' : 'no']
+
+      # correspondence guide sent
+      data[:correspondence_guide_sent] = pp.correspondence_guide_sent
+      data[:display_fields] << [t(:'correspondence_guide_sent'), pp.correspondence_guide_sent ? 'yes' : 'no']
+
       # prison info
       begin
         prison = ReConnect::Models::Prison[pp.decrypt(:prison_id).to_i]
