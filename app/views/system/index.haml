@@ -4,21 +4,53 @@
   %p
     = t(:'system/index/stats', :counts => counts)
 
-  - if has_role?("system:penpal:access")
-    .form-wrapped
-      %h1= t(:'system/index/to_action/section_title')
+  .form-wrapped
+    %h1= t(:'system/index/to_action/section_title')
 
-      - if to_action.count.positive?
-        %ul.block-list
-          - to_action.each do |c|
-            %li
-              %a.block-button.pure-button{:href => to("/system/penpal/relationship/#{c[:relationship].id}/correspondence/#{c[:id]}")}
-                %i.fa.fa-list
-                = t(:'system/index/to_action/item/view')
+    - if to_action.count.positive?
+      %ul.block-list
+        - to_action.each do |c|
+          %li
+            %a.block-button.pure-button{:href => to("/system/penpal/relationship/#{c[:relationship].id}/correspondence/#{c[:id]}")}
+              %i.fa.fa-list
+              = t(:'system/index/to_action/item/view')
 
-              %span
-                = t(:'system/index/to_action/item/text', :from => c[:sending_penpal_name], :to => c[:receiving_penpal_name], :date => c[:creation])
+            %span
+              = t(:'system/index/to_action/item/text', :from => c[:sending_penpal_name], :to => c[:receiving_penpal_name], :date => c[:creation])
 
-      - else
-        %p
-          = t(:'system/index/to_action/none')
+    - else
+      %p
+        = t(:'system/index/to_action/none')
+
+  .form-wrapped
+    %h1= t(:'system/index/duplicates/section_title')
+
+    - if duplicates.count.positive?
+      %table.pure-table.pure-table-bordered.pure-table-striped
+        %thead
+          %tr
+            %th= t(:'prisoner_number')
+            %th= t(:'penpals')
+
+        %tbody
+          - duplicates.each do |dup|
+            %tr
+              %td
+                &= dup[:prisoner_number]
+              %td
+                %ul
+                  - dup[:penpals].each do |pp|
+                    %li
+                      %a{:href => url("/system/penpal/#{pp[:id]}")}
+                        &= pp[:name]
+                        - if pp[:pseudonym]
+                          %em
+                            = surround '(', ')' do
+                              &= pp[:pseudonym]
+
+    - else
+      %p
+        = t(:'system/index/duplicates/none')
+
+    %p
+      = t(:'system/index/duplicates/scan_time')

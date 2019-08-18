@@ -6,3 +6,7 @@
   status_transitions:
     cron: '30 0 * * 1'
     class: "ReConnect::Workers::PenpalStatusTransitionWorker"
+
+  duplicate_check:
+    cron: '*/10 * * * *'
+    class: "ReConnect::Workers::PenpalDuplicateCheckWorker"

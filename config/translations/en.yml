@@ -42,6 +42,7 @@
 :'last_correspondence': "Last correspondence"
 :'birthday': "Birthday"
 :'penpal_status': "Penpal status"
+:'penpals': "Penpals"
 :'outside_penpals': "Outside penpals"
 :'is_advocacy': "Advocacy case?"
 :'correspondence_guide_sent': "Correspondence guide sent?"
@@ -197,6 +198,9 @@
 :'system/index/to_action/none': "There is no new correspondence that requires admin attention!"
 :'system/index/to_action/item/text': "<%= date.strftime('%Y-%m-%d %H:%M:%S') %>: From <%= from %> to <%= to %>"
 :'system/index/to_action/item/view': "View"
+:'system/index/duplicates/section_title': "Duplicate prisoner numbers"
+:'system/index/duplicates/scan_time': "Scans for duplicate prisoner numbers occur every 10 minutes."
+:'system/index/duplicates/none': "There are no penpals with duplicate prisoner numbers, as of the last scan."
 
 # System user info
 :'system/user/title': "User info"
