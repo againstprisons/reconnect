@@ -13,6 +13,7 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     data[:site_name] = ReConnect.app_config["site-name"]
     data[:org_name] = ReConnect.app_config["org-name"]
     data[:base_url] = ReConnect.app_config["base-url"]
+    data[:helpers] = ReConnect::Helpers::InEmailHelpers.helper_methods
     data = OpenStruct.new(data)
 
     # create new EmailQueue instance
