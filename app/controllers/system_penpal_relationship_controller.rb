@@ -15,10 +15,12 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
     @penpal_one = penpal_view_data(@penpal_one) if @penpal_one
     @penpal_one_name = @penpal_one&.key?(:name) ? @penpal_one[:name] : "(unknown)"
+    @penpal_one_pseudonym = @penpal_one&.key?(:pseudonym) ? @penpal_one[:pseudonym] : "(unknown)"
 
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two = penpal_view_data(@penpal_two) if @penpal_two
     @penpal_two_name = @penpal_two&.key?(:name) ? @penpal_two[:name] : "(unknown)"
+    @penpal_two_pseudonym = @penpal_two&.key?(:pseudonym) ? @penpal_two[:pseudonym] : "(unknown)"
 
     @email_approved = {
       :approved => @relationship.email_approved == true,
@@ -38,7 +40,12 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @correspondence = ReConnect::Models::Correspondence.find_for_relationship(@relationship)
     @notes = @relationship.decrypt(:notes)
 
-    @title = t(:'system/penpal/relationships/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
+    @title = t(:'system/penpal/relationships/title', {
+      :one_name => @penpal_one_name,
+      :one_pseudonym => @penpal_one_pseudonym,
+      :two_name => @penpal_two_name,
+      :two_pseudonym => @penpal_two_pseudonym,
+    })
 
     return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/penpal/relationship/index', :layout => false, :locals => {
@@ -66,10 +73,12 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
     @penpal_one = penpal_view_data(@penpal_one) if @penpal_one
     @penpal_one_name = @penpal_one&.key?(:name) ? @penpal_one[:name] : "(unknown)"
+    @penpal_one_pseudonym = @penpal_one&.key?(:pseudonym) ? @penpal_one[:pseudonym] : "(unknown)"
 
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two = penpal_view_data(@penpal_two) if @penpal_two
     @penpal_two_name = @penpal_two&.key?(:name) ? @penpal_two[:name] : "(unknown)"
+    @penpal_two_pseudonym = @penpal_two&.key?(:pseudonym) ? @penpal_two[:pseudonym] : "(unknown)"
 
     approved = @relationship.email_approved == true
     if approved

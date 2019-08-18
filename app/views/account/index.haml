@@ -13,6 +13,9 @@
           %label{:for => "edit_last_name"}= t(:'name/last')
           %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last'), :value => name_a.last}
 
+    %label{:for => "edit_pseudonym"}= t(:'pseudonym')
+    %input#edit_pseudonym{:type => 'text', :name => 'pseudonym', :required => false, :placeholder => t(:'pseudonym'), :value => pseudonym}
+
     %button.pure-button.button.button-primary{:type => 'submit'}
       %i.fa.fa-pencil
       = t :'name/change'

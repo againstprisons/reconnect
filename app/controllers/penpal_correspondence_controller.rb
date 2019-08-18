@@ -17,7 +17,7 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
 
-    @penpal_name = @penpal.get_name.first
+    @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
 
     @title = t(:'penpal/view/correspondence/single/title', :name => @penpal_name)

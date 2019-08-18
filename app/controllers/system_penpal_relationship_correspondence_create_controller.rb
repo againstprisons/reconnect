@@ -14,11 +14,18 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
     @penpal_one_name = @penpal_one.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     @penpal_one_name = "(unknown)" if @penpal_one_name.nil? || @penpal_one_name&.strip&.empty?
+    @penpal_one_pseudonym = @penpal_one.get_pseudonym
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two_name = @penpal_two.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     @penpal_two_name = "(unknown)" if @penpal_two_name.nil? || @penpal_two_name&.strip&.empty?
+    @penpal_two_pseudonym = @penpal_two.get_pseudonym
 
-    @title = t(:'system/penpal/relationship/correspondence/create/title', :one_name => @penpal_one_name, :two_name => @penpal_two_name)
+    @title = t(:'system/penpal/relationship/correspondence/create/title', {
+      :one_name => @penpal_one_name,
+      :one_pseudonym => @penpal_one_pseudonym,
+      :two_name => @penpal_two_name,
+      :two_pseudonym => @penpal_two_pseudonym,
+    })
 
     if request.get?
       return haml(:'system/layout', :locals => {:title => @title}) do
@@ -27,8 +34,10 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
           :relationship => @relationship,
           :penpal_one => @penpal_one,
           :penpal_one_name => @penpal_one_name,
+          :penpal_one_pseudonym => @penpal_one_pseudonym,
           :penpal_two => @penpal_two,
           :penpal_two_name => @penpal_two_name,
+          :penpal_two_pseudonym => @penpal_two_pseudonym,
         })
       end
     end

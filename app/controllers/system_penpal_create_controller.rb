@@ -32,6 +32,8 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
       return redirect request.path
     end
 
+    pp_pseudonym = request.params["pseudonym"]&.strip
+    pp_pseudonym = nil if pp_pseudonym&.empty?
     pp_prisoner_number = request.params["prisoner_number"]&.strip
 
     pp_status = request.params["status"]&.strip
@@ -50,6 +52,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     @penpal.save
     @penpal.encrypt(:first_name, pp_first_name)
     @penpal.encrypt(:last_name, pp_last_name)
+    @penpal.encrypt(:pseudonym, pp_pseudonym) if pp_pseudonym
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
     @penpal.encrypt(:status, pp_status)
     @penpal.encrypt(:prison_id, pp_prison)

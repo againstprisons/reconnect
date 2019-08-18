@@ -11,6 +11,15 @@ class ReConnect::Models::Penpal < Sequel::Model
     [self.decrypt(:first_name), self.decrypt(:last_name)]
   end
 
+  def get_pseudonym
+    return self.user.get_pseudonym if self.user
+    if self.pseudonym
+      self.decrypt(:pseudonym)
+    else
+      self.get_name.first
+    end
+  end
+
   def relationship_count
     ds_one = ReConnect::Models::PenpalRelationship.where(:penpal_one => self.id)
     ds_two = ReConnect::Models::PenpalRelationship.where(:penpal_two => self.id)
@@ -77,6 +86,28 @@ class ReConnect::Models::PenpalFilter < Sequel::Model
 
       # filter on partial name
       name.split(" ").map{|x| x.split("-")}.flatten.each do |partial|
+        ReConnect.filter_strip_chars.each {|x| partial.gsub!(x, "")}
+
+        e = ReConnect::Crypto.index("Penpal", "name", partial)
+        filters << self.new(:penpal_id => penpal.id, :filter_label => "name", :filter_value => e)
+      end
+    end
+
+    # pseudonym (but indexed as name)
+    pseudonym = penpal.get_pseudonym&.downcase
+    pseudonym = nil if pseudonym&.empty?
+    if pseudonym
+      pseudonym = pseudonym.encode(Encoding::UTF_8, :invalid => :replace, :undef => :replace, :replace => "")
+
+      full_pseudonym = pseudonym.dup
+      ReConnect.filter_strip_chars.each {|x| full_pseudonym.gsub!(x, "")}
+
+      # filter on full name
+      e = ReConnect::Crypto.index("Penpal", "name", full_pseudonym)
+      filters << self.new(:penpal_id => penpal.id, :filter_label => "name", :filter_value => e)
+
+      # filter on partial name
+      pseudonym.split(" ").map{|x| x.split("-")}.flatten.each do |partial|
         ReConnect.filter_strip_chars.each {|x| partial.gsub!(x, "")}
 
         e = ReConnect::Crypto.index("Penpal", "name", partial)

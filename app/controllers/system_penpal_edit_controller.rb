@@ -12,6 +12,8 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     return halt 404 unless @penpal
     @penpal_name_a = @penpal.get_name
     @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @penpal_pseudonym = @penpal.decrypt(:pseudonym)
+    @penpal_pseudonym = nil if @penpal_pseudonym&.empty?
     @pp_data = penpal_view_data(@penpal)
     @prisons = ReConnect::Models::Prison.all.map do |p|
       {
@@ -28,7 +30,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
       return redirect back
     end
 
-    @title = t(:'system/penpal/edit/title', :name => @penpal_name, :id => @penpal.id)
+    @title = t(:'system/penpal/edit/title', :name => @penpal_name, :pseudonym => @penpal_pseudonym, :id => @penpal.id)
 
     if request.get?
       return haml(:'system/layout', :locals => {:title => @title}) do
@@ -36,6 +38,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
           :title => @title,
           :penpal => @penpal,
           :pp_data => @pp_data,
+          :pseudonym => @penpal_pseudonym,
           :name => @penpal_name,
           :name_a => @penpal_name_a,
           :user => @user,
@@ -53,6 +56,15 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
 
     @penpal.encrypt(:first_name, pp_first_name)
     @penpal.encrypt(:last_name, pp_last_name)
+
+    pp_pseudonym = request.params["pseudonym"]&.strip
+    pp_pseudonym = nil if pp_pseudonym&.empty?
+
+    if pp_pseudonym
+      @penpal.encrypt(:pseudonym, pp_pseudonym)
+    else
+      @penpal.pseudonym = nil
+    end
 
     pp_prisoner_number = request.params["prisoner_number"]&.strip
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)

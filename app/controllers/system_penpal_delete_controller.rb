@@ -15,9 +15,10 @@ class ReConnect::Controllers::SystemPenpalDeleteController < ReConnect::Controll
 
     @user = nil
     @user = @penpal.user unless @penpal.user_id.nil?
-    @user_name_a = @user_name = nil
+    @user_name_a = @user_name = @user_pseudonym = nil
     @user_name_a = @user.get_name if @user
     @user_name = @user_name_a.map{|x| x == "" ? nil : x}.compact.join(" ") if @user
+    @user_pseudonym = @user.get_pseudonym if @user
 
     @title = t(:'system/penpal/delete/title', :name => @penpal_name, :id => @penpal.id)
 
@@ -31,6 +32,7 @@ class ReConnect::Controllers::SystemPenpalDeleteController < ReConnect::Controll
           :user => @user,
           :user_name => @user_name,
           :user_name_a => @user_name_a,
+          :user_pseudonym => @user_pseudonym,
         })
       end
     end

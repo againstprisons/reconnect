@@ -15,6 +15,10 @@ module ReConnect::Helpers::SystemPenpalHelpers
     data[:display_fields] << [t(:'name/first'), name_a.first]
     data[:display_fields] << [t(:'name/last'), name_a.last]
 
+    # pseudonym
+    data[:pseudonym] = pp.get_pseudonym
+    data[:display_fields] << [t(:'pseudonym'), data[:pseudonym]]
+
     # user ID
     data[:user_id] = pp.user ? pp.user.id : nil
     data[:display_fields] << [t(:'user_id'), pp.user.id] if pp.user

@@ -16,8 +16,10 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
     @penpal_one_name = @penpal_one.get_name
+    @penpal_one_pseudonym = @penpal_one.get_pseudonym
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two_name = @penpal_two.get_name
+    @penpal_two_pseudonym = @penpal_two.get_pseudonym
 
     @correspondence = ReConnect::Models::Correspondence[cid.to_i]
     return halt 404 unless @correspondence

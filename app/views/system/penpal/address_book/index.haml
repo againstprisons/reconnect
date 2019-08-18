@@ -27,6 +27,7 @@
           %thead
             %tr
               %th= t(:'name')
+              %th= t(:'pseudonym')
               %th= t(:'prisoner_number')
               %th= t(:'prison')
               %th= t(:'email_address')
@@ -41,6 +42,9 @@
                 %td
                   %a{:href => url("/system/penpal/#{pp[:pp_d][:id]}"), :title => "id #{pp[:pp_d][:id]}"}
                     &= pp[:pp_d][:name]
+                %td
+                  - if pp[:pp_d][:pseudonym]
+                    &= pp[:pp_d][:pseudonym]
                 %td
                   &= pp[:pp_d][:prisoner_number]
                 %td

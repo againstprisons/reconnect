@@ -14,10 +14,12 @@ class ReConnect::Controllers::SystemPenpalRelationshipDeleteController < ReConne
     @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
     @penpal_one_name = @penpal_one&.get_name
     @penpal_one_name = "(unknown)" unless @penpal_one_name
+    @penpal_one_pseudosym = @penpal_one&.get_pseudonym
 
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two_name = @penpal_two&.get_name
     @penpal_two_name = "(unknown)" unless @penpal_two_name
+    @penpal_two_pseudosym = @penpal_two&.get_pseudonym
 
     @title = t(:'system/penpal/relationship/delete/title')
 
@@ -28,8 +30,10 @@ class ReConnect::Controllers::SystemPenpalRelationshipDeleteController < ReConne
           :relationship => @relationship,
           :penpal_one => @penpal_one,
           :penpal_one_name => @penpal_one_name,
+          :penpal_one_pseudonym => @penpal_one_pseudonym,
           :penpal_two => @penpal_two,
           :penpal_two_name => @penpal_two_name,
+          :penpal_two_pseudonym => @penpal_two_pseudonym,
         })
       end
     end

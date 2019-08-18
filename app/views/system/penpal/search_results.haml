@@ -13,4 +13,9 @@
       %li
         %a{:href => pp[:link]}
           %strong= pp[:name]
+
+          - if pp[:pseudonym]
+            = surround '(' ,')' do
+              %em= pp[:pseudonym]
+
           %span= "(id #{pp[:id]})"

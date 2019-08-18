@@ -10,6 +10,7 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
     return halt 404 unless @user
     @name_a = @user.get_name
     @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @pseudonym = @user.decrypt(:pseudonym)
     @email = @user.email
 
     @title = t(:'system/user/edit_profile/title', :name => @name, :id => @user.id)
@@ -21,6 +22,7 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
           :user => @user,
           :user_name => @name,
           :user_name_a => @name_a,
+          :user_pseudonym => @pseudonym,
           :user_email => @email,
         })
       end
@@ -30,6 +32,8 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
     new_name_first = request.params["first_name"]&.strip
     new_name_last = request.params["last_name"]&.strip
     new_name_a = [new_name_first, new_name_last]
+    new_pseudonym = request.params["pseudonym"]&.strip
+    new_pseudonym = nil if new_pseudonym&.empty?
 
     none_of = [
       new_email.nil?,
@@ -50,6 +54,16 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
     if @name_a != new_name_a
       @user.encrypt(:first_name, new_name_first)
       @user.encrypt(:last_name, new_name_last)
+      changed = true
+    end
+
+    if @pseudonym != new_pseudonym
+      if new_pseudonym
+        @user.encrypt(:pseudonym, new_pseudonym)
+      else
+        @user.pseudonym = nil
+      end
+
       changed = true
     end
 

@@ -19,7 +19,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
         other = ReConnect::Models::Penpal[pr.penpal_one]
       end
 
-      name = other.get_name.first
+      name = other.get_pseudonym
       name = "(unknown)" if name.nil? || name.empty?
 
       {
@@ -32,9 +32,9 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       next if c.nil?
 
       sending = ReConnect::Models::Penpal[c.sending_penpal]
-      sending_name = sending.get_name.first
+      sending_name = sending.get_pseudonym
       sending_name = "(unknown)" if sending_name.nil? || sending_name&.strip&.empty?
-      receiving_name = @current_penpal.get_name.first
+      receiving_name = @current_penpal.get_pseudonym
       receiving_name = "(unknown)" if receiving_name.nil? || receiving_name&.strip&.empty?
 
       {

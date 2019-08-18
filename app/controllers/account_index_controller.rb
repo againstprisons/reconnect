@@ -14,6 +14,7 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
     @user = current_user
     @name_a = @user.get_name
     @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
+    @pseudonym = @user.decrypt(:pseudonym)
     @title = t(:'account/title')
 
     haml(:'account/layout', :locals => {:title => @title}) do
@@ -21,6 +22,7 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
         :title => @title,
         :name_a => @name_a,
         :name => @name,
+        :pseudonym => @pseudonym,
       })
     end
   end
@@ -41,8 +43,17 @@ class ReConnect::Controllers::AccountIndexController < ReConnect::Controllers::A
       return redirect to("/account")
     end
 
+    pseudonym = request.params["pseudonym"]&.strip
+    pseudonym = nil if pseudonym&.empty?
+
     @user.encrypt(:first_name, first_name)
     @user.encrypt(:last_name, last_name)
+    if pseudonym
+      @user.encrypt(:pseudonym, pseudonym)
+    else
+      @user.pseudonym = nil
+    end
+
     @user.save
 
     # refresh penpal filter for this user's penpal object, if they have one

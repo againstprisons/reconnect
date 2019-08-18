@@ -13,6 +13,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @user = @penpal.user
     @penpal_name_a = @penpal.get_name
     @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @penpal_pseudonym = @penpal.get_pseudonym
 
     @pp_data = penpal_view_data(@penpal)
 
@@ -40,7 +41,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
       end
     end
 
-    @title = t(:'system/penpal/view/title', :name => @penpal_name, :id => @penpal.id)
+    @title = t(:'system/penpal/view/title', :name => @penpal_name, :pseudonym => @penpal_pseudonym, :id => @penpal.id)
     return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/penpal/view', :layout => false, :locals => {
         :title => @title,
@@ -48,6 +49,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :user => @user,
         :name => @penpal_name,
         :name_a => @penpal_name_a,
+        :pseudonym => @penpal_pseudonym,
         :display_fields => @pp_data[:display_fields],
         :relationships => @relationships,
         :copied_link => @copied_link,

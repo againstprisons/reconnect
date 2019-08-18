@@ -19,6 +19,9 @@
           %label{:for => "edit_last_name"}= t(:'name/last')
           %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last'), :value => user_name_a.last}
 
+    %label{:for => "edit_pseudonym"}= t(:'pseudonym')
+    %input#edit_pseudonym{:type => 'text', :name => 'pseudonym', :required => false, :placeholder => t(:'pseudonym'), :value => user_pseudonym}
+
     %label{:for => "edit_email"}= t(:'email_address')
     %input#edit_email{:type => 'email', :name => 'email', :required => true, :placeholder => t(:'email_address'), :value => user_email}
 

@@ -15,6 +15,10 @@ module ReConnect::Helpers::SystemUserHelpers
     data[:display_fields] << [t(:'name/first'), name_a.first]
     data[:display_fields] << [t(:'name/last'), name_a.last]
 
+    # pseudonym
+    data[:pseudonym] = u.get_pseudonym
+    data[:display_fields] << [t(:'pseudonym'), data[:pseudonym]]
+
     # email address
     data[:email_address] = u.email
     data[:display_fields] << [t(:'email_address'), u.email]

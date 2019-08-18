@@ -9,6 +9,14 @@ class ReConnect::Models::User < Sequel::Model
     [self.decrypt(:first_name), self.decrypt(:last_name)]
   end
 
+  def get_pseudonym
+    if self.pseudonym
+      self.decrypt(:pseudonym)
+    else
+      self.get_name.first
+    end
+  end
+
   def password=(pw)
     self.password_hash = ReConnect::Crypto.password_hash(pw)
   end
