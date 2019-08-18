@@ -44,12 +44,21 @@
                 %td
                   &= pp[:pp_d][:prisoner_number]
                 %td
-                  %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
-                    &= pp[:pp_d][:prison][:name]
+                  - if pp[:pp_d][:prison]
+                    %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
+                      &= pp[:pp_d][:prison][:name]
+                  - else
+                    = '(unknown)'
                 %td
-                  &= pp[:pp_d][:prison][:email_address]
+                  - if pp[:pp_d][:prison]
+                    &= pp[:pp_d][:prison][:email_address]
+                  - else
+                    = '(unknown)'
                 %td
-                  &= pp[:pp_d][:prison][:address]
+                  - if pp[:pp_d][:prison]
+                    &= pp[:pp_d][:prison][:address]
+                  - else
+                    = '(unknown)'
                 %td
                   - if pp[:pp_d][:birthday]
                     &= pp[:pp_d][:birthday].strftime("%Y-%m-%d")
