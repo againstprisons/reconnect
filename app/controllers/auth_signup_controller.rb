@@ -66,7 +66,8 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
         return redirect request.path
       end
 
-      if user_dob > ReConnect.app_config['signup-age-gate']
+      age_gate = Chronic.parse(ReConnect.app_config['signup-age-gate'], :guess => true)
+      if user_dob > age_gate
         flash :error, t(:'auth/signup/age_gate/error')
         return redirect request.path
       end

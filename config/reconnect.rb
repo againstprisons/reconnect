@@ -239,13 +239,10 @@ module ReConnect
 
   def self.app_config_refresh_signup_age_gate
     loaded = Chronic.parse(@app_config['signup-age-gate'], :guess => true)
-    if loaded
-      @app_config['signup-age-gate'] = loaded
-      return
-    end
+    return if !loaded.nil?
 
     puts "app_config_refresh_signup_age_gate: failed to parse date, setting default of 18 years"
-    @app_config['signup-age-gate'] = Chronic.parse('18 years ago', :guess => true)
+    @app_config['signup-age-gate'] = '18 years ago'
   end
 
   def self.site_load_config
