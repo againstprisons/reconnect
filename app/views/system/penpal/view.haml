@@ -91,6 +91,11 @@
             %i.fa.fa-pencil
             = t(:'system/penpal/actions/edit')
 
+          - if has_role?("system:email")
+            %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
+              %i.fa.fa-envelope
+              = t(:'system/penpal/actions/send-email')
+
         - if has_role?("system:user:access")
           - if user
             %a.pure-button.button{:href => "/system/user/#{user.id}"}

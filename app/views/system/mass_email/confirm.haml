@@ -1,0 +1,39 @@
+.system-admin-mass-email-confirm
+  %h1= title
+
+  .form-wrapped
+    %h1= t(:'system/mass_email/confirm/section_title')
+
+    %p
+      - if penpal
+        = t(:'system/mass_email/sending_to/penpal', penpal)
+      - else
+        = t(:'system/mass_email/sending_to/all')
+
+    %iframe#email_preview.rich-text-container{:src => rendered, :style => 'height:400px;max-height:100%'}
+
+    .y-margin-large= ""
+
+    %form{:method => "POST", :action => url("/system/mass-email")}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      - if penpal
+        %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
+
+      %input{:type => 'hidden', :name => 'subject', :value => subject}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-pencil=""
+        = t(:'system/mass_email/confirm/edit')
+
+    %form{:method => "POST", :action => url("/system/mass-email/send")}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      - if penpal
+        %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
+
+      %input{:type => 'hidden', :name => 'subject', :value => subject}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+
+      %button.pure-button.button.button-success{:type => 'submit'}
+        %i.fa.fa-envelope=""
+        = t(:'system/mass_email/confirm/submit')

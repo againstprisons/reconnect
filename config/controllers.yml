@@ -28,6 +28,9 @@ controllers:
   - path: /system/files/:id
     controller: SystemFilesInspectController
 
+  - path: /system/mass-email
+    controller: SystemMassEmailController
+
   - path: /system/prison/create
     controller: SystemPrisonCreateController
   - path: /system/prison/:pid

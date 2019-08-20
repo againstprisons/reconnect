@@ -1,0 +1,30 @@
+.system-admin-mass-email
+  %h1= title
+
+  %p
+    - if penpal
+      = t(:'system/mass_email/sending_to/penpal', penpal)
+    - else
+      = t(:'system/mass_email/sending_to/all')
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => url("/system/mass-email/confirm")}
+    %h1= t(:'system/mass_email/section_title')
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    - if penpal
+      %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
+
+    %label{:for => "email_subject"}= t(:'system/mass_email/subject')
+    %input#email_subject{:type => 'text', :name => 'subject', :value => subject, :required => true}
+
+    %label{:for => "email_content"}= t(:'system/mass_email/content')
+    %textarea#email_content.rich-editor{:name => 'content', :value => content}
+      &= content
+
+    .y-margin= ""
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-arrow-right=""
+      = t(:'system/mass_email/continue_to_verify')
+
+%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}

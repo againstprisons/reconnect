@@ -1,0 +1,19 @@
+.system-admin-mass-email-incomplete
+  %h1= title
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => url("/system/mass-email")}
+    %h1= t(:'system/mass_email/incomplete/section_title')
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    %p
+      = t(:'system/mass_email/incomplete/content')
+
+    - if penpal
+      %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
+
+    %input{:type => 'hidden', :name => 'subject', :value => subject}
+    %input{:type => 'hidden', :name => 'content', :value => content}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil=""
+      = t(:'system/mass_email/incomplete/back')

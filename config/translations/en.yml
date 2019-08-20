@@ -293,6 +293,7 @@
 :'system/penpal/create/success': "Successfully created a new penpal."
 :'system/penpal/actions': "Actions for this penpal"
 :'system/penpal/actions/edit': "Edit penpal information"
+:'system/penpal/actions/send-email': "Send email to outside penpals of this penpal"
 :'system/penpal/actions/jump_to_user': "Jump to associated user"
 :'system/penpal/actions/jump_to_user/no_associated': "No associated user"
 :'system/penpal/actions/copy_link': "Copy penpal link"
@@ -450,6 +451,25 @@
 :'system/prison/delete/confirm_not_checked': "Refusing to delete this prison as the confirm box was not checked."
 :'system/prison/delete/refusing_as_penpals_exist': "Refusing to delete this prison as there are still <%= count %> penpals associated with this prison."
 :'system/prison/delete/success': "Successfully deleted prison <%= name %> (ID <%= id %>)."
+
+# Mass emailing
+:'system/mass_email/title': "Mass emailing"
+:'system/mass_email/section_title': "Send a mass email"
+:'system/mass_email/sending_to/all': "This will send an email to all registered outside penpals."
+:'system/mass_email/sending_to/penpal': "This will send an email to all the outside penpals who have a penpal relationship with <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(ID <%= id %>)."
+:'system/mass_email/subject': "Email subject"
+:'system/mass_email/content': "Email content"
+:'system/mass_email/continue_to_verify': "Continue to verification"
+:'system/mass_email/incomplete/section_title': "Incomplete email!"
+:'system/mass_email/incomplete/content': "It looks like you didn't finish your email! Either the subject or the email body were missing. Click the button below to return to the editing screen."
+:'system/mass_email/incomplete/back': "Return to editing"
+:'system/mass_email/confirm/section_title': "Preview and confirm"
+:'system/mass_email/confirm/edit': "Go back and edit"
+:'system/mass_email/confirm/submit': "Send email"
+:'system/mass_email/sent/section_title': "Email sent!"
+:'system/mass_email/sent/to_penpal': "This email has been sent to <%= r_emails.count %> outside penpals who have a penpal relationship with <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(ID <%= id %>)."
+:'system/mass_email/sent/content': "This email has been queued with ID <%= queue_id %>, and will be sent in the next few minutes."
+:'system/mass_email/sent/again': "Write another email"
 
 # System configuration
 :'system/configuration/title': "Configuration"

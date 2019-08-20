@@ -25,13 +25,20 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     entry = self.new(:queue_status => "preparing")
     entry.save # save to get an ID
 
-    # get templates
-    text_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.txt.erb"))
-    html_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.html.erb"))
+    text_output = nil
+    html_output = nil
+    if template.nil?
+      text_output = data[:content_text] if data[:content_text]
+      html_output = data[:content_html] if data[:content_html]
+    else
+      # get templates
+      text_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.txt.erb"))
+      html_template = entry.new_tilt_template_from_fn(File.join(lang, "#{template}.html.erb"))
 
-    # render templates
-    text_output = text_template.render(data) if text_template
-    html_output = html_template.render(data) if html_template
+      # render templates
+      text_output = text_template.render(data) if text_template
+      html_output = html_template.render(data) if html_template
+    end
 
     # get themeable wrapper templates
     text_wrapper = entry.new_tilt_template_from_fn(data.layout[:text])
