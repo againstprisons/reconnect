@@ -209,10 +209,15 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     ].join("")
 
     # wrap in layout_to_incarcerated
+    template_data = OpenStruct.new({
+      :site_name => ReConnect.app_config['site-name'],
+      :org_name => ReConnect.app_config['org-name'],
+    })
+
     html_template = new_tilt_template_from_fn("layout_to_incarcerated.html.erb")
     text_template = new_tilt_template_from_fn("layout_to_incarcerated.txt.erb")
-    html_part = html_template.render() { html_part } if html_template
-    text_part = text_template.render() { text_part } if text_template
+    html_part = html_template.render(template_data) { html_part } if html_template
+    text_part = text_template.render(template_data) { text_part } if text_template
 
     # create email queue entry
     email = ReConnect::Models::EmailQueue.new(:queue_status => "preparing")
