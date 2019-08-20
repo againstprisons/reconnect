@@ -319,6 +319,7 @@
 :'system/penpal/edit/section_title': "Penpal information"
 :'system/penpal/edit/associated_user': "Can't edit this penpal's information directly as this penpal has an associated user. Please edit that user instead."
 :'system/penpal/edit/name_required': "A name is required for this penpal."
+:'system/penpal/edit/auto_set_advocacy_case': "Automatically set the \"Advocacy case?\" flag as this penpal's status has been changed to <%= status %>."
 :'system/penpal/edit/success': "Successfully saved changes to this penpal."
 :'system/penpal/delete/title': "Delete penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
 :'system/penpal/delete/section_title': "Delete penpal"

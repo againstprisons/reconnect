@@ -81,6 +81,21 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     end
     @penpal.encrypt(:status, pp_status)
 
+    @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
+    @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
+    @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
+
+    if ReConnect.app_config['penpal-status-advocacy']
+      if pp_status == ReConnect.app_config['penpal-status-advocacy']
+        unless @penpal.is_advocacy
+          @penpal.is_advocacy = true
+          flash :warning, t(:'system/penpal/edit/auto_set_advocacy_case', {
+            :status => ReConnect.app_config['penpal-status-advocacy'],
+          })
+        end
+      end
+    end
+
     pp_prison = request.params["prison"]&.strip&.downcase.to_i
     if pp_prison.nil? || pp_prison.zero?
       pp_prison = nil
@@ -89,9 +104,6 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     end
     @penpal.encrypt(:prison_id, pp_prison)
 
-    @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
-    @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
-    @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
     @penpal.save
 
     ReConnect::Models::PenpalFilter.clear_filters_for(@penpal)

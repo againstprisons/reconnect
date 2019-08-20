@@ -40,6 +40,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     if !(ReConnect.app_config['penpal-statuses'].include?(pp_status))
       pp_status = ReConnect.app_config['penpal-status-default']
     end
+    set_advo = pp_status == ReConnect.app_config['penpal-status-advocacy']
 
     pp_prison = request.params["prison"]&.strip&.downcase.to_i
     if pp_prison.nil? || pp_prison.zero?
@@ -56,6 +57,18 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)
     @penpal.encrypt(:status, pp_status)
     @penpal.encrypt(:prison_id, pp_prison)
+
+    if ReConnect.app_config['penpal-status-advocacy']
+      if pp_status == ReConnect.app_config['penpal-status-advocacy']
+        unless @penpal.is_advocacy
+          @penpal.is_advocacy = true
+          flash :warning, t(:'system/penpal/edit/auto_set_advocacy_case', {
+            :status => ReConnect.app_config['penpal-status-advocacy'],
+          })
+        end
+      end
+    end
+
     @penpal.save
 
     ReConnect::Models::PenpalFilter.create_filters_for(@penpal)

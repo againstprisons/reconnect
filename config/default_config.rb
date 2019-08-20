@@ -66,6 +66,10 @@ module ReConnect
       :type => :text,
       :default => '[]',
     },
+    "penpal-status-advocacy" => {
+      :type => :text,
+      :default => '',
+    },
   }
 
   class Application

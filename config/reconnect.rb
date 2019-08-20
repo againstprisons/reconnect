@@ -162,6 +162,7 @@ module ReConnect
       self.app_config_refresh_mail if key == 'email-smtp-host'
       self.app_config_refresh_filter_words if key == 'filter-words'
       self.app_config_refresh_penpal_statuses if key == 'penpal-statuses'
+      self.app_config_refresh_nil_if_empty(key) if key == 'penpal-status-advocacy'
       self.app_config_refresh_penpal_status_transitions if key == 'penpal-status-transitions'
       self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
     end
@@ -169,6 +170,12 @@ module ReConnect
     @app_config_refresh_pending.clear
 
     keys
+  end
+
+  def self.app_config_refresh_nil_if_empty(key)
+    if @app_config[key].strip.empty?
+      @app_config[key] = nil
+    end
   end
 
   def self.app_config_refresh_mail
