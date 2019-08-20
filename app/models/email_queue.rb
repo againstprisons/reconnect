@@ -9,6 +9,11 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     # and default to ReConnect.default_language should the template not exist
     lang = "en"
 
+    # add layout info to data hash
+    data[:layout] ||= {}
+    data[:layout][:text] ||= "layout.txt.erb"
+    data[:layout][:html] ||= "layout.html.erb"
+
     # add generic data
     data[:site_name] = ReConnect.app_config["site-name"]
     data[:org_name] = ReConnect.app_config["org-name"]
@@ -29,8 +34,8 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
     html_output = html_template.render(data) if html_template
 
     # get themeable wrapper templates
-    text_wrapper = entry.new_tilt_template_from_fn("layout.txt.erb")
-    html_wrapper = entry.new_tilt_template_from_fn("layout.html.erb")
+    text_wrapper = entry.new_tilt_template_from_fn(data.layout[:text])
+    html_wrapper = entry.new_tilt_template_from_fn(data.layout[:html])
 
     # render wrappers, passing in rendered output from above
     text_output = text_wrapper.render(data) { text_output } if text_wrapper

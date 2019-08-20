@@ -1,6 +1,8 @@
 require 'reverse_markdown'
 
 class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
+  include ReConnect::Helpers::EmailTemplateHelpers
+
   def self.find_for_relationship(relationship)
     [
       self.where(:sending_penpal => relationship.penpal_one, :receiving_penpal => relationship.penpal_two).all,
@@ -205,6 +207,12 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       ", ",
       penpal_receiving.decrypt(:prisoner_number) || 'unknown prisoner number',
     ].join("")
+
+    # wrap in layout_to_incarcerated
+    html_template = new_tilt_template_from_fn("layout_to_incarcerated.html.erb")
+    text_template = new_tilt_template_from_fn("layout_to_incarcerated.txt.erb")
+    html_part = html_template.render() { html_part } if html_template
+    text_part = text_template.render() { text_part } if text_template
 
     # create email queue entry
     email = ReConnect::Models::EmailQueue.new(:queue_status => "preparing")
