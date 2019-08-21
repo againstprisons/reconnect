@@ -124,11 +124,29 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       :email => email,
     }
 
-    queued_email = ReConnect::Models::EmailQueue.new_from_template("new_user_welcome", email_data)
-    queued_email.queue_status = "queued"
-    queued_email.encrypt(:subject, "Welcome to #{site_name}!") # TODO: translation
-    queued_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [email]}))
-    queued_email.save
+    welcome_email = ReConnect::Models::EmailQueue.new_from_template("new_user_welcome", email_data)
+    welcome_email.queue_status = "queued"
+    welcome_email.encrypt(:subject, "Welcome to #{site_name}!") # TODO: translation
+    welcome_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [email]}))
+    welcome_email.save
+
+    # generate new user alert email, if enabled
+    if should_send_alert_email('new_user')
+      alert_data = {
+        :name => [user_first_name, user_last_name].compact.join(" "),
+        :email => user.email,
+        :userlink => url("/system/user/#{user.id}"),
+      }
+
+      alert_email = ReConnect::Models::EmailQueue.new_from_template('alert_new_user', alert_data)
+      alert_email.queue_status = 'queued'
+      alert_email.encrypt(:subject, "A new user has signed up")
+      alert_email.encrypt(:recipients, JSON.generate({
+        "mode" => "list",
+        "list" => [ReConnect.app_config['site-alert-emails']['email']],
+      }))
+      alert_email.save
+    end
 
     # log the user in
     token = user.login!

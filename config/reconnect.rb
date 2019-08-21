@@ -160,11 +160,12 @@ module ReConnect
 
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
-      self.app_config_refresh_filter_words if key == 'filter-words'
-      self.app_config_refresh_penpal_statuses if key == 'penpal-statuses'
+      self.app_config_refresh_json(key) if key == 'filter-words'
+      self.app_config_refresh_json(key) if key == 'penpal-statuses'
       self.app_config_refresh_nil_if_empty(key) if key == 'penpal-status-advocacy'
-      self.app_config_refresh_penpal_status_transitions if key == 'penpal-status-transitions'
+      self.app_config_refresh_json(key) if key == 'penpal-status-transitions'
       self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
+      self.app_config_refresh_json(key) if key == 'site-alert-emails'
     end
 
     @app_config_refresh_pending.clear
@@ -175,6 +176,17 @@ module ReConnect
   def self.app_config_refresh_nil_if_empty(key)
     if @app_config[key].strip.empty?
       @app_config[key] = nil
+    end
+  end
+
+  def self.app_config_refresh_json(key)
+    begin
+      loaded = JSON.parse(@app_config[key])
+      @app_config[key] = loaded
+    rescue => e
+      puts "app_config_refresh_json(#{key}): Failed to parse JSON: #{e.class.name}: #{e}"
+      puts e.traceback if e.respond_to?(:traceback)
+      return
     end
   end
 
@@ -223,39 +235,6 @@ module ReConnect
   def self.app_config_refresh_file_storage_dir
     unless Dir.exist?(@app_config["file-storage-dir"])
       Dir.mkdir(@app_config["file-storage-dir"])
-    end
-  end
-
-  def self.app_config_refresh_filter_words
-    begin
-      loaded = JSON.parse(@app_config["filter-words"])
-      @app_config["filter-words"] = loaded
-    rescue => e
-      puts "app_config_refresh_filter_words: Failed to parse JSON: #{e.class.name}: #{e}"
-      puts e.traceback if e.respond_to?(:traceback)
-      return
-    end
-  end
-
-  def self.app_config_refresh_penpal_statuses
-    begin
-      loaded = JSON.parse(@app_config["penpal-statuses"])
-      @app_config["penpal-statuses"] = loaded
-    rescue => e
-      puts "app_config_refresh_penpal_statuses: Failed to parse JSON: #{e.class.name}: #{e}"
-      puts e.traceback if e.respond_to?(:traceback)
-      return
-    end
-  end
-
-  def self.app_config_refresh_penpal_status_transitions
-    begin
-      loaded = JSON.parse(@app_config["penpal-status-transitions"])
-      @app_config["penpal-status-transitions"] = loaded
-    rescue => e
-      puts "app_config_refresh_penpal_status_transitions: Failed to parse JSON: #{e.class.name}: #{e}"
-      puts e.traceback if e.respond_to?(:traceback)
-      return
     end
   end
 

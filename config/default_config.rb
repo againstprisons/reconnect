@@ -70,6 +70,10 @@ module ReConnect
       :type => :text,
       :default => '',
     },
+    "site-alert-emails" => {
+      :type => :text,
+      :default => '{"email": null, "alerts": ["*"]}',
+    },
   }
 
   class Application

@@ -26,6 +26,9 @@ module ReConnect::Helpers::ApplicationHelpers
   require_relative './navbar_helpers'
   include ReConnect::Helpers::NavbarHelpers
 
+  require_relative './site_alert_helpers'
+  include ReConnect::Helpers::SiteAlertHelpers
+
   def site_name
     ReConnect.app_config["site-name"]
   end
