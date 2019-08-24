@@ -2,6 +2,8 @@ require 'tilt/erb'
 require 'ostruct'
 
 class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
+  EMAIL_CHUNK_SIZE = 10
+
   include ReConnect::Helpers::EmailTemplateHelpers
 
   def self.new_from_template(template, data = {})
@@ -105,7 +107,7 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
   def generate_messages_chunked
     out = []
 
-    chunks = self.generate_recipients_list.each_slice(25).to_a
+    chunks = self.generate_recipients_list.each_slice(EMAIL_CHUNK_SIZE).to_a
     chunks.each do |chunk|
       m = self.generate_message_no_recipients
       m.bcc = chunk
