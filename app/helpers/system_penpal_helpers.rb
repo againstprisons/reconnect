@@ -104,6 +104,7 @@ module ReConnect::Helpers::SystemPenpalHelpers
           }
 
           data[:display_fields] << [t(:'prison'), data[:prison][:name]]
+          data[:display_fields] << [t(:'address'), data[:prison][:address].lines.map(&:strip).join(", ")]
         else
           data[:display_fields] << [t(:'prison'), '(unknown)']
         end

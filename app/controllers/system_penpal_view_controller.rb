@@ -18,6 +18,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
     @pp_data = penpal_view_data(@penpal)
     @notes = @penpal.decrypt(:notes)&.strip
+    @intro = @penpal.decrypt(:intro)
 
     @relationships = @penpal.relationships.map do |r|
       other_party = r.penpal_one
@@ -57,6 +58,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :display_fields => @pp_data[:display_fields],
         :relationships => @relationships,
         :copied_link => @copied_link,
+        :intro => @intro,
       })
     end
   end

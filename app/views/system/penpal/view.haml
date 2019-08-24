@@ -120,3 +120,10 @@
             %i.fa.fa-trash
             = t(:'system/penpal/actions/delete')
 
+    .pure-u-1
+      - if !intro.strip.empty?
+        .form-wrapped
+          %h1= t(:'penpal_intro')
+
+          .rich-text-container
+            != intro
