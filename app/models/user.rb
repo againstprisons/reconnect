@@ -20,6 +20,9 @@ class ReConnect::Models::User < Sequel::Model
   end
 
   def password_correct?(pw)
+    return false if self.password_hash.nil?
+    return false if self.password_hash&.empty?
+
     ReConnect::Crypto.password_verify(self.password_hash, pw)
   end
 

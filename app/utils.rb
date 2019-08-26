@@ -12,6 +12,7 @@ module ReConnect::Utils
 
   # Turns a string of hexadecimal characters into it's binary representation.
   def self.hex_to_bin(data)
+    return "" if data.nil?
     return data.scan(/../).map do |x|
       x.hex.chr
     end.join.encode(Encoding::BINARY)
@@ -19,6 +20,7 @@ module ReConnect::Utils
 
   # Turns a binary-encoded string into it's hexadecimal representation.
   def self.bin_to_hex(data)
+    return "" if data.nil?
     return data.each_byte.map do |b|
       t = b.to_s(16)
       t = "0" + t if t.length == 1

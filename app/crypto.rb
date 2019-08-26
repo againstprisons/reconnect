@@ -124,6 +124,7 @@ module ReConnect::Crypto
     def password_verify(hashed, password)
       saltbytes = RbNaCl::PasswordHash::SCrypt::SALTBYTES
       data = ReConnect::Utils.hex_to_bin(hashed)
+      return false if data.nil? || data&.empty?
       salt = data[0..(saltbytes - 1)]
 
       return Rack::Utils.secure_compare(hashed, self.password_hash(password, salt))
