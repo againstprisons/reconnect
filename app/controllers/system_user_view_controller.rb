@@ -12,7 +12,7 @@ class ReConnect::Controllers::SystemUserViewController < ReConnect::Controllers:
     @user_d = user_view_data(@user)
     @penpal = ReConnect::Models::Penpal[@user.penpal_id]
 
-    @title = t(:'system/user/view/title', :name => @user_d[:name], :id => @user.id)
+    @title = t(:'system/user/view/title', :name => @user_d[:name], :pseudonym => @user_d[:pseudonym], :id => @user.id)
 
     return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/user/view', :layout => false, :locals => {

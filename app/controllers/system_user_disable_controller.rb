@@ -9,12 +9,13 @@ class ReConnect::Controllers::SystemUserDisableController < ReConnect::Controlle
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
     @name_a = @user.get_name
+    @pseudonym = @user.get_pseudonym
     @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @email = @user.email
     @disabled_reason = @user.decrypt(:disabled_reason)
     @disabled_reason = nil if @disabled_reason&.strip == ""
 
-    @title = t(:'system/user/disable_delete/title', :name => @name, :id => @user.id)
+    @title = t(:'system/user/disable_delete/title', :name => @name, :pseudonym => @pseudonym, :id => @user.id)
 
     if request.get?
       return haml(:'system/layout', :locals => {:title => @title}) do

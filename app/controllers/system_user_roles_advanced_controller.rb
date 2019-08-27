@@ -11,6 +11,7 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
+    @pseudonym = @user.get_pseudonym
     @name_a = @user.get_name
     @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @email = @user.email
@@ -22,7 +23,7 @@ class ReConnect::Controllers::SystemUserRolesAdvancedController < ReConnect::Con
       }
     end
 
-    @title = t(:'system/user/roles/advanced/title', :name => @name, :id => @user.id)
+    @title = t(:'system/user/roles/advanced/title', :name => @name, :pseudonym => @pseudonym, :id => @user.id)
 
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/user/roles/advanced', :layout => false, :locals => {

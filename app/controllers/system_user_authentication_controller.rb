@@ -8,11 +8,12 @@ class ReConnect::Controllers::SystemUserAuthenticationController < ReConnect::Co
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
+    @pseudonym = @user.get_pseudonym
     @name_a = @user.get_name
     @name = @name_a.map{|x| x == "" ? nil : x}.compact.join(" ") || "(unknown)"
     @email = @user.email
 
-    @title = t(:'system/user/auth_options/title', :name => @name, :id => @user.id)
+    @title = t(:'system/user/auth_options/title', :name => @name, :pseudonym => @pseudonym, :id => @user.id)
 
     if request.get?
       return haml(:'system/layout', :locals => {:title => @title}) do
@@ -20,6 +21,7 @@ class ReConnect::Controllers::SystemUserAuthenticationController < ReConnect::Co
           :title => @title,
           :user => @user,
           :user_name => @name,
+          :user_pseudonym => @pseudonym,
           :user_email => @email,
         })
       end
