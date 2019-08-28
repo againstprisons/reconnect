@@ -184,8 +184,9 @@ module ReConnect
       loaded = JSON.parse(@app_config[key])
       @app_config[key] = loaded
     rescue => e
-      puts "app_config_refresh_json(#{key}): Failed to parse JSON: #{e.class.name}: #{e}"
-      puts e.traceback if e.respond_to?(:traceback)
+      $stderr.puts "app_config_refresh_json(#{key}): Failed to parse JSON: #{e.class.name}: #{e}"
+      $stderr.puts e.traceback if e.respond_to?(:traceback)
+      $stderr.flush
       return
     end
   end
@@ -204,8 +205,9 @@ module ReConnect
     begin
       uri = Addressable::URI.parse(entry)
     rescue => e
-      puts "app_config_refresh_mail: Failed to parse email-smtp-host URI: #{e.class.name}: #{e}"
-      puts e.traceback if e.respond_to?(:traceback)
+      $stderr.puts "app_config_refresh_mail: Failed to parse email-smtp-host URI: #{e.class.name}: #{e}"
+      $stderr.puts e.traceback if e.respond_to?(:traceback)
+      $stderr.flush
       return
     end
 
@@ -242,7 +244,8 @@ module ReConnect
     loaded = Chronic.parse(@app_config['signup-age-gate'], :guess => true)
     return if !loaded.nil?
 
-    puts "app_config_refresh_signup_age_gate: failed to parse date, setting default of 18 years"
+    $stderr.puts "app_config_refresh_signup_age_gate: failed to parse date, setting default of 18 years"
+    $stderr.flush
     @app_config['signup-age-gate'] = '18 years ago'
   end
 
