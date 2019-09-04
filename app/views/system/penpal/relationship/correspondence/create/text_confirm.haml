@@ -1,0 +1,27 @@
+.system-admin-penpal-relationship-correspondence-create
+  %h1= title
+
+  .form-wrapped
+    %h1= t(:'system/penpal/relationship/correspondence/create/confirm/section_title')
+
+    %iframe#email_preview.rich-text-container{:src => rendered, :style => 'height:400px;max-height:100%'}
+
+    .y-margin-large= ""
+
+    %form{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'direction', :value => direction}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'force-compose', :value => '1'}
+      %button.pure-button.button{:type => 'submit'}
+        %i.fa.fa-chevron-left
+        = t(:'system/penpal/relationship/correspondence/create/back_to_edit')
+
+    %form{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'direction', :value => direction}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'confirm', :value => '1'}
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-envelope
+        = t(:'system/penpal/relationship/correspondence/create/submit')
