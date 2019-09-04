@@ -74,6 +74,10 @@ module ReConnect
       :type => :text,
       :default => '{"email": null, "alerts": ["*"]}',
     },
+    "allow-outside-file-upload" => {
+      :type => :bool,
+      :default => false,
+    },
   }
 
   class Application

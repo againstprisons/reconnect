@@ -100,6 +100,8 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       return redirect to("/auth")
     end
 
+    return halt 404 unless ReConnect.app_config['allow-outside-file-upload']
+
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
