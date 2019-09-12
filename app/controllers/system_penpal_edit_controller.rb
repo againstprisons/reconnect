@@ -85,6 +85,10 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
     @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
 
+    pp_release_date = request.params["release_date"]&.strip&.downcase
+    pp_release_date = Chronic.parse(pp_release_date, :guess => true)
+    @penpal.encrypt(:expected_release_date, pp_release_date.strftime("%Y-%m-%d")) if pp_release_date
+
     if ReConnect.app_config['penpal-status-advocacy']
       if pp_status == ReConnect.app_config['penpal-status-advocacy']
         unless @penpal.is_advocacy

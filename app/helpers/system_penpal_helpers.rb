@@ -109,6 +109,13 @@ module ReConnect::Helpers::SystemPenpalHelpers
           data[:display_fields] << [t(:'prison'), '(unknown)']
         end
       end
+
+      # expected release date
+      release_date = pp.decrypt(:expected_release_date)&.strip&.downcase
+      data[:release_date] = Chronic.parse(release_date, :guess => true)
+      if data[:release_date]
+        data[:display_fields] << [t(:'release_date'), data[:release_date].strftime("%Y-%m-%d")]
+      end
     end
 
     data

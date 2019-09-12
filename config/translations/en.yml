@@ -48,6 +48,7 @@
 :'correspondence_guide_sent': "Correspondence guide sent?"
 :'penpal_intro': "Penpal introduction"
 :'send_correspondence': "Send correspondence"
+:'release_date': "Expected release date"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."

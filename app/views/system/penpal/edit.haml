@@ -55,6 +55,9 @@
       - prisons.each do |p|
         %option{:value => p[:id], :selected => pp_data.key?(:prison) ? pp_data[:prison][:id] == p[:id] : false}= p[:name]
 
+    %label{:for => "edit_release_date"}= t(:'release_date')
+    %input#edit_release_date{:type => 'date', :name => 'release_date', :required => false, :value => pp_data[:release_date]&.strftime("%Y-%m-%d")}
+
     %label{:for => "edit_intro"}= t(:'penpal_intro')
     %textarea#edit_intro.rich-editor{:name => "intro"}
       &= intro
