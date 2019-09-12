@@ -4,14 +4,35 @@
   .form-wrapped
     %h1= t(:'system/penpal/relationship/correspondence/create/confirm/section_title')
 
+    %p
+      - if direction == '1to2'
+        = t(:'system/penpal/relationship/correspondence/create/confirm/direction',
+          :one_name => penpal_one_name,
+          :one_pseudonym => penpal_one_pseudonym,
+          :two_name => penpal_two_name,
+          :two_pseudonym => penpal_two_pseudonym)
+
+      - else
+        = t(:'system/penpal/relationship/correspondence/create/confirm/direction',
+          :one_name => penpal_two_name,
+          :one_pseudonym => penpal_two_pseudonym,
+          :two_name => penpal_one_name,
+          :two_pseudonym => penpal_one_pseudonym)
+
+    - if archive_mode
+      %p
+        = t(:'system/penpal/relationship/correspondence/create/confirm/archive_mode_date', :date => ul_date.strftime("%Y-%m-%d"))
+
     %iframe#email_preview.rich-text-container{:src => rendered, :style => 'height:400px;max-height:100%'}
 
     .y-margin-large= ""
 
     %form{:method => 'POST'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'archive', :value => archive_mode ? 1 : 0}
       %input{:type => 'hidden', :name => 'direction', :value => direction}
       %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'date', :value => ul_date.strftime("%Y-%m-%d")}
       %input{:type => 'hidden', :name => 'force-compose', :value => '1'}
       %button.pure-button.button{:type => 'submit'}
         %i.fa.fa-chevron-left
@@ -19,8 +40,10 @@
 
     %form{:method => 'POST'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'archive', :value => archive_mode ? 1 : 0}
       %input{:type => 'hidden', :name => 'direction', :value => direction}
       %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'date', :value => ul_date.strftime("%Y-%m-%d")}
       %input{:type => 'hidden', :name => 'confirm', :value => '1'}
       %button.pure-button.button.button-primary{:type => 'submit'}
         %i.fa.fa-envelope

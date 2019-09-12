@@ -5,9 +5,21 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
-  %a.pure-button.button.button-primary{:href => "/system/penpal/relationship/#{relationship.id}/correspondence/create"}
+  %a.pure-button.button.button-primary{:href => "/system/penpal/relationship/#{relationship.id}/correspondence/create?archive=#{archive_mode ? 1 : 0}"}
     %i.fa.fa-folder-open
     = t(:'system/penpal/relationship/correspondence/create/to_file')
+
+  %a.pure-button.button{:href => url("/system/penpal/relationship/#{relationship.id}/correspondence/create/text?archive=#{archive_mode ? 0 : 1}")}
+    %i.fa.fa-book
+    - if archive_mode
+      = t(:'system/penpal/relationship/correspondence/create/archive_mode/disable')
+    - else
+      = t(:'system/penpal/relationship/correspondence/create/archive_mode/enable')
+
+  - if archive_mode
+    .message.message-warning
+      = t(:'system/penpal/relationship/correspondence/create/archive_mode/warning')
+
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
@@ -19,6 +31,10 @@
         = t(:'system/penpal/relationship/correspondence/create/direction_text', :one_name => penpal_one_name, :two_name => penpal_two_name)
       %option{:value => "2to1"}
         = t(:'system/penpal/relationship/correspondence/create/direction_text', :one_name => penpal_two_name, :two_name => penpal_one_name)
+
+    - if archive_mode
+      %label{:for => 'ul_date'}= t(:'system/penpal/relationship/correspondence/create/date')
+      %input#ul_date{:type => 'date', :name => 'date', :required => true, :value => ul_date&.strftime("%Y-%m-%d")}
 
     %label{:for => "content"}= t(:'penpal/view/correspondence/create/compose/content_label')
     %textarea#content.rich-editor{:name => "content"}

@@ -22,6 +22,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     @penpal_two_name = "(unknown)" if @penpal_two_name.nil? || @penpal_two_name&.strip&.empty?
     @penpal_two_pseudonym = @penpal_two.get_pseudonym
 
+    @archive_mode = request.params['archive']&.strip&.downcase == '1'
+
     @title = t(:'system/penpal/relationship/correspondence/create/title', {
       :one_name => @penpal_one_name,
       :one_pseudonym => @penpal_one_pseudonym,
@@ -40,6 +42,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
           :penpal_two => @penpal_two,
           :penpal_two_name => @penpal_two_name,
           :penpal_two_pseudonym => @penpal_two_pseudonym,
+          :archive_mode => @archive_mode,
+          :ul_date => @archive_mode ? Chronic.parse(request.params['date']&.strip&.downcase) || nil : nil,
         })
       end
     end
@@ -53,7 +57,16 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
 
     unless params[:file]
       flash :error, t(:'system/penpal/relationship/correspondence/create/errors/no_file')
-      return redirect to("/system/penpal/relationship/#{rid}/correspondence/create")
+      return redirect to request.path
+    end
+
+    ul_date = Time.now
+    if @archive_mode
+      ul_date = Chronic.parse(request.params["date"]&.strip&.downcase)
+      unless ul_date
+        flash :error, t(:'system/penpal/relationship/correspondence/create/errors/archive_mode_no_date')
+        return redirect to request.path
+      end
     end
 
     # upload the file
@@ -80,12 +93,12 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       obj.save
     rescue => e
       flash :error, t(:'system/penpal/relationship/correspondence/create/errors/upload_failed')
-      return redirect to("/system/penpal/relationship/#{rid}/correspondence/create")
+      return redirect to request.path
     end
 
     # create the correspondence
     c = ReConnect::Models::Correspondence.new
-    c.creation = Time.now
+    c.creation = ul_date
     c.creating_user = current_user.id
     c.file_id = obj.file_id
 
@@ -108,8 +121,13 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       c.sent = "to_outside"
     end
 
+    if @archive_mode
+      c.sent = "archive"
+      c.actioning_user = current_user.id
+    end
+
     c.save
-    c.send!
+    c.send! unless @archive_mode
 
     flash :success, t(:'system/penpal/relationship/correspondence/create/success', :id => c.id)
     return redirect to("/system/penpal/relationship/#{@relationship.id}/correspondence/#{c.id}")
@@ -135,6 +153,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     @content = request.params['content']&.strip
     @content = nil if @content&.empty?
 
+    @archive_mode = request.params['archive']&.strip&.downcase == '1'
+
     @title = t(:'system/penpal/relationship/correspondence/create/title', {
       :one_name => @penpal_one_name,
       :one_pseudonym => @penpal_one_pseudonym,
@@ -153,7 +173,9 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
           :penpal_two => @penpal_two,
           :penpal_two_name => @penpal_two_name,
           :penpal_two_pseudonym => @penpal_two_pseudonym,
+          :archive_mode => @archive_mode,
           :content => @content,
+          :ul_date => @archive_mode ? Chronic.parse(request.params['date']&.strip&.downcase) || nil : nil,
         })
       end
     end
@@ -162,12 +184,21 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     direction = request.params["direction"]&.strip&.downcase
     if direction.nil? || direction.empty?
       flash :error, t(:'required_field_missing')
-      return redirect to("/system/penpal/relationship/#{rid}/correspondence/create")
+      return redirect to request.path
+    end
+
+    ul_date = Time.now
+    if @archive_mode
+      ul_date = Chronic.parse(request.params["date"]&.strip&.downcase)
+      unless ul_date
+        flash :error, t(:'system/penpal/relationship/correspondence/create/errors/archive_mode_no_date')
+        return redirect to request.path
+      end
     end
 
     if @content.nil? || @content.empty?
       flash :error, t(:'system/penpal/relationship/correspondence/create/errors/no_text')
-      return redirect to("/system/penpal/relationship/#{@relationship.id}/correspondence/create")
+      return redirect to request.path
     end
 
     # Do a sanitize run
@@ -191,6 +222,8 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
           :direction => direction,
           :content => @content,
           :rendered => @rendered,
+          :archive_mode => @archive_mode,
+          :ul_date => ul_date,
         })
       end
     end
@@ -202,7 +235,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
 
     # create the correspondence
     c = ReConnect::Models::Correspondence.new
-    c.creation = Time.now
+    c.creation = ul_date
     c.creating_user = current_user.id
     c.file_id = obj.file_id
 
@@ -225,8 +258,13 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       c.sent = "to_outside"
     end
 
+    if @archive_mode
+      c.sent = "archive"
+      c.actioning_user = current_user.id
+    end
+
     c.save
-    c.send!
+    c.send! unless @archive_mode
 
     flash :success, t(:'system/penpal/relationship/correspondence/create/success', :id => c.id)
     return redirect to("/system/penpal/relationship/#{@relationship.id}/correspondence/#{c.id}")

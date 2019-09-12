@@ -62,6 +62,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
   end
 
   def send!
+    return if self.sent == "archive"
+
     penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
     penpal_receiving = ReConnect::Models::Penpal[self.receiving_penpal]
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
@@ -83,6 +85,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
   end
 
   def send_alert!
+    return if self.sent == "archive"
+
     penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
     penpal_sending_name = penpal_sending.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
     penpal_sending_name = "(unknown)" if penpal_sending_name.nil? || penpal_sending_name&.strip&.empty?
@@ -156,6 +160,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
   end
 
   def send_email_to_prison!(force = false)
+    return if self.sent == "archive"
+
     penpal_sending = ReConnect::Models::Penpal[self.sending_penpal]
     penpal_receiving = ReConnect::Models::Penpal[self.receiving_penpal]
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
