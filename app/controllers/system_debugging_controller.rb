@@ -4,6 +4,7 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
   add_route :post, "/email", :method => :test_email
   add_route :post, "/filter-refresh", :method => :filter_refresh
   add_route :get, "/routes", :method => :routes
+  add_route :post, "/error-pls", :method => :error_pls
 
   def index
     return halt 404 unless logged_in?
@@ -95,5 +96,12 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
     flash :success, t(:'system/debugging/filter_refresh/success')
 
     return redirect back
+  end
+
+  def error_pls
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:debugging")
+
+    raise "This is a test exception!"
   end
 end
