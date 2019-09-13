@@ -11,8 +11,14 @@
 
     %label{:for => 'type'}= t(:'system/configuration/key_value/edit_key/type')
     %select#type{:name => 'type', :required => true}
-      %option{:value => 'bool', :selected => (type == "bool")} bool
-      %option{:value => 'text', :selected => (type == "text")} text
+      %option{:value => 'bool', :selected => (type == "bool")}
+        = t(:'system/configuration/key_value/edit_key/type/bool')
+      %option{:value => 'text', :selected => (type == "text")}
+        = t(:'system/configuration/key_value/edit_key/type/text')
+      %option{:value => 'number', :selected => (type == "number")}
+        = t(:'system/configuration/key_value/edit_key/type/number')
+      %option{:value => 'json', :selected => (type == "json")}
+        = t(:'system/configuration/key_value/edit_key/type/json')
 
     %label{:for => 'value'}= t(:'system/configuration/key_value/edit_key/value')
     %input#value{:name => 'value', :required => true, :value => value}

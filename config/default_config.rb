@@ -51,11 +51,11 @@ module ReConnect
       :default => true,
     },
     "filter-words" => {
-      :type => :text,
+      :type => :json,
       :default => '[]',
     },
     "penpal-statuses" => {
-      :type => :text,
+      :type => :json,
       :default => '["Application pending", "Active", "Unknown"]',
     },
     "penpal-status-default" => {
@@ -63,7 +63,7 @@ module ReConnect
       :default => "Unknown",
     },
     "penpal-status-transitions" => {
-      :type => :text,
+      :type => :json,
       :default => '[]',
     },
     "penpal-status-advocacy" => {
@@ -71,7 +71,7 @@ module ReConnect
       :default => '',
     },
     "site-alert-emails" => {
-      :type => :text,
+      :type => :json,
       :default => '{"email": null, "alerts": ["*"]}',
     },
     "allow-outside-file-upload" => {
@@ -79,8 +79,8 @@ module ReConnect
       :default => false,
     },
     "admin-profile-id" => {
-      :type => :text,
-      :default => "",
+      :type => :number,
+      :default => 0,
     }
   }
 

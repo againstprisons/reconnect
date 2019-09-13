@@ -58,7 +58,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     end
 
     type = request.params["type"]&.strip&.downcase
-    unless %w[bool text].include?(type)
+    unless %w[bool text number json].include?(type)
       flash :error, t(:'system/configuration/key_value/edit_key/type/invalid')
       return redirect request.path
     end

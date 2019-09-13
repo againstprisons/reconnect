@@ -148,24 +148,28 @@ module ReConnect
       cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
         a.type = desc[:type].to_s
 
-        a.value = desc[:default]
+        a.value = desc[:default].to_s
         if desc[:type] == :bool && !desc[:default].is_a?(String)
           a.value = (desc[:default] ? 'yes' : 'no')
         end
       end
 
+      # correct configuration entry types
+      if cfg.type != desc[:type].to_s
+        cfg.type = desc[:type].to_s
+        cfg.save
+      end
+
       @app_config[key] = cfg.value.force_encoding(Encoding::UTF_8)
       @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
       @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
+      @app_config[key] = cfg.value.to_i if desc[:type] == :number
+      self.app_config_refresh_json(key) if desc[:type] == :json
 
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
-      self.app_config_refresh_json(key) if key == 'filter-words'
-      self.app_config_refresh_json(key) if key == 'penpal-statuses'
       self.app_config_refresh_nil_if_empty(key) if key == 'penpal-status-advocacy'
-      self.app_config_refresh_json(key) if key == 'penpal-status-transitions'
       self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
-      self.app_config_refresh_json(key) if key == 'site-alert-emails'
     end
 
     @app_config_refresh_pending.clear
