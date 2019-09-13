@@ -1,0 +1,15 @@
+.pure-g
+  .pure-u-1.pure-u-md-1-4= ""
+  .pure-u-1.pure-u-md-1-2
+    .im-a-teapot-splash.form-wrapped.xy-margin
+      %h1= title
+
+      %p.center
+        = t(:'errors/im_a_teapot/content')
+
+      %p.center
+        %a.pure-button.button.button-primary{:href => url("/")}
+          = t(:'errors/im_a_teapot/back_to_home')
+
+      %p.center
+        %img{:src => 'https://http.cat/418', :style => 'display:block;max-width:100%;margin:1em auto'}

@@ -28,8 +28,15 @@ class ReConnect::Application < Sinatra::Base
   end
 
   not_found do
-    haml :'errors/not_found', :locals => {
+    haml :'errors/not_found', :layout => :layout_minimal, :locals => {
       :title => t(:'errors/not_found/title'),
+      :no_flash => true,
+    }
+  end
+
+  error 418 do
+    haml :'errors/im_a_teapot', :layout => :layout_minimal, :locals => {
+      :title => t(:'errors/im_a_teapot/title'),
       :no_flash => true,
     }
   end

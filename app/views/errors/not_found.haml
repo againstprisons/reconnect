@@ -1,3 +1,22 @@
-%h1= title
-%p
-  = t :'errors/not_found/content'
+.pure-g
+  .pure-u-1.pure-u-md-1-4= ""
+  .pure-u-1.pure-u-md-1-2
+    .not-found-splash.form-wrapped.xy-margin
+      %h1= title
+      %p.center
+        = t(:'errors/not_found/content')
+
+      - if logged_in?
+        %p.center
+          %a.pure-button.button.button-primary{:href => url("/")}
+            = t(:'errors/not_found/back_to_home')
+
+      - else
+        %p.center
+          = t(:'errors/not_found/not_logged_in')
+
+        %p.center
+          - login_url = Addressable::URI.parse(url("/auth"))
+          - login_url.query_values = {"next" => url(request.path)}
+          %a.pure-button.button.button-primary{:href => login_url.to_s}
+            = t(:'auth/login/title')
