@@ -585,6 +585,10 @@
 :'system/configuration/filter/words/warnings/no_config_entry': "Warning: The configuration entry <code>filter-words</code> does not exist, using an empty list."
 :'system/configuration/filter/words/warnings/unable_to_parse': "Warning: The system was unable to parse the configuration entry <code>filter-words</code>, using an empty list."
 :'system/configuration/filter/words/warnings/unknown_error': "Warning: An unknown error occurred while parsing the configuration entry <code>filter-words</code>, using an empty list."
+:'system/configuration/create_admin_penpal/title': "Create administration profile"
+:'system/configuration/create_admin_penpal/content': "An administration profile does not yet exist within the system. Clicking the button below will create a new penpal for the administration profile, configure the application to use the administration profile, create relationships between every incarcerated penpal and the administration profile, and finally reload the configuration (which, if the application is running with multiple workers, will start a phased restart). Once this process has started, it may take a while for all the relationships with each incarcerated penpal to appear. You should only perform this action with confirmation from your system administrator."
+:'system/configuration/create_admin_penpal/submit': "Create administration profile now"
+:'system/configuration/create_admin_penpal/success': "The administration profile has been created. The relationships between this administration profile and all of the incarcerated penpals in the system may take some time to appear."
 
 # Debugging
 :'system/debugging/title': "Debugging"
