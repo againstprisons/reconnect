@@ -65,6 +65,8 @@
 :'errors/im_a_teapot/title': "I'm a teapot!"
 :'errors/im_a_teapot/content': "You're seeing this error because you somehow found your way to a disabled area of <%= site_name %>. Please use your browser's back button to return to where you were, or click the button below to return to the home page."
 :'errors/im_a_teapot/back_to_home': "Return to the home page"
+:'errors/internal_server_error/title': "Internal server error"
+:'errors/internal_server_error/content': "Something went wrong while processing your request. Please contact the site administrator and tell them about this, including what you were trying to do that lead you to this error."
 
 # Maintenance
 :'maintenance/warning': "Maintenance mode is enabled!"

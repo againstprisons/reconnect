@@ -34,6 +34,13 @@ class ReConnect::Application < Sinatra::Base
     }
   end
 
+  error do
+    haml :'errors/internal_server_error', :layout => :layout_minimal, :locals => {
+      :title => t(:'errors/internal_server_error/title'),
+      :no_flash => true,
+    }
+  end
+
   error 418 do
     haml :'errors/im_a_teapot', :layout => :layout_minimal, :locals => {
       :title => t(:'errors/im_a_teapot/title'),
