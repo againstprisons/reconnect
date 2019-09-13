@@ -10,6 +10,10 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/view/penpal_info')
 
+        - if is_admin_profile
+          .message.message-success
+            = t(:'system/penpal/view/penpal_info/is_admin_profile')
+
         %ul
           - display_fields.each do |d|
             %li
@@ -91,10 +95,10 @@
             %i.fa.fa-pencil
             = t(:'system/penpal/actions/edit')
 
-          - if has_role?("system:email")
-            %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
-              %i.fa.fa-envelope
-              = t(:'system/penpal/actions/send-email')
+        - if penpal.is_incarcerated && has_role?("system:email")
+          %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
+            %i.fa.fa-envelope
+            = t(:'system/penpal/actions/send-email')
 
         - if has_role?("system:user:access")
           - if user

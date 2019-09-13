@@ -307,6 +307,7 @@
 :'system/penpal/address_book/totals/section_title': "Total penpal count by status"
 :'system/penpal/view/title': "Viewing penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
 :'system/penpal/view/penpal_info': "Penpal info"
+:'system/penpal/view/penpal_info/is_admin_profile': "This penpal is set as the administration profile for <%= org_name %>."
 :'system/penpal/view/notes/section_title': "Notes on this penpal"
 :'system/penpal/view/notes/submit': "Save notes"
 :'system/penpal/view/notes/success': "Saved notes for this penpal."

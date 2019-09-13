@@ -1,0 +1,15 @@
+Hello,
+
+New correspondence directed to the administrator profile on
+<%= site_name %> has been uploaded.
+
+This correspondence has been received from:
+
+<%= penpal_sending[:name][:joined] %>
+<% if penpal_sending[:name][:pseudonym] %>(<%= penpal_sending[:name][:pseudonym] %>)<% end %>
+(ID <%= penpal_sending[:id] %>)
+
+To view this correspondence, open the following link in your browser:
+<%= link_to_correspondence %>
+
+This is an automated email from <%= site_name %>.

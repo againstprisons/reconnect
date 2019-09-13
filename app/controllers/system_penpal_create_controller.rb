@@ -69,6 +69,28 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
       end
     end
 
+    admin_pid = ReConnect.app_config['admin-profile-id']&.to_i
+    if !admin_pid.nil? && !admin_pid.zero?
+      admin_profile = ReConnect::Models::Penpal[admin_pid]
+      if admin_profile
+        relationship_message = (
+          "This relationship was created automatically on creation of this " +
+          "incarcerated penpal, at #{Time.now.strftime("%Y-%m-%d %H:%M:%S")}."
+        )
+
+        r = ReConnect::Models::PenpalRelationship.new({
+          :penpal_one => admin_pid,
+          :penpal_two => @penpal.id,
+          :email_approved => true,
+          :email_approved_by_id => nil,
+        })
+
+        r.save # to get ID
+        r.encrypt(:notes, relationship_message)
+        r.save
+      end
+    end
+
     @penpal.save
 
     ReConnect::Models::PenpalFilter.create_filters_for(@penpal)

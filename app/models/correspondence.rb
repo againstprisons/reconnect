@@ -2,6 +2,7 @@ require 'reverse_markdown'
 
 class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
   include ReConnect::Helpers::EmailTemplateHelpers
+  include ReConnect::Helpers::SiteAlertHelpers
 
   def self.find_for_relationship(relationship)
     [
@@ -101,6 +102,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(penpal_sending, penpal_receiving)
     return unless relationship
 
+    subject = "New correspondence" # TODO: translation
+
     if penpal_receiving.is_incarcerated
       template = "correspondence_to_incarcerated"
 
@@ -114,20 +117,36 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
         ]
       })
     else
-      user_receiving = ReConnect::Models::User[penpal_receiving.user_id]
-      return unless user_receiving
+      if penpal_receiving.id == ReConnect.app_config['admin-profile-id'].to_i
+        return unless should_send_alert_email('admin_correspondence')
+        template = "correspondence_to_admin"
+        subject = "New administrator correspondence"
 
-      template = "correspondence_to_user"
+        url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+        url += "/system/penpal/relationship/#{relationship.id}/correspondence/#{self.id}"
 
-      url = Addressable::URI.parse(ReConnect.app_config["base-url"])
-      url += "/penpal/#{penpal_sending.id}/correspondence/#{self.id}"
+        recipients = JSON.dump({
+          "mode" => "list",
+          "list" => [
+            ReConnect.app_config['site-alert-emails']['email'],
+          ]
+        })
+      else
+        user_receiving = ReConnect::Models::User[penpal_receiving.user_id]
+        return unless user_receiving
 
-      recipients = JSON.dump({
-        "mode" => "list",
-        "list" => [
-          user_receiving.email,
-        ]
-      })
+        template = "correspondence_to_user"
+
+        url = Addressable::URI.parse(ReConnect.app_config["base-url"])
+        url += "/penpal/#{penpal_sending.id}/correspondence/#{self.id}"
+
+        recipients = JSON.dump({
+          "mode" => "list",
+          "list" => [
+            user_receiving.email,
+          ]
+        })
+      end
     end
 
     data = {
@@ -154,7 +173,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
 
     email = ReConnect::Models::EmailQueue.new_from_template(template, data)
     email.queue_status = "queued"
-    email.encrypt(:subject, "New correspondence") # TODO: translation
+    email.encrypt(:subject, subject)
     email.encrypt(:recipients, recipients)
     email.save
   end

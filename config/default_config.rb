@@ -78,6 +78,10 @@ module ReConnect
       :type => :bool,
       :default => false,
     },
+    "admin-profile-id" => {
+      :type => :text,
+      :default => "",
+    }
   }
 
   class Application

@@ -59,6 +59,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :relationships => @relationships,
         :copied_link => @copied_link,
         :intro => @intro,
+        :is_admin_profile => @penpal.id == ReConnect.app_config['admin-profile-id']&.to_i,
       })
     end
   end

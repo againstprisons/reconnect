@@ -1,0 +1,22 @@
+<p>Hello,</p>
+
+<p>New correspondence directed to the administrator profile on <%= site_name %> has been uploaded.</p>
+
+<p>
+  This correspondence has been received from:
+
+  <strong><%= penpal_sending[:name][:joined] %></strong>
+  <% if penpal_sending[:name][:pseudonym] %>(<em><%= penpal_sending[:name][:pseudonym] %></em>)<% end %>
+  (ID <%= penpal_sending[:id] %>)
+</p>
+
+<%= helpers.button[link_to_correspondence, "View new correspondence"] %>
+
+<p>
+  If the above link does not work, copy and paste the following link into your
+  browser:
+
+  <a href="<%= link_to_correspondence %>"><%= link_to_correspondence %></a>
+</p>
+
+<p>This is an automated email from <%= site_name %>.</p>
