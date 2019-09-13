@@ -8,6 +8,9 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
 
   def index
     return redirect "/" if logged_in?
+    if !request.params["next"].nil?
+      session[:after_login] = request.params["next"]
+    end
 
     @title = t(:'auth/login/title')
 
