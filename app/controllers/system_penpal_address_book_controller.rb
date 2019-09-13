@@ -17,6 +17,9 @@ class ReConnect::Controllers::SystemPenpalAddressBookController < ReConnect::Con
         other_party = ReConnect::Models::Penpal[other_party]
         next nil unless other_party
 
+        # ignore administration profile
+        next nil if other_party.id == ReConnect.app_config['admin-profile-id']&.to_i
+
         other_party_name = other_party.get_name
         other_party_name = other_party_name.map{|x| x == "" ? nil : x}.compact.join(" ")
         other_party_pseudonym = other_party.get_pseudonym
