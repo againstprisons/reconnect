@@ -294,6 +294,7 @@
 :'system/penpal/create/submit': "Create penpal"
 :'system/penpal/create/success': "Successfully created a new penpal."
 :'system/penpal/actions': "Actions for this penpal"
+:'system/penpal/actions/admin_profile_some_unavailable': "Some actions for this penpal are unavailable as this penpal is set as the administration profile."
 :'system/penpal/actions/edit': "Edit penpal information"
 :'system/penpal/actions/send-email': "Send email to outside penpals of this penpal"
 :'system/penpal/actions/jump_to_user': "Jump to associated user"

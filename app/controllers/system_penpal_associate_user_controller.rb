@@ -9,6 +9,7 @@ class ReConnect::Controllers::SystemPenpalAssociateUserController < ReConnect::C
 
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
+    return halt 418 if @penpal.id == ReConnect.app_config['admin-profile-id']&.to_i
     @penpal_name_a = @penpal.get_name
     @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
 

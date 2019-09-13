@@ -70,6 +70,8 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
     @penpal = ReConnect::Models::Penpal[uid.to_i]
     return halt 404 unless @penpal
+    return halt 418 if @penpal.id == ReConnect.app_config['admin-profile-id']&.to_i
+
     @name = @penpal.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
 
     session[:copied_penpal_id] = @penpal.id

@@ -84,45 +84,51 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/actions')
 
-        %form{:method => 'POST', :action => "/system/penpal/#{penpal.id}/copy-link"}
-          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-          %button.pure-button.button.button-primary{:type => 'submit'}
-            %i.fa.fa-clipboard
-            = t(:'system/penpal/actions/copy_link')
+        - if is_admin_profile
+          .message.message-warning
+            = t(:'system/penpal/actions/admin_profile_some_unavailable')
+
+        - if !is_admin_profile
+          %form{:method => 'POST', :action => "/system/penpal/#{penpal.id}/copy-link"}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+            %button.pure-button.button.button-primary{:type => 'submit'}
+              %i.fa.fa-clipboard
+              = t(:'system/penpal/actions/copy_link')
 
         - unless user
           %a.pure-button.button.button-primary{:href => "/system/penpal/#{penpal.id}/edit"}
             %i.fa.fa-pencil
             = t(:'system/penpal/actions/edit')
 
-        - if penpal.is_incarcerated && has_role?("system:email")
-          %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
-            %i.fa.fa-envelope
-            = t(:'system/penpal/actions/send-email')
+        - if !is_admin_profile
+          - if penpal.is_incarcerated && has_role?("system:email")
+            %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
+              %i.fa.fa-envelope
+              = t(:'system/penpal/actions/send-email')
 
-        - if has_role?("system:user:access")
-          - if user
-            %a.pure-button.button{:href => "/system/user/#{user.id}"}
-              %i.fa.fa-user
-              = t(:'system/penpal/actions/jump_to_user')
+          - if has_role?("system:user:access")
+            - if user
+              %a.pure-button.button{:href => "/system/user/#{user.id}"}
+                %i.fa.fa-user
+                = t(:'system/penpal/actions/jump_to_user')
 
-            %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/associate"}
-              %i.fa.fa-chain-broken
-              = t(:'system/penpal/actions/user_association_remove')
+              %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/associate"}
+                %i.fa.fa-chain-broken
+                = t(:'system/penpal/actions/user_association_remove')
 
-          - else
-            %a.pure-button.button{:href => "#", :disabled => true}
-              %i.fa.fa-user
-              = t(:'system/penpal/actions/jump_to_user/no_associated')
+            - else
+              %a.pure-button.button{:href => "#", :disabled => true}
+                %i.fa.fa-user
+                = t(:'system/penpal/actions/jump_to_user/no_associated')
 
-            %a.pure-button.button.button-success{:href => "/system/penpal/#{penpal.id}/associate"}
-              %i.fa.fa-chain
-              = t(:'system/penpal/actions/user_association_add')
+              %a.pure-button.button.button-success{:href => "/system/penpal/#{penpal.id}/associate"}
+                %i.fa.fa-chain
+                = t(:'system/penpal/actions/user_association_add')
 
-        - if has_role?("system:penpal:delete")
-          %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/delete"}
-            %i.fa.fa-trash
-            = t(:'system/penpal/actions/delete')
+          - if has_role?("system:penpal:delete")
+            %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/delete"}
+              %i.fa.fa-trash
+              = t(:'system/penpal/actions/delete')
 
     .pure-u-1
       - if !intro.strip.empty?
