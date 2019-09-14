@@ -162,6 +162,9 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     admin_penpal.correspondence_guide_sent = false
     admin_penpal.save
 
+    # create filters
+    ReConnect::Models::PenpalFilter.create_filters_for(admin_penpal)
+
     # save profile id to config
     cfg = ReConnect::Models::Config.where(:key => 'admin-profile-id').first
     unless cfg
