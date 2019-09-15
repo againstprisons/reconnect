@@ -210,6 +210,8 @@
 :'system/index/duplicates/section_title': "Duplicate prisoner numbers"
 :'system/index/duplicates/scan_time': "Scans for duplicate prisoner numbers occur every 10 minutes."
 :'system/index/duplicates/none': "There are no penpals with duplicate prisoner numbers, as of the last scan."
+:'system/index/admin_profile/section_title': "Administration profile"
+:'system/index/admin_profile/link': "Go to administration profile (<%= name %>)"
 
 # System user info
 :'system/user/title': "User info"

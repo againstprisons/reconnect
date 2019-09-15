@@ -22,6 +22,15 @@
       %p
         = t(:'system/index/to_action/none')
 
+  - if admin_profile
+    .form-wrapped
+      %h1= t(:'system/index/admin_profile/section_title')
+
+      %a.pure-button.button.button-primary{:href => url("/system/penpal/#{admin_profile[:id]}")}
+        %i.fa.fa-user= ""
+        = t(:'system/index/admin_profile/link', :name => admin_profile[:name])
+
+
   .form-wrapped
     %h1= t(:'system/index/duplicates/section_title')
 

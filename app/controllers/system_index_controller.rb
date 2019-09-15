@@ -35,14 +35,31 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
       }
     end
 
+    admin_pid = ReConnect.app_config['admin-profile-id']&.to_i
+    @admin_profile = ReConnect::Models::Penpal[admin_pid]
+    @admin_profile_d = nil
+    if @admin_profile
+      @admin_profile_d = {
+        :id => @admin_profile.id,
+        :name => @admin_profile.get_name.map{|x| x == "" ? nil : x}.compact.join(" "),
+      }
+    end
+
+    @relationship_count = ReConnect::Models::PenpalRelationship.count
+    if @admin_profile
+      @relationship_count -= ReConnect::Models::PenpalRelationship.where(:penpal_one => @admin_profile.id).count
+      @relationship_count -= ReConnect::Models::PenpalRelationship.where(:penpal_two => @admin_profile.id).count
+    end
+
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/index', :layout => false, :locals => {
         :title => @title,
         :to_action => @to_action,
         :duplicates => @duplicates,
+        :admin_profile => @admin_profile_d,
         :counts => {
           :penpals => ReConnect::Models::Penpal.count,
-          :relationships => ReConnect::Models::PenpalRelationship.count,
+          :relationships => @relationship_count,
           :correspondence => ReConnect::Models::Correspondence.count,
         },
       })
