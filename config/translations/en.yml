@@ -202,7 +202,7 @@
 # System settings
 :'system/title': "System admin"
 :'system/index/title': "System admin home"
-:'system/index/stats': "Currently, there are <%= counts[:penpals] %> penpals, with <%= counts[:relationships] %> penpal relationships, and <%= counts[:correspondence] %> correspondence entries."
+:'system/index/stats': "Currently, there are <%= counts[:penpals] %> penpals, with <%= counts[:relationships] %> penpal relationships (excluding administration profile relationships), and <%= counts[:correspondence] %> correspondence entries."
 :'system/index/to_action/section_title': "Correspondence requiring admin attention"
 :'system/index/to_action/none': "There is no new correspondence that requires admin attention!"
 :'system/index/to_action/item/text': "<%= date.strftime('%Y-%m-%d %H:%M:%S') %>: From <%= from %> to <%= to %>"
@@ -211,6 +211,9 @@
 :'system/index/duplicates/scan_time': "Scans for duplicate prisoner numbers occur every 10 minutes."
 :'system/index/duplicates/none': "There are no penpals with duplicate prisoner numbers, as of the last scan."
 :'system/index/admin_profile/section_title': "Administration profile"
+:'system/index/admin_profile/to_action/none': "There is no unread correspondence for the administration profile."
+:'system/index/admin_profile/to_action/item/view': "View"
+:'system/index/admin_profile/to_action/item/text': "<%= date.strftime('%Y-%m-%d %H:%M:%S') %>: From <%= from %>"
 :'system/index/admin_profile/link': "Go to administration profile (<%= name %>)"
 
 # System user info
@@ -417,6 +420,10 @@
 :'system/penpal/relationship/correspondence/view/sent/via_post': "Sent via post <% if name %>(by <%= name %>)<% end %>"
 :'system/penpal/relationship/correspondence/view/sent/via_email': "Sent via email <% if name %>(by <%= name %>)<% else %>(automatic)<% end %>"
 :'system/penpal/relationship/correspondence/view/actions': "Actions"
+:'system/penpal/relationship/correspondence/view/actions/mark/as_unread': "Mark as unread"
+:'system/penpal/relationship/correspondence/view/actions/mark/as_unread/success': "Successfully marked as unread."
+:'system/penpal/relationship/correspondence/view/actions/mark/as_read': "Mark as read"
+:'system/penpal/relationship/correspondence/view/actions/mark/as_read/success': "Successfully marked as read."
 :'system/penpal/relationship/correspondence/view/actions/send/already_sent': "Correspondence already sent to penpal"
 :'system/penpal/relationship/correspondence/view/actions/send/via_post': "Mark as sent via post"
 :'system/penpal/relationship/correspondence/view/actions/send/via_post/success': "This correspondence has been marked as sent via post."

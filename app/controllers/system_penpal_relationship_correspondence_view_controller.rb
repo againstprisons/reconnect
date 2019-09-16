@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
   include ReConnect::Helpers::SystemPenpalHelpers
 
   add_route :get, "/"
+  add_route :post, "/mark", :method => :mark
   add_route :post, "/send", :method => :send_form
   add_route :get, "/download", :method => :download
   add_route :get, "/delete", :method => :delete
@@ -20,6 +21,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
     @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
     @penpal_two_name = @penpal_two.get_name
     @penpal_two_pseudonym = @penpal_two.get_pseudonym
+    @admin_profile = ReConnect::Models::Penpal[ReConnect.app_config['admin-profile-id']&.to_i]
 
     @correspondence = ReConnect::Models::Correspondence[cid.to_i]
     return halt 404 unless @correspondence
@@ -27,6 +29,11 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
     return halt 404 unless @correspondence.sending_penpal == @penpal_two.id || @correspondence.receiving_penpal == @penpal_two.id
 
     @correspondence_d = [@correspondence].map{|x| x.get_data}.first
+
+    @is_to_admin_profile = false
+    if @admin_profile && @correspondence.receiving_penpal == @admin_profile.id
+      @is_to_admin_profile = true
+    end
 
     @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
     return halt 404 unless @file
@@ -36,6 +43,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
       :html_content => @file.mime_type == 'text/html' ? @file.decrypt_file : nil,
     }
 
+    @mark_form_url = request.path.to_s + "/mark"
     @send_form_url = request.path.to_s + "/send"
     @download_form_url = request.path.to_s + "/download"
     @delete_form_url = request.path.to_s + "/delete"
@@ -50,16 +58,58 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
         :penpal_one_d => penpal_view_data(@penpal_one),
         :penpal_two => @penpal_two,
         :penpal_two_d => penpal_view_data(@penpal_two),
+        :is_to_admin_profile => @is_to_admin_profile,
         :correspondence => @correspondence,
         :correspondence_d => @correspondence_d,
         :file => @file,
         :file_d => @file_d,
+        :mark_form_url => @mark_form_url,
         :send_form_url => @send_form_url,
         :download_form_url => @download_form_url,
         :delete_form_url => @delete_form_url,
       })
     end
   end
+
+  def mark(rid, cid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
+    return halt 404 unless @relationship
+
+    @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
+    @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
+    @admin_profile = ReConnect::Models::Penpal[ReConnect.app_config['admin-profile-id']&.to_i]
+    return halt 418 unless @admin_profile
+
+    @correspondence = ReConnect::Models::Correspondence[cid.to_i]
+    return halt 404 unless @correspondence
+    return halt 404 unless @correspondence.sending_penpal == @penpal_one.id || @correspondence.receiving_penpal == @penpal_one.id
+    return halt 404 unless @correspondence.sending_penpal == @penpal_two.id || @correspondence.receiving_penpal == @penpal_two.id
+
+    @is_to_admin_profile = false
+    if @admin_profile && @correspondence.receiving_penpal == @admin_profile.id
+      @is_to_admin_profile = true
+    end
+
+    # only allow marking if this is directed to the admin profile
+    return halt 418 unless @is_to_admin_profile
+
+    # mark
+    if @correspondence.actioning_user
+      @correspondence.actioning_user = nil
+      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/mark/as_unread/success')
+    else
+      @correspondence.actioning_user = current_user.id
+      flash :success, t(:'system/penpal/relationship/correspondence/view/actions/mark/as_read/success')
+    end
+
+    @correspondence.save
+
+    return redirect url("/system/penpal/relationship/#{@relationship.id}/correspondence/#{@correspondence.id}")
+  end
+
 
   def send_form(rid, cid)
     return halt 404 unless logged_in?

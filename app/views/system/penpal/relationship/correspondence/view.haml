@@ -25,12 +25,21 @@
 
                 - elsif correspondence_d[:sending_method] == "email"
                   = t(:'system/penpal/relationship/correspondence/view/sent/via_email', :name => correspondence_d[:actioning_user_name])
-              - else 
+              - else
                 = t(:'system/penpal/relationship/correspondence/view/sent/no')
 
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationship/correspondence/view/actions')
+
+        - if is_to_admin_profile 
+          %form.pure-form.pure-form-stacked{:method => 'POST', :action => mark_form_url}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+            %button.pure-button.button{:type => 'submit', :class => [correspondence_d[:actioned] || 'button-success']}
+              - if correspondence_d[:actioned]
+                = t(:'system/penpal/relationship/correspondence/view/actions/mark/as_unread')
+              - else
+                = t(:'system/penpal/relationship/correspondence/view/actions/mark/as_read')
 
         - if correspondence_d[:receiving_is_incarcerated]
           - if correspondence_d[:has_been_sent]
@@ -76,6 +85,10 @@
       - if correspondence.file_id
         %a{:href => to("/system/files/#{correspondence.file_id}")}
           %i.fa.fa-link
+
+      &middot;
+
+      &= "is to admin profile #{is_to_admin_profile.inspect}"
 
       &middot;
 

@@ -39,9 +39,15 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
     @admin_profile = ReConnect::Models::Penpal[admin_pid]
     @admin_profile_d = nil
     if @admin_profile
+      to_action = ReConnect::Models::Correspondence
+        .where(:sent => 'to_outside', :receiving_penpal => @admin_profile.id)
+        .map(&:get_data)
+        .reject{|x| x[:actioned]}
+
       @admin_profile_d = {
         :id => @admin_profile.id,
         :name => @admin_profile.get_name.map{|x| x == "" ? nil : x}.compact.join(" "),
+        :to_action => to_action,
       }
     end
 
