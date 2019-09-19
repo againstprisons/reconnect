@@ -42,6 +42,26 @@ namespace :cfg do
       end
     end
   end
+
+  desc "Find configuration key duplicates"
+  task :duplicates do |t|
+    do_setup
+
+    keys = {}
+    ReConnect::Models::Config.all.each do |cfg|
+      keys[cfg.key] ||= []
+      keys[cfg.key] << [cfg.id, cfg.value]
+    end
+
+    keys.each do |key, values|
+      if values.count > 1
+        puts "Key #{key.inspect} has #{values.count} entries:"
+        values.each do |v|
+          puts "\tID #{v.first}: #{v.last.inspect}"
+        end
+      end
+    end
+  end
 end
 
 namespace :release do
