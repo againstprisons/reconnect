@@ -5,9 +5,10 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
-  %a.pure-button.button.button-success{:href => url("/penpal/#{penpal.id}/correspondence/create")}
-    %i.fa.fa-plus
-    = t(:'penpal/view/correspondence/actions/create')
+  - if sending_enabled
+    %a.pure-button.button.button-success{:href => url("/penpal/#{penpal.id}/correspondence/create")}
+      %i.fa.fa-plus
+      = t(:'penpal/view/correspondence/actions/create')
 
   .form-wrapped
     %h1= t(:'penpal/view/correspondence/section_title')

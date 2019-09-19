@@ -17,8 +17,14 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
 
+    @penpal_status = @penpal.decrypt(:status)&.strip
+    @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
+    @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
+    return halt 418 unless @sending_enabled
+
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
+
 
     @title = t(:'penpal/view/correspondence/create/title', :name => @penpal_name)
 
@@ -108,6 +114,11 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
+
+    @penpal_status = @penpal.decrypt(:status)&.strip
+    @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
+    @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
+    return halt 418 unless @sending_enabled
 
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?

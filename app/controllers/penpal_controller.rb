@@ -15,6 +15,9 @@ class ReConnect::Controllers::PenpalController < ReConnect::Controllers::Applica
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
 
+    @penpal_status = @penpal.decrypt(:status)&.strip
+    @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
+    @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
 
@@ -31,6 +34,7 @@ class ReConnect::Controllers::PenpalController < ReConnect::Controllers::Applica
       :penpal_name => @penpal_name,
       :relationship => @relationship,
       :correspondence => @correspondence,
+      :sending_enabled => @sending_enabled,
     }
   end
 end

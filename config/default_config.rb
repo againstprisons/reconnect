@@ -62,6 +62,10 @@ module ReConnect
       :type => :text,
       :default => "Unknown",
     },
+    "penpal-status-disable-sending" => {
+      :type => :json,
+      :default => "[]",
+    },
     "penpal-status-transitions" => {
       :type => :json,
       :default => '[]',
