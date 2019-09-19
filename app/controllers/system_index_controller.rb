@@ -7,7 +7,10 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
 
     @title = t(:'system/title')
     @to_action = ReConnect::Models::Correspondence
-      .where(:sent => 'no')
+      .where({
+        :sent => 'no',
+        :actioning_user => nil,
+      })
       .map(&:get_data)
       .reject{|x| x[:actioned]}
 
@@ -40,7 +43,11 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
     @admin_profile_d = nil
     if @admin_profile
       to_action = ReConnect::Models::Correspondence
-        .where(:sent => 'to_outside', :receiving_penpal => @admin_profile.id)
+        .where({
+          :sent => 'to_outside',
+          :receiving_penpal => @admin_profile.id,
+          :actioning_user => nil,
+        })
         .map(&:get_data)
         .reject{|x| x[:actioned]}
 
