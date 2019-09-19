@@ -20,6 +20,30 @@ namespace :db do
   end
 end
 
+namespace :cfg do
+  desc "Set default values for configuration keys that are not already set"
+  task :defaults do |t|
+    do_setup
+
+    ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
+      cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
+        a.type = desc[:type].to_s
+
+        a.value = desc[:default].to_s
+        if desc[:type] == :bool && !desc[:default].is_a?(String)
+          a.value = (desc[:default] ? 'yes' : 'no')
+        end
+      end
+
+      # correct configuration entry types
+      if cfg.type != desc[:type].to_s
+        cfg.type = desc[:type].to_s
+        cfg.save
+      end
+    end
+  end
+end
+
 namespace :release do
   desc "Change version to given version"
   task :change_version, [:version] do |t, args|

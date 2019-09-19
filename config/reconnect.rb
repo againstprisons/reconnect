@@ -145,25 +145,13 @@ module ReConnect
       next unless force || @app_config_refresh_pending.include?(key)
       keys << key
 
-      cfg = ReConnect::Models::Config.find_or_create(:key => key) do |a|
-        a.type = desc[:type].to_s
+      cfg = ReConnect::Models::Config.where(:key => key).first
+      value = cfg ? cfg.value : desc[:default]
 
-        a.value = desc[:default].to_s
-        if desc[:type] == :bool && !desc[:default].is_a?(String)
-          a.value = (desc[:default] ? 'yes' : 'no')
-        end
-      end
-
-      # correct configuration entry types
-      if cfg.type != desc[:type].to_s
-        cfg.type = desc[:type].to_s
-        cfg.save
-      end
-
-      @app_config[key] = cfg.value.force_encoding(Encoding::UTF_8)
+      @app_config[key] = value.force_encoding(Encoding::UTF_8)
       @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
-      @app_config[key] = (cfg.value == 'yes') if desc[:type] == :bool
-      @app_config[key] = cfg.value.to_i if desc[:type] == :number
+      @app_config[key] = (value == 'yes') if desc[:type] == :bool
+      @app_config[key] = value.to_i if desc[:type] == :number
       self.app_config_refresh_json(key) if desc[:type] == :json
 
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
