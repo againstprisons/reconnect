@@ -24,24 +24,33 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/view/relationships/title')
 
-        - if relationships.empty?
-          = t(:'system/penpal/view/relationships/empty')
+        - if relationships == false
+          %p
+            = t(:'system/penpal/view/relationships/too_many', :count => penpal.relationship_count)
+
+          %p
+            %a.pure-button.button{:href => url("/system/penpal/#{penpal.id}?allrel=1")}
+              = t(:'system/penpal/view/relationships/view_all')
 
         - else
-          %ul.block-list
-            - relationships.each do |r|
-              %li
-                %strong= name
-                and
-                %strong= r[:other_party][:name]
+          - if relationships.empty?
+            = t(:'system/penpal/view/relationships/empty')
 
-                .block-form
-                  %a.block-button.pure-button.button{:href => r[:link]}
-                    %i.fa.fa-link
-                    See relationship
+          - else
+            %ul.block-list
+              - relationships.each do |r|
+                %li
+                  %strong= name
+                  and
+                  %strong= r[:other_party][:name]
 
-                %span.dotted-underline{:title => "rid #{r[:id]}"}
-                  %i.fa.fa-ellipsis-v
+                  .block-form
+                    %a.block-button.pure-button.button{:href => r[:link]}
+                      %i.fa.fa-link
+                      See relationship
+
+                  %span.dotted-underline{:title => "rid #{r[:id]}"}
+                    %i.fa.fa-ellipsis-v
 
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/view/relationships/create/title')

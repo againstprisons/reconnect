@@ -20,18 +20,21 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @notes = @penpal.decrypt(:notes)&.strip
     @intro = @penpal.decrypt(:intro)
 
-    @relationships = @penpal.relationships.map do |r|
-      other_party = r.penpal_one
-      other_party = r.penpal_two if other_party == @penpal.id
-      other_party = ReConnect::Models::Penpal[other_party]
-      next nil unless other_party
+    @relationships = false
+    if @penpal.relationship_count < 20 || request.params['allrel']&.strip&.downcase == '1'
+      @relationships = @penpal.relationships.map do |r|
+        other_party = r.penpal_one
+        other_party = r.penpal_two if other_party == @penpal.id
+        other_party = ReConnect::Models::Penpal[other_party]
+        next nil unless other_party
 
-      {
-        :id => r.id,
-        :link => "/system/penpal/relationship/#{r.id}",
-        :other_party => penpal_view_data(other_party),
-      }
-    end.compact
+        {
+          :id => r.id,
+          :link => "/system/penpal/relationship/#{r.id}",
+          :other_party => penpal_view_data(other_party),
+        }
+      end.compact
+    end
 
     @copied_link = nil
     if session[:copied_penpal_id]
