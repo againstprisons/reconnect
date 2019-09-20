@@ -83,6 +83,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
           :penpal_two => @penpal.id,
           :email_approved => true,
           :email_approved_by_id => nil,
+          :confirmed => true,
         })
 
         r.save # to get ID

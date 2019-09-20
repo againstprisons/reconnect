@@ -51,6 +51,7 @@
 :'send_correspondence': "Send correspondence"
 :'release_date': "Expected release date"
 :'unknown': "(unknown)"
+:'unconfirmed': "(unconfirmed)"
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -83,6 +84,7 @@
 
 # Penpal
 :'penpal/view/title': "Your penpal: <%= name %>"
+:'penpal/view/unconfirmed': "The relationship between you and this penpal has not yet been confirmed by the site administrators."
 :'penpal/view/correspondence/section_title': "Correspondence"
 :'penpal/view/correspondence/link_text/new': "(new!)"
 :'penpal/view/correspondence/link_text/sent': "<%= date.strftime('%Y-%m-%d %H:%M') %> - Sent by you"
@@ -217,6 +219,9 @@
 :'system/index/admin_profile/to_action/item/view': "View"
 :'system/index/admin_profile/to_action/item/text': "<%= date.strftime('%Y-%m-%d %H:%M:%S') %>: From <%= from %>"
 :'system/index/admin_profile/link': "Go to administration profile (<%= name %>)"
+:'system/index/unconfirmed/section_title': "Unconfirmed relationships"
+:'system/index/unconfirmed/none': "No unconfirmed relationships to display."
+:'system/index/unconfirmed/item/text': "Relationship between <strong><%= penpal_one[:name] %></strong><% if penpal_one[:pseudonym] %> (<em><%= penpal_one[:pseudonym] %></em>)<% end %> and <strong><%= penpal_two[:name] %></strong><% if penpal_two[:pseudonym] %> (<em><%= penpal_two[:pseudonym] %></em>)<% end %>"
 
 # System user info
 :'system/user/title': "User info"
@@ -366,6 +371,10 @@
 :'system/penpal/relationships/notes/section_title': "Relationship notes"
 :'system/penpal/relationships/notes/submit': "Save notes"
 :'system/penpal/relationships/notes/success': "Successfully saved notes for this relationship."
+:'system/penpal/relationships/confirm/section_title': "Relationship confirmation"
+:'system/penpal/relationships/confirm/content': "This relationship was created when the outside penpal in the relationship wrote correspondence to the inside penpal via the \"Write to a new penpal\" view. This relationship must be manually confirmed before the outside penpal can send any further correspondence, and this relationship will appear as \"unconfirmed\" to the outside penpal until confirmed."
+:'system/penpal/relationships/confirm/submit': "Confirm relationship"
+:'system/penpal/relationships/confirm/success': "This relationship has been confirmed."
 :'system/penpal/relationships/actions': "Actions for this relationship"
 :'system/penpal/relationships/actions/delete': "Delete relationship"
 :'system/penpal/relationships/actions/view_correspondence': "View correspondence"

@@ -41,6 +41,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCreateController < ReConne
     @relationship = ReConnect::Models::PenpalRelationship.new
     @relationship.penpal_one = @penpal_one.id
     @relationship.penpal_two = @penpal_two.id
+    @relationship.confirmed = true
     @relationship.save
 
     flash :success, t(:'system/penpal/relationships/create/success')

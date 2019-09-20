@@ -41,6 +41,7 @@ class ReConnect::Workers::CreateAdministratorProfileRelationshipWorker
         :penpal_two => pp.id,
         :email_approved => true,
         :email_approved_by_id => nil,
+        :confirmed => true,
       })
 
       r.save # to get ID

@@ -25,7 +25,6 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
 
-
     @title = t(:'penpal/view/correspondence/create/title', :name => @penpal_name)
 
     force_compose = request.params["compose"]&.strip&.downcase == "1"

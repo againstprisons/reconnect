@@ -4,6 +4,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
   add_route :get, "/"
   add_route :get, "/email-approve", :method => :email_approve
   add_route :post, "/notes", :method => :notes
+  add_route :post, "/confirm", :method => :confirm
 
   def index(rid)
     return halt 404 unless logged_in?
@@ -114,6 +115,20 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @relationship.save
 
     flash :success, t(:'system/penpal/relationships/notes/success')
+    return redirect back
+  end
+
+  def confirm(rid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
+    return halt 404 unless @relationship
+
+    @relationship.confirmed = true
+    @relationship.save
+
+    flash :success, t(:'system/penpal/relationships/confirm/success')
     return redirect back
   end
 end

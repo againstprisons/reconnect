@@ -22,6 +22,24 @@
       %p
         = t(:'system/index/to_action/none')
 
+  .form-wrapped
+    %h1= t(:'system/index/unconfirmed/section_title')
+
+    - if unconfirmed.count.positive?
+      %ul.block-list
+        - unconfirmed.each do |u|
+          %li
+            %a.block-button.pure-button{:href => to("/system/penpal/relationship/#{u[:rid]}")}
+              %i.fa.fa-list
+              = t(:'view')
+
+            %span
+              = t(:'system/index/unconfirmed/item/text', u)
+
+    - else
+      %p
+        = t(:'system/index/unconfirmed/none')
+
   - if admin_profile
     .form-wrapped
       %h1= t(:'system/index/admin_profile/section_title')

@@ -18,6 +18,8 @@ class ReConnect::Controllers::PenpalController < ReConnect::Controllers::Applica
     @penpal_status = @penpal.decrypt(:status)&.strip
     @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
+    @sending_enabled = false unless @relationship.confirmed
+
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
 

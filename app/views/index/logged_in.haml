@@ -12,6 +12,10 @@
               %li
                 %a{:href => url("/penpal/#{pp[:id]}")}
                   = pp[:name]
+
+                - unless pp[:confirmed]
+                  = t(:'unconfirmed')
+
         - else
           = t(:'index/penpals/no_penpals')
 

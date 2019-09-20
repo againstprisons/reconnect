@@ -25,6 +25,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       {
         :id => other.id,
         :name => name,
+        :confirmed => pr.confirmed,
       }
     end.compact
 

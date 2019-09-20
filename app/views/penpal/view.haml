@@ -5,6 +5,10 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
+  - unless relationship.confirmed
+    .message.message-warning
+      = t(:'penpal/view/unconfirmed')
+
   - if sending_enabled
     %a.pure-button.button.button-success{:href => url("/penpal/#{penpal.id}/correspondence/create")}
       %i.fa.fa-plus

@@ -1,6 +1,18 @@
 .system-admin-penpal-relationship-index
   %h1= title
 
+  - unless relationship.confirmed
+    %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/confirm")}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %h1= t(:'system/penpal/relationships/confirm/section_title')
+
+      %p
+        = t(:'system/penpal/relationships/confirm/content')
+
+      %button.pure-button.button.button-success{:type => 'submit'}
+        %i.fa.fa-check
+        = t(:'system/penpal/relationships/confirm/submit')
+
   .pure-g
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin

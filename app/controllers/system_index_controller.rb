@@ -64,12 +64,35 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
       @relationship_count -= ReConnect::Models::PenpalRelationship.where(:penpal_two => @admin_profile.id).count
     end
 
+    @unconfirmed = ReConnect::Models::PenpalRelationship.where(:confirmed => false).map do |pr|
+      one = ReConnect::Models::Penpal[pr.penpal_one]
+      next nil unless one
+
+      two = ReConnect::Models::Penpal[pr.penpal_two]
+      next nil unless two
+
+      {
+        :rid => pr.id,
+        :penpal_one => {
+          :id => one.id,
+          :name => one.get_name.map{|x| x&.empty?() ? nil : x}.compact.join(" "),
+          :pseudonym => one.get_pseudonym,
+        },
+        :penpal_two => {
+          :id => two.id,
+          :name => two.get_name.map{|x| x&.empty?() ? nil : x}.compact.join(" "),
+          :pseudonym => two.get_pseudonym,
+        },
+      }
+    end
+
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/index', :layout => false, :locals => {
         :title => @title,
         :to_action => @to_action,
         :duplicates => @duplicates,
         :admin_profile => @admin_profile_d,
+        :unconfirmed => @unconfirmed,
         :counts => {
           :penpals => ReConnect::Models::Penpal.count,
           :relationships => @relationship_count,
