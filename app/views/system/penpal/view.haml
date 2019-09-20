@@ -22,37 +22,6 @@
                 &= d.last
 
       .form-wrapped.x-margin
-        %h1= t(:'system/penpal/view/relationships/title')
-
-        - if relationships == false
-          %p
-            = t(:'system/penpal/view/relationships/too_many', :count => penpal.relationship_count)
-
-          %p
-            %a.pure-button.button{:href => url("/system/penpal/#{penpal.id}?allrel=1")}
-              = t(:'system/penpal/view/relationships/view_all')
-
-        - else
-          - if relationships.empty?
-            = t(:'system/penpal/view/relationships/empty')
-
-          - else
-            %ul.block-list
-              - relationships.each do |r|
-                %li
-                  %strong= name
-                  and
-                  %strong= r[:other_party][:name]
-
-                  .block-form
-                    %a.block-button.pure-button.button{:href => r[:link]}
-                      %i.fa.fa-link
-                      See relationship
-
-                  %span.dotted-underline{:title => "rid #{r[:id]}"}
-                    %i.fa.fa-ellipsis-v
-
-      .form-wrapped.x-margin
         %h1= t(:'system/penpal/view/relationships/create/title')
 
         - if copied_link
@@ -138,6 +107,54 @@
             %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/delete"}
               %i.fa.fa-trash
               = t(:'system/penpal/actions/delete')
+
+    .pure-u-1
+      .form-wrapped.x-margin
+        %h1= t(:'system/penpal/view/relationships/title')
+
+        - if relationships == false
+          %p
+            = t(:'system/penpal/view/relationships/too_many', :count => penpal.relationship_count)
+
+          %p
+            %a.pure-button.button{:href => url("/system/penpal/#{penpal.id}?allrel=1")}
+              = t(:'system/penpal/view/relationships/view_all')
+
+        - else
+          - if relationships.empty?
+            = t(:'system/penpal/view/relationships/empty')
+
+          - else
+            %table.pure-table.pure-table-bordered.pure-table-striped
+              %thead
+                %tr
+                  %th= ""
+                  %th= t(:'name')
+                  %th= t(:'pseudonym')
+                  %th= t(:'email_address')
+              %tbody
+                - relationships.each do |r|
+                  %tr
+                    %td
+                      %a.pure-button.button{:href => r[:link], :style => 'margin: 0 !important;'}
+                        %i.fa.fa-link
+                        = t(:'system/penpal/view/relationships/item/view_relationship')
+
+                    %td
+                      &= r[:other_party][:name]
+
+                    %td
+                      &= r[:other_party][:pseudonym]
+
+                    %td
+                      - if r[:other_party][:is_incarcerated]
+                        = t(:'system/penpal/view/relationships/item/is_incarcerated')
+                      - else
+                        - if r[:other_party][:email]
+                          %a{:href => "mailto:#{r[:other_party][:email]}"}
+                            &= r[:other_party][:email]
+                        - else
+                          = t(:'unknown')
 
     .pure-u-1
       - if !intro.strip.empty?

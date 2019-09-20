@@ -23,6 +23,9 @@ module ReConnect::Helpers::SystemPenpalHelpers
     data[:user_id] = pp.user ? pp.user.id : nil
     data[:display_fields] << [t(:'user_id'), pp.user.id] if pp.user
 
+    # email
+    data[:email] = pp.user ? pp.user.email : nil
+
     # get last correspondence
     begin
       data[:last_correspondence] = nil
