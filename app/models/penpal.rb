@@ -133,6 +133,7 @@ class ReConnect::Models::PenpalFilter < Sequel::Model
 
     # status
     status = penpal.decrypt(:status)&.strip&.downcase
+    ReConnect.filter_strip_chars.each {|x| status.gsub!(x, "")}
     if status
       e = ReConnect::Crypto.index("Penpal", "status", status)
       filters << self.new(:penpal_id => penpal.id, :filter_label => "status", :filter_value => e)
