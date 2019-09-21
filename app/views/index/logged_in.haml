@@ -1,6 +1,10 @@
 .index-logged-in
   %h1= title
 
+  %a.pure-button.button{:href => url("/penpal/waiting")}
+    %i.fa.fa-pencil-square-o= ""
+    = t(:'penpal/waiting/title')
+
   .pure-g
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin

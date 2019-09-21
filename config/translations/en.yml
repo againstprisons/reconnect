@@ -118,6 +118,19 @@
 :'penpal/view/correspondence/single/mark/unread': "Mark as unread"
 :'penpal/view/correspondence/single/mark/unread/success': "Marked this correspondence as unread."
 
+# Pending penpals
+:'penpal/waiting/title': "Write to a new penpal"
+:'penpal/waiting/item/write_to': "Write to this penpal"
+:'penpal/waiting/compose/title': "Write to <%= name %>"
+:'penpal/waiting/compose/section_title': "Compose your letter"
+:'penpal/waiting/compose/submit': "Continue to confirmation"
+:'penpal/waiting/compose/errors/no_text': "No text was provided - we can't send a blank letter!"
+:'penpal/waiting/compose/errors/content_filter_matched': "Your message contains words that aren't allowed. Please remove the following words: <%= matched.join(', ') %>"
+:'penpal/waiting/compose/confirm/section_title': "Confirm your letter"
+:'penpal/waiting/compose/confirm/send': "Send this letter"
+:'penpal/waiting/compose/confirm/edit': "Go back and edit"
+:'penpal/waiting/compose/success': "Successfully uploaded your letter! The <%= org_name %> administrators will now have to approve your letter before it is sent to <%= penpal_name %>."
+
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"
 :'auth/logout': "Log out"
@@ -375,7 +388,7 @@
 :'system/penpal/relationships/confirm/section_title': "Relationship confirmation"
 :'system/penpal/relationships/confirm/content': "This relationship was created when the outside penpal in the relationship wrote correspondence to the inside penpal via the \"Write to a new penpal\" view. This relationship must be manually confirmed before the outside penpal can send any further correspondence, and this relationship will appear as \"unconfirmed\" to the outside penpal until confirmed."
 :'system/penpal/relationships/confirm/submit': "Confirm relationship"
-:'system/penpal/relationships/confirm/success': "This relationship has been confirmed."
+:'system/penpal/relationships/confirm/success': "This relationship has been confirmed. You may want to approve automatic emails at this point."
 :'system/penpal/relationships/actions': "Actions for this relationship"
 :'system/penpal/relationships/actions/delete': "Delete relationship"
 :'system/penpal/relationships/actions/view_correspondence': "View correspondence"

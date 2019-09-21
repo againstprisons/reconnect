@@ -1,0 +1,15 @@
+.penpal-waiting-index
+  %h1= title
+
+  - waiting_penpals.each do |pp|
+    .penpal-waiting-item
+      .penpal-waiting-item-header
+        %h1= pp[:name]
+
+        .penpal-waiting-item-header-link
+          %a.pure-button.button.button-primary{:href => url("/penpal/waiting/#{pp[:id]}")}
+            %i.fa.fa-pencil-square-o
+            = t(:'penpal/waiting/item/write_to')
+
+      .penpal-waiting-item-intro.rich-text-container
+        = pp[:intro]

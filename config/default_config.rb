@@ -74,6 +74,10 @@ module ReConnect
       :type => :text,
       :default => '',
     },
+    "penpal-status-waiting-for-relationships" => {
+      :type => :text,
+      :default => "Application pending",
+    },
     "site-alert-emails" => {
       :type => :json,
       :default => '{"email": null, "alerts": ["*"]}',

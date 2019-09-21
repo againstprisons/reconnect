@@ -1,0 +1,21 @@
+.penpal-waiting-compose
+  %h1= title
+
+  %a.pure-button.button{:href => url("/penpal/waiting")}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'penpal/waiting/compose/section_title')
+
+    %textarea#content.rich-editor{:name => "content"}
+      &= content || ""
+
+    .y-margin= ""
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-upload
+      = t(:'penpal/waiting/compose/submit')
+
+%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}

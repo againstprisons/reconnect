@@ -11,6 +11,8 @@ controllers:
   - path: /auth
     controller: AuthLoginController
 
+  - path: /penpal/waiting
+    controller: PenpalWaitingController
   - path: /penpal/:ppid/correspondence/create
     controller: PenpalCorrespondenceCreateController
   - path: /penpal/:ppid/correspondence/:cid

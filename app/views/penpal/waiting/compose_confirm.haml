@@ -1,0 +1,28 @@
+.penpal-waiting-compose-confirm
+  %h1= title
+
+  .form-wrapped
+    %h1= t(:'penpal/waiting/compose/confirm/section_title')
+
+    .correspondence-html.rich-text-container
+      != content
+
+    .y-margin= ""
+
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'confirm', :value => '1'}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-envelope
+        = t(:'penpal/waiting/compose/confirm/send')
+
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'confirm', :value => '0'}
+      %input{:type => 'hidden', :name => 'compose', :value => '1'}
+      %input{:type => 'hidden', :name => 'content', :value => content}
+      %button.pure-button.button{:type => 'submit'}
+        %i.fa.fa-pencil
+        = t(:'penpal/waiting/compose/confirm/edit')
+
