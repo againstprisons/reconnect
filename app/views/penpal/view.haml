@@ -34,3 +34,14 @@
     - else
       = t(:'penpal/view/correspondence/no_correspondence')
 
+  - if settings.development?
+    .page-footer.y-margin-large
+      debug:
+
+      = "relationship #{relationship.id}"
+      %a{:href => url("/system/penpal/relationship/#{relationship.id}")}
+        %i.fa.fa-link
+
+      &middot;
+
+      = "confirmed #{relationship.confirmed.inspect}"
