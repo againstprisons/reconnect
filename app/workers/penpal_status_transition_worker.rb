@@ -8,8 +8,10 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
     ReConnect.app_config['penpal-status-transitions'].each do |transition|
       logger.info("transition from:#{transition["from"].inspect} to:#{transition["to"].inspect}")
 
+      modes = [transition["when"]["mode"]].flatten
+
       last_correspondence_gate = nil
-      if transition["when"]["mode"] == "last_correspondence"
+      if modes.include?("last_correspondence")
         last_correspondence_gate = Chronic.parse(transition["when"]["last_correspondence"], :guess => true)
       end
 
@@ -31,24 +33,45 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
         end
 
         begin
-          changed = false
-          if transition["when"]["mode"] == "last_correspondence"
-            last = ReConnect::Models::Correspondence
-              .where(:sending_penpal => pp.id)
-              .order(Sequel.desc(:creation))
-              .first
+          do_transition = []
 
-            if last
-              if last.creation < last_correspondence_gate
-                # do the transition
-                pp.encrypt(:status, transition["to"])
-                changed = true
+          modes.each do |mode|
+            case mode
+            when "last_correspondence"
+              last = ReConnect::Models::Correspondence
+                .where(:sending_penpal => pp.id)
+                .order(Sequel.desc(:creation))
+                .first
+
+              if last
+                do_transition << (last.creation < last_correspondence_gate)
+              else
+                do_transition << false
               end
+
+            when "penpal_count"
+              rels = ReConnect::Models::PenpalRelationship
+                .find_for_single_penpal(pp)
+
+              # filter out admin profile if it exists
+              admin_pid = ReConnect.app_config['admin-profile-id']
+              if !admin_pid.nil? && !admin_pid.zero?
+                rels = rels.reject do |r|
+                  other_party = r.penpal_one
+                  other_party = r.penpal_two if other_party = pp.id
+
+                  other_party == ReConnect.app_config['admin-profile-id']
+                end
+              end
+
+              do_transition << (rels.count > transition["when"]["penpal_count"])
             end
           end
 
-          if changed
+          if do_transition.all?
+            pp.encrypt(:status, transition["to"])
             pp.save
+
             ReConnect::Models::PenpalFilter.clear_filters_for(pp)
             ReConnect::Models::PenpalFilter.create_filters_for(pp)
           end

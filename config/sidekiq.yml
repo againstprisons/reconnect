@@ -4,7 +4,7 @@
     class: "ReConnect::Workers::EmailQueueSendWorker"
 
   status_transitions:
-    cron: '30 0 * * 1'
+    cron: '*/30 * * * *'
     class: "ReConnect::Workers::PenpalStatusTransitionWorker"
 
   duplicate_check:

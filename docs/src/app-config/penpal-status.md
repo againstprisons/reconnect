@@ -24,8 +24,18 @@ and could cause issues.
 The content of the `penpal-status-transitions` configuration entry is used to
 perform automatic transitions between different penpal statuses.
 
-Currently, the only trigger for these transitions is the date of the last
-correspondence sent by a penpal.
+The available triggers are:
+
+* `last_correspondence` - transition when the penpal's last correspondence was
+  before the time period specified in the `last_correspondence` key.
+* `penpal_count` - transition when the penpal has more penpal relationships
+  (excluding the relationship with the admin profile, if that exists) than is
+  specified in the `penpal_count` key.
+
+The `mode` key can be either a string, in which case the transition is applied
+if the conditions for that trigger are met, or an array of strings, in which
+case the transition is applied only if the conditions for all of the specified
+triggers are met.
 
 For example, to change a penpal's status from `Active` to `Inactive` after
 6 months without any new correspondence, the field could be set like this:
