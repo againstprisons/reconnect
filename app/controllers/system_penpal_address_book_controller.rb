@@ -41,7 +41,12 @@ class ReConnect::Controllers::SystemPenpalAddressBookController < ReConnect::Con
     end
 
     @pp_statuses = ReConnect.app_config['penpal-statuses'].map do |status|
-      [status, penpals_by_status[status] || []]
+      pps = penpals_by_status[status] || []
+      pps.sort! do |a, b|
+        a[:pp_d][:name_a].first <=> b[:pp_d][:name_a].first
+      end
+
+      [status, pps]
     end
 
     haml(:'system/penpal/address_book/index', :locals => {
