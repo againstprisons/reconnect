@@ -411,6 +411,7 @@
 :'system/penpal/relationship/delete/success': "Successfully deleted relationship."
 :'system/penpal/relationship/correspondence/title': "Correspondence between <%= one_name %> <% if one_pseudonym %>(<em><%= one_pseudonym %></em>) <% end %>and <%= two_name %> <% if two_pseudonym %>(<em><%= two_pseudonym %></em>) <% end %>"
 :'system/penpal/relationship/correspondence/back': "Back to relationship details"
+:'system/penpal/relationship/correspondence/unconfirmed_relationship': "<strong>Warning!</strong> This correspondence is in a relationship that is unconfirmed."
 :'system/penpal/relationship/correspondence/create_action': "Create new correspondence"
 :'system/penpal/relationship/correspondence/existing/section_title': "Correspondence"
 :'system/penpal/relationship/correspondence/existing/is_new': "(new!)"

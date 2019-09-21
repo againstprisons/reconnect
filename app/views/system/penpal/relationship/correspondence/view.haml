@@ -5,6 +5,10 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
+  - unless relationship.confirmed
+    .message.message-warning
+      = t(:'system/penpal/relationship/correspondence/unconfirmed_relationship')
+
   .pure-g
     .pure-u-1.pure-u-md-1-2
       .form-wrapped.x-margin
@@ -32,7 +36,7 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationship/correspondence/view/actions')
 
-        - if is_to_admin_profile 
+        - if is_to_admin_profile
           %form.pure-form.pure-form-stacked{:method => 'POST', :action => mark_form_url}
             %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
             %button.pure-button.button{:type => 'submit', :class => [correspondence_d[:actioned] || 'button-success']}

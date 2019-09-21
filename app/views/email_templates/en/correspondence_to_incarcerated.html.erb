@@ -14,6 +14,12 @@
   (ID <%= penpal_receiving[:id] %>)
 </p>
 
+<% unless relationship_confirmed %>
+  <p>
+    <strong>This correspondence is in a relationship that is unconfirmed.</strong>
+  </p>
+<% end %>
+
 <%= helpers.button[link_to_correspondence, "View new correspondence"] %>
 
 <p>

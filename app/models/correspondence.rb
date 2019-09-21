@@ -151,6 +151,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
 
     data = {
       :link_to_correspondence => url.to_s,
+      :relationship_confirmed => relationship.confirmed,
       :penpal_sending => {
         :id => penpal_sending.id,
         :name => {
@@ -168,7 +169,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
           :joined => penpal_receiving_name,
           :pseudonym => penpal_receiving_pseudonym,
         },
-      }
+      },
     }
 
     email = ReConnect::Models::EmailQueue.new_from_template(template, data)

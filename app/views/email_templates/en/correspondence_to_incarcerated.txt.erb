@@ -8,6 +8,10 @@ and
 
 <%= penpal_receiving[:name][:joined] %> <% if penpal_receiving[:name][:pseudonym] %>(<%= penpal_receiving[:name][:pseudonym] %>) <% end %>(ID <%= penpal_receiving[:id] %>)
 
+<% unless relationship_confirmed %>
+This correspondence is in a relationship that is unconfirmed.
+<% end %>
+
 This correspondence can be viewed at the following link:
 <%= link_to_correspondence %>
 
