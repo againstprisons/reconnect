@@ -49,7 +49,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
       pp_prison = ReConnect::Models::Prison[pp_prison]&.id
     end
 
-    @penpal = ReConnect::Models::Penpal.new(:user_id => nil, :is_incarcerated => true)
+    @penpal = ReConnect::Models::Penpal.new(:user_id => nil, :is_incarcerated => true, :creation => Time.now)
     @penpal.save
     @penpal.encrypt(:first_name, pp_first_name)
     @penpal.encrypt(:last_name, pp_last_name)

@@ -26,6 +26,9 @@ module ReConnect::Helpers::SystemPenpalHelpers
     # email
     data[:email] = pp.user ? pp.user.email : nil
 
+    # creation
+    data[:creation] = pp.creation
+
     # get last correspondence
     begin
       data[:last_correspondence] = nil

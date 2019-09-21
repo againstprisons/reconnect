@@ -3,7 +3,7 @@ class ReConnect::Models::Penpal < Sequel::Model
 
   def self.new_for_user(user)
     user = user.id if user.respond_to?(:id)
-    self.new(:user_id => user, :is_incarcerated => false)
+    self.new(:user_id => user, :is_incarcerated => false, :creation => Time.now)
   end
 
   def get_name

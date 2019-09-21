@@ -50,6 +50,7 @@
 :'penpal_intro': "Penpal introduction"
 :'send_correspondence': "Send correspondence"
 :'release_date': "Expected release date"
+:'creation': "Creation date"
 :'unknown': "(unknown)"
 :'unconfirmed': "(unconfirmed)"
 

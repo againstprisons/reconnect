@@ -160,6 +160,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     admin_penpal.is_incarcerated = false
     admin_penpal.is_advocacy = false
     admin_penpal.correspondence_guide_sent = false
+    admin_penpal.creation = Time.now
     admin_penpal.save
 
     # create filters
