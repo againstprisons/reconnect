@@ -202,7 +202,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
     end
 
     # Do a sanitize run
-    @content = Sanitize.fragment(@content, Sanitize::Config::BASIC)
+    @content = Sanitize.fragment(@content, Sanitize::Config::RELAXED)
 
     # Render
     @rendered = @content

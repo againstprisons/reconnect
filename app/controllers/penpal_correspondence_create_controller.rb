@@ -50,7 +50,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     end
 
     # Do a sanitize run
-    content = Sanitize.fragment(content, Sanitize::Config::BASIC)
+    content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
 
     # Run content filter
     filter = ReConnect.new_content_filter
