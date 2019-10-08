@@ -37,20 +37,20 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     errs = [
       request.params["first_name"].nil?,
-      request.params["first_name"]&.strip.empty?,
+      request.params["first_name"]&.strip&.empty?,
       request.params["last_name"].nil?,
-      request.params["last_name"]&.strip.empty?,
+      request.params["last_name"]&.strip&.empty?,
       request.params["email"].nil?,
-      request.params["email"]&.strip.empty?,
+      request.params["email"]&.strip&.empty?,
       request.params["password"].nil?,
-      request.params["password"].empty?,
+      request.params["password"]&.empty?,
       request.params["password_confirm"].nil?,
-      request.params["password_confirm"].empty?,
+      request.params["password_confirm"]&.empty?,
     ]
 
     if ReConnect.app_config['signup-age-gate-enabled']
       errs << request.params["age_verify"].nil?
-      errs << request.params["age_verify"].empty?
+      errs << request.params["age_verify"]&.empty?
     end
 
     if errs.any?
