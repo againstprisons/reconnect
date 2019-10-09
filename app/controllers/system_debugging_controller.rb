@@ -17,6 +17,7 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
       haml(:'system/debugging/index', :layout => false, :locals => {
         :title => @title,
         :app_config => @app_config,
+        :site_dir => ReConnect.site_dir,
       })
     end
   end
