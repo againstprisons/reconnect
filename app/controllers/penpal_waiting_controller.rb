@@ -50,6 +50,10 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
 
+    @penpal_name = @penpal.get_pseudonym
+    @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
+    @title = t(:'penpal/waiting/compose/title', :name => @penpal_name)
+
     # get the current user's penpal object, and then get the list of all
     # penpal IDs that the current user has a relationship with
     @our_penpal = current_user.penpal
@@ -72,11 +76,15 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       .reject{|pp| @our_relationships.include? pp[:id]}
 
     @waiting_penpal_ids = @waiting_penpals.map{|x| x[:id]}
-    return halt 404 unless @waiting_penpal_ids.include?(@penpal.id)
 
-    @penpal_name = @penpal.get_pseudonym
-    @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
-    @title = t(:'penpal/waiting/compose/title', :name => @penpal_name)
+    unless @waiting_penpal_ids.include?(@penpal.id)
+      @title = t(:'penpal/waiting/satisfied/title')
+      return haml(:'penpal/waiting/satisfied', :locals => {
+        :title => @title,
+        :penpal => @penpal,
+        :penpal_name => @penpal_name,
+      })
+    end
 
     force_compose = request.params["compose"]&.strip&.downcase == "1"
     content = nil

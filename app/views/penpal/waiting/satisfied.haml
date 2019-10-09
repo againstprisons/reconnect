@@ -1,0 +1,10 @@
+.penpal-waiting-satisfied
+  %h1= title
+
+  .form-wrapped
+    %p
+      = t(:'penpal/waiting/satisfied/content', :name => penpal_name)
+
+    %a.pure-button.button.button-primary{:href => url("/penpal/waiting")}
+      %i.fa.fa-pencil-square-o= ""
+      = t(:'penpal/waiting/satisfied/back')

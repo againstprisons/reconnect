@@ -120,6 +120,7 @@
 
 # Pending penpals
 :'penpal/waiting/title': "Write to a new penpal"
+:'penpal/waiting/none_waiting': "There are no incarcerated penpals that need a new penpal!"
 :'penpal/waiting/item/write_to': "Write to this penpal"
 :'penpal/waiting/compose/title': "Write to <%= name %>"
 :'penpal/waiting/compose/section_title': "Compose your letter"
@@ -130,6 +131,9 @@
 :'penpal/waiting/compose/confirm/send': "Send this letter"
 :'penpal/waiting/compose/confirm/edit': "Go back and edit"
 :'penpal/waiting/compose/success': "Successfully uploaded your letter! The <%= org_name %> administrators will now have to approve your letter before it is sent to <%= penpal_name %>."
+:'penpal/waiting/satisfied/title': "This penpal has someone to write to!"
+:'penpal/waiting/satisfied/content': "Good news! <strong><%= name %></strong> already has enough penpals to write to, so we've removed them from the list of waiting penpals. If you want to find someone else to write to, click the button below."
+:'penpal/waiting/satisfied/back': "Write to a different penpal"
 
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"
