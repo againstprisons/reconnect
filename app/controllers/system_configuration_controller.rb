@@ -2,6 +2,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
   add_route :get, "/"
   add_route :post, "/toggle", :method => :toggle
   add_route :post, "/refresh", :method => :refresh
+  add_route :post, "/refresh-dry", :method => :refresh_dry
   add_route :post, "/create-admin-penpal", :method => :create_admin_penpal
 
   def index
@@ -50,6 +51,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
         :title => @title,
         :quick_toggles => quick_toggles,
         :admin_profile_exists => admin_profile_exists,
+        :allow_config_dry_run => request.params["show-dryrun"].to_i == 1,
       })
     end
   end
@@ -92,6 +94,23 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
 
     flash :success, t(:'system/configuration/quick_toggle/toggled', :key => key, :value => cfg.value)
     redirect to("/system/configuration")
+  end
+
+  def refresh_dry
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:configuration:refresh")
+
+    # refresh
+    output = ReConnect.app_config_refresh(:dry => true)
+
+    @title = t(:'system/configuration/refresh_global_config/title')
+    haml(:'system/layout', :locals => {:title => @title}) do
+      haml(:'system/configuration/refresh', :layout => false, :locals => {
+        :title => @title,
+        :dry_run => true,
+        :output => output,
+      })
+    end
   end
 
   def refresh

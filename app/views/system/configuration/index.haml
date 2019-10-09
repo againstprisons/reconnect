@@ -16,6 +16,13 @@
         - else 
           = t :'system/configuration/refresh_global_config/disabled'
 
+    - if allow_config_dry_run
+      %form{:method => "POST", :action => to('/system/configuration/refresh-dry'), :style => 'display:inline-block'}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %button.button.pure-button{:type => 'submit'}
+          %i.fa.fa-refresh
+          = t :'system/configuration/refresh_global_config/dry_run'
+
   - if !admin_profile_exists && has_role?("system:configuration:admin_penpal")
     %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => url('/system/configuration/create-admin-penpal')}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
@@ -69,3 +76,13 @@
         %a.pure-button.button.button-primary{:href => to('/system/configuration/filter')}
           %i.fa.fa-filter
           = t(:'system/configuration/filter/title')
+
+
+  .page-footer.y-margin-large
+    %span= t(:'actions')
+
+    %a{:href => url("/system/configuration?show-dryrun=#{allow_config_dry_run ? 0 : 1}")}
+      - if allow_config_dry_run
+        = t(:'system/configuration/refresh_global_config/hide_dry_run')
+      - else
+        = t(:'system/configuration/refresh_global_config/show_dry_run')
