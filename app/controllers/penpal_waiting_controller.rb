@@ -49,6 +49,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
 
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
+    return halt 404 unless @penpal.is_incarcerated
 
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
