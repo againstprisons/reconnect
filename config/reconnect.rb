@@ -148,11 +148,19 @@ module ReConnect
       cfg = ReConnect::Models::Config.where(:key => key).first
       value = cfg ? cfg.value : desc[:default]
 
-      @app_config[key] = value.force_encoding(Encoding::UTF_8)
-      @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
-      @app_config[key] = (value == 'yes') if desc[:type] == :bool
-      @app_config[key] = value.to_i if desc[:type] == :number
-      self.app_config_refresh_json(key) if desc[:type] == :json
+      @app_config[key] = value
+      if %i[text json].include?(desc[:type])
+        @app_config[key] = value.force_encoding(Encoding::UTF_8)
+        @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
+
+        if desc[:type] == :json
+          self.app_config_refresh_json(key)
+        end
+      elsif desc[:type] == :bool
+        @app_config[key] = (value == 'yes')
+      elsif desc[:type] == :number
+        @app_config[key] = value.to_i
+      end
 
       self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
       self.app_config_refresh_mail if key == 'email-smtp-host'
