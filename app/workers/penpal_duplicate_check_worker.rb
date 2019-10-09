@@ -3,7 +3,7 @@ class ReConnect::Workers::PenpalDuplicateCheckWorker
 
   def perform
     ReConnect.initialize if ReConnect.app.nil?
-    ReConnect.app_config_refresh(true)
+    ReConnect.app_config_refresh(:force => true)
 
     prisoner_numbers = {}
     total = ReConnect::Models::Penpal.where(:is_incarcerated => true).count

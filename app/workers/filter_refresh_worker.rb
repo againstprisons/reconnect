@@ -3,7 +3,7 @@ class ReConnect::Workers::FilterRefreshWorker
 
   def perform
     ReConnect.initialize if ReConnect.app.nil?
-    ReConnect.app_config_refresh(true)
+    ReConnect.app_config_refresh(:force => true)
 
     ###
     # enable maintenance mode

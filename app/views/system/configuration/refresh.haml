@@ -1,0 +1,35 @@
+.system-admin-configuration-refresh
+  %h1= title
+
+  %a.pure-button.button{:href => '/system/configuration'}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  %p
+    - if dry_run
+      = t(:'system/configuration/refresh_global_config/summary/content_dry')
+    - else
+      = t(:'system/configuration/refresh_global_config/summary/content')
+
+  - if output.count.zero?
+    = t(:'system/configuration/refresh_global_config/summary/no_keys')
+  - else
+    %ul.block-list
+      - output.each do |v|
+        %li
+          .y-margin-large
+            %code.code-line
+              &= v[:key]
+
+            %ul.block-list
+              - if v[:warnings].count.zero?
+                %li
+                  .y-margin-large
+                    = t(:'system/configuration/refresh_global_config/summary/no_warnings')
+
+              - else
+                - v[:warnings].each do |warning|
+                  %li
+                    .y-margin-large
+                      %code.code-line
+                        &= warning

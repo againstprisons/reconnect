@@ -16,6 +16,7 @@ module ReConnect
 
   require File.join(@@root, 'app', 'version')
   require File.join(@@root, 'app', 'utils')
+  require File.join(@@root, 'app', 'config')
   require File.join(@@root, 'app', 'server_utils')
   require File.join(@@root, 'app', 'workers')
 
@@ -107,7 +108,7 @@ module ReConnect
       self.load_config
 
       # load config from database
-      self.app_config_refresh(true) unless opts[:no_load_models]
+      self.app_config_refresh(:force => true) unless opts[:no_load_models]
     end
 
     @app = ReConnect::Application.new
@@ -137,116 +138,62 @@ module ReConnect
     self.site_load_config
   end
 
-  def self.app_config_refresh(force = false)
-    return [] unless force || @app_config_refresh_pending.count.positive?
-    keys = []
+  def self.app_config_refresh(opts = {})
+    if @app_config_refresh_pending.count.zero?
+      return [] unless (opts[:force] || opts[:dry])
+    end
 
+    output = []
     ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
-      next unless force || @app_config_refresh_pending.include?(key)
-      keys << key
+      unless @app_config_refresh_pending.include?(key)
+        unless opts[:force] || opts[:dry]
+          next
+        end
+      end
 
       cfg = ReConnect::Models::Config.where(:key => key).first
-      value = cfg ? cfg.value : desc[:default]
-
-      @app_config[key] = value
-      if %i[text json].include?(desc[:type])
-        @app_config[key] = value.force_encoding(Encoding::UTF_8)
-        @app_config[key].gsub!("@SITEDIR@", @site_dir) if @site_dir
-
-        if desc[:type] == :json
-          self.app_config_refresh_json(key)
+      if cfg
+        value = cfg.value
+      else
+        value = desc[:default]
+        if desc[:type] == :bool
+          value = (value ? 'yes' : 'no')
         end
-      elsif desc[:type] == :bool
-        @app_config[key] = (value == 'yes')
-      elsif desc[:type] == :number
-        @app_config[key] = value.to_i
+
+        value = value.to_s
       end
 
-      self.app_config_refresh_file_storage_dir if key == 'file-storage-dir'
-      self.app_config_refresh_mail if key == 'email-smtp-host'
-      self.app_config_refresh_nil_if_empty(key) if key == 'penpal-status-advocacy'
-      self.app_config_refresh_signup_age_gate if key == 'signup-age-gate'
-    end
+      parsed = value
+      warnings = []
+      stop = false
+      ReConnect::Config.parsers.each do |parser|
+        next if stop
 
-    @app_config_refresh_pending.clear
+        if parser.accept?(key, desc[:type])
+          out = parser.parse(value)
+          warnings << out[:warning] if out[:warning]
+          parsed = out[:data]
 
-    keys
-  end
+          if !opts[:dry]
+            parser.process(parsed) if parser.respond_to?(:process)
+          end
 
-  def self.app_config_refresh_nil_if_empty(key)
-    if @app_config[key].strip.empty?
-      @app_config[key] = nil
-    end
-  end
-
-  def self.app_config_refresh_json(key)
-    begin
-      loaded = JSON.parse(@app_config[key])
-      @app_config[key] = loaded
-    rescue => e
-      $stderr.puts "app_config_refresh_json(#{key}): Failed to parse JSON: #{e.class.name}: #{e}"
-      $stderr.puts e.traceback if e.respond_to?(:traceback)
-      $stderr.flush
-      return
-    end
-  end
-
-  def self.app_config_refresh_mail
-    entry = @app_config["email-smtp-host"]&.strip
-    return if entry.nil? || entry == ""
-
-    if entry&.strip&.downcase == 'logger'
-      return Mail.defaults do
-        delivery_method :logger
+          stop = out[:stop_processing_here]
+        end
       end
+
+      if !opts[:dry]
+        @app_config[key] = parsed
+      end
+
+      output << {:key => key, :warnings => warnings}
     end
 
-    uri = nil
-    begin
-      uri = Addressable::URI.parse(entry)
-    rescue => e
-      $stderr.puts "app_config_refresh_mail: Failed to parse email-smtp-host URI: #{e.class.name}: #{e}"
-      $stderr.puts e.traceback if e.respond_to?(:traceback)
-      $stderr.flush
-      return
+    if !opts[:dry]
+      @app_config_refresh_pending.clear
     end
 
-    opts = {
-      :address => uri.host,
-      :port => uri.port,
-
-      :enable_starttls_auto => uri.query_values ? uri.query_values["starttls"] == 'yes' : false,
-      :enable_tls => uri.query_values ? uri.query_values["tls"] == 'yes' : false,
-      :enable_ssl => uri.query_values ? uri.query_values["ssl"] == 'yes' : false,
-      :openssl_verify_mode => uri.query_values ? uri.query_values["verify_mode"]&.strip&.upcase || 'PEER' : 'PEER',
-      :ca_path => ENV["SSL_CERT_DIR"],
-      :ca_file => ENV["SSL_CERT_FILE"],
-
-      :authentication => uri.query_values ? uri.query_values["authentication"]&.strip&.downcase || 'plain' : 'plain',
-      :user_name => Addressable::URI.unencode(uri.user || ''),
-      :password => Addressable::URI.unencode(uri.password || ''),
-    }
-
-    @app_config["email-smtp-host"] = opts
-
-    Mail.defaults do
-      delivery_method :smtp, opts
-    end
-  end
-
-  def self.app_config_refresh_file_storage_dir
-    unless Dir.exist?(@app_config["file-storage-dir"])
-      Dir.mkdir(@app_config["file-storage-dir"])
-    end
-  end
-
-  def self.app_config_refresh_signup_age_gate
-    loaded = Chronic.parse(@app_config['signup-age-gate'], :guess => true)
-    return if !loaded.nil?
-
-    $stderr.puts "app_config_refresh_signup_age_gate: failed to parse date, setting default of 18 years"
-    $stderr.flush
-    @app_config['signup-age-gate'] = '18 years ago'
+    output
   end
 
   def self.site_load_config

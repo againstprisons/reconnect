@@ -8,9 +8,10 @@
 
     %form{:method => "POST", :action => to('/system/configuration/refresh'), :style => 'display:inline-block'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      %button.button.pure-button{:type => 'submit', :disabled => ReConnect.app_config_refresh_pending.empty? && !ReConnect::ServerUtils.app_server_has_multiple_workers?}
+      - refresh_enabled = ReConnect.app_config_refresh_pending.count.positive? || ReConnect::ServerUtils.app_server_has_multiple_workers? || settings.development?
+      %button.button.pure-button{:type => 'submit', :disabled => !refresh_enabled}
         %i.fa.fa-refresh
-        - if ReConnect.app_config_refresh_pending.count.positive? || ReConnect::ServerUtils.app_server_has_multiple_workers?
+        - if refresh_enabled
           = t :'system/configuration/refresh_global_config/title'
         - else 
           = t :'system/configuration/refresh_global_config/disabled'

@@ -115,7 +115,7 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     maint_cfg.save
 
     # refresh
-    keys = ReConnect.app_config_refresh
+    output = ReConnect.app_config_refresh
 
     # disable maintenance mode if it wasn't already enabled
     unless maint_enabled
@@ -126,11 +126,16 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     if ReConnect::ServerUtils.app_server_has_multiple_workers?
       flash :success, t(:'system/configuration/refresh_global_config/success_restarting')
       ReConnect::ServerUtils.app_server_restart!
-    else
-      flash :success, t(:'system/configuration/refresh_global_config/success', :count => keys.count)
     end
 
-    redirect to("/system/configuration")
+    @title = t(:'system/configuration/refresh_global_config/title')
+    haml(:'system/layout', :locals => {:title => @title}) do
+      haml(:'system/configuration/refresh', :layout => false, :locals => {
+        :title => @title,
+        :dry_run => false,
+        :output => output,
+      })
+    end
   end
 
   def create_admin_penpal

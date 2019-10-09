@@ -3,7 +3,7 @@ class ReConnect::Workers::CreateAdministratorProfileRelationshipWorker
 
   def perform
     ReConnect.initialize if ReConnect.app.nil?
-    ReConnect.app_config_refresh(true)
+    ReConnect.app_config_refresh(:force => true)
 
     admin_pid = ReConnect.app_config['admin-profile-id'].to_i
     if admin_pid.nil? || admin_pid.zero?

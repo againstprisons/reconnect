@@ -3,7 +3,7 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
 
   def perform
     ReConnect.initialize if ReConnect.app.nil?
-    ReConnect.app_config_refresh(true)
+    ReConnect.app_config_refresh(:force => true)
 
     ReConnect.app_config['penpal-status-transitions'].each do |transition|
       logger.info("transition from:#{transition["from"].inspect} to:#{transition["to"].inspect}")
