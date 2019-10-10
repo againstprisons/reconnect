@@ -1,8 +1,8 @@
 class ReConnect::Controllers::SystemConfigurationController < ReConnect::Controllers::ApplicationController
   add_route :get, "/"
   add_route :post, "/toggle", :method => :toggle
+  add_route :get, "/refresh", :method => :refresh
   add_route :post, "/refresh", :method => :refresh
-  add_route :post, "/refresh-dry", :method => :refresh_dry
   add_route :post, "/create-admin-penpal", :method => :create_admin_penpal
 
   def index
@@ -51,7 +51,6 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
         :title => @title,
         :quick_toggles => quick_toggles,
         :admin_profile_exists => admin_profile_exists,
-        :allow_config_dry_run => request.params["show-dryrun"].to_i == 1,
       })
     end
   end
@@ -96,33 +95,30 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     redirect to("/system/configuration")
   end
 
-  def refresh_dry
-    return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:configuration:refresh")
-
-    # refresh
-    output = ReConnect.app_config_refresh(:dry => true)
-
-    @title = t(:'system/configuration/refresh_global_config/title')
-    haml(:'system/layout', :locals => {:title => @title}) do
-      haml(:'system/configuration/refresh', :layout => false, :locals => {
-        :title => @title,
-        :dry_run => true,
-        :output => output,
-      })
-    end
-  end
-
   def refresh
     return halt 404 unless logged_in?
     return halt 404 unless has_role?("system:configuration:refresh")
 
-    session.delete(:we_changed_app_config)
+    @title = t(:'system/configuration/refresh_global_config/title')
 
-    unless ReConnect.app_config_refresh_pending || ReConnect::ServerUtils.app_server_has_multiple_workers?
-      flash :warning, t(:'system/configuration/refresh_global_config/not_required')
-      return redirect to("/system/configuration")
+    if request.get?
+      # do initial dry run
+      output = ReConnect.app_config_refresh(:dry => true)
+
+      return haml(:'system/layout', :locals => {:title => @title}) do
+        haml(:'system/configuration/refresh', :layout => false, :locals => {
+          :title => @title,
+          :output => output,
+          :has_warnings => output.map{|x| x[:warnings].count.positive?}.any?,
+          :dry_run => true,
+        })
+      end
     end
+
+    ## if we get here, this is a POST request ##
+
+    # clear banner
+    session.delete(:we_changed_app_config)
 
     # enable maintenance mode
     maint_cfg = ReConnect::Models::Config.where(:key => 'maintenance').first
@@ -143,16 +139,15 @@ class ReConnect::Controllers::SystemConfigurationController < ReConnect::Control
     end
 
     if ReConnect::ServerUtils.app_server_has_multiple_workers?
-      flash :success, t(:'system/configuration/refresh_global_config/success_restarting')
       ReConnect::ServerUtils.app_server_restart!
     end
 
-    @title = t(:'system/configuration/refresh_global_config/title')
-    haml(:'system/layout', :locals => {:title => @title}) do
+    return haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/configuration/refresh', :layout => false, :locals => {
         :title => @title,
-        :dry_run => false,
         :output => output,
+        :has_warnings => output.map{|x| x[:warnings].count.positive?}.any?,
+        :dry_run => false,
       })
     end
   end

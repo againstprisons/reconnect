@@ -6,22 +6,9 @@
       %i.fa.fa-pencil
       = t :'system/configuration/key_value/title'
 
-    %form{:method => "POST", :action => to('/system/configuration/refresh'), :style => 'display:inline-block'}
-      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      - refresh_enabled = ReConnect.app_config_refresh_pending.count.positive? || ReConnect::ServerUtils.app_server_has_multiple_workers? || settings.development?
-      %button.button.pure-button{:type => 'submit', :disabled => !refresh_enabled}
-        %i.fa.fa-refresh
-        - if refresh_enabled
-          = t :'system/configuration/refresh_global_config/title'
-        - else 
-          = t :'system/configuration/refresh_global_config/disabled'
-
-    - if allow_config_dry_run
-      %form{:method => "POST", :action => to('/system/configuration/refresh-dry'), :style => 'display:inline-block'}
-        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-        %button.button.pure-button{:type => 'submit'}
-          %i.fa.fa-refresh
-          = t :'system/configuration/refresh_global_config/dry_run'
+    %a.button.pure-button{:href => to('/system/configuration/refresh')}
+      %i.fa.fa-refresh= ""
+      = t(:'system/configuration/refresh_global_config/title')
 
   - if !admin_profile_exists && has_role?("system:configuration:admin_penpal")
     %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => url('/system/configuration/create-admin-penpal')}
@@ -76,13 +63,3 @@
         %a.pure-button.button.button-primary{:href => to('/system/configuration/filter')}
           %i.fa.fa-filter
           = t(:'system/configuration/filter/title')
-
-
-  .page-footer.y-margin-large
-    %span= t(:'actions')
-
-    %a{:href => url("/system/configuration?show-dryrun=#{allow_config_dry_run ? 0 : 1}")}
-      - if allow_config_dry_run
-        = t(:'system/configuration/refresh_global_config/hide_dry_run')
-      - else
-        = t(:'system/configuration/refresh_global_config/show_dry_run')

@@ -5,31 +5,54 @@
     %i.fa.fa-chevron-left
     = t :back
 
-  %p
-    - if dry_run
-      = t(:'system/configuration/refresh_global_config/summary/content_dry')
-    - else
-      = t(:'system/configuration/refresh_global_config/summary/content')
+  - if dry_run
+    %p
+      = t(:'system/configuration/refresh_global_config/content/dry_run')
 
-  - if output.count.zero?
-    = t(:'system/configuration/refresh_global_config/summary/no_keys')
   - else
-    %ul.block-list
-      - output.each do |v|
-        %li
-          .y-margin-large
-            %code.code-line
-              &= v[:key]
+    .message.message-success
+      - if ReConnect::ServerUtils.app_server_has_multiple_workers?
+        = t(:'system/configuration/refresh_global_config/success_restarting')
+      - else
+        = t(:'system/configuration/refresh_global_config/success')
 
+  %p
+    = t(:'system/configuration/refresh_global_config/content/list_below')
+
+  %ul.block-list
+    - output.each do |v|
+      %li
+        .y-margin-large
+          - if v[:warnings].count.zero?
+            %i.fa.fa-check= ""
+          - else
+            %i.fa.fa-warning= ""
+
+          %code.code-line
+            &= v[:key]
+
+          - if v[:warnings].count.positive?
             %ul.block-list
-              - if v[:warnings].count.zero?
+              - v[:warnings].each do |warning|
                 %li
                   .y-margin-large
-                    = t(:'system/configuration/refresh_global_config/summary/no_warnings')
+                    %code.code-line
+                      &= warning
 
-              - else
-                - v[:warnings].each do |warning|
-                  %li
-                    .y-margin-large
-                      %code.code-line
-                        &= warning
+  - if dry_run
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+      - if has_warnings
+        .message.message-error
+          = t(:'system/configuration/refresh_global_config/parse/warning')
+      - else
+        .message.message-success
+          = t(:'system/configuration/refresh_global_config/parse/success')
+
+      %p
+        = t(:'system/configuration/refresh_global_config/above_submit')
+
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-refresh= ""
+        = t(:'system/configuration/refresh_global_config/submit')
