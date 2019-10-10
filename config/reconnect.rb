@@ -139,18 +139,9 @@ module ReConnect
   end
 
   def self.app_config_refresh(opts = {})
-    if @app_config_refresh_pending.count.zero?
-      return [] unless (opts[:force] || opts[:dry])
-    end
-
     output = []
-    ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
-      unless @app_config_refresh_pending.include?(key)
-        unless opts[:force] || opts[:dry]
-          next
-        end
-      end
 
+    ReConnect::APP_CONFIG_ENTRIES.each do |key, desc|
       cfg = ReConnect::Models::Config.where(:key => key).first
       if cfg
         value = cfg.value
@@ -189,10 +180,7 @@ module ReConnect
       output << {:key => key, :warnings => warnings}
     end
 
-    if !opts[:dry]
-      @app_config_refresh_pending.clear
-    end
-
+    @app_config_refresh_pending.clear if !opts[:dry]
     output
   end
 
