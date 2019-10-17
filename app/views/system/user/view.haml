@@ -36,6 +36,11 @@
             %i.fa.fa-plus= ""
             = t(:'system/user/actions/create_penpal_obj')
 
+        - if has_role?("system:user:groups")
+          %a.pure-button.button{:href => "/system/user/#{user.id}/groups"}
+            %i.fa.fa-group= ""
+            = t(:'system/user/actions/groups')
+
         - if has_role?("system:user:roles")
           %a.pure-button.button{:href => "/system/user/#{user.id}/roles"}
             %i.fa.fa-list-alt= ""
