@@ -1,0 +1,40 @@
+.system-admin-group
+  %h1= title
+
+  %a.pure-button.button{:href => url("/system/group/create")}
+    %i.fa.fa-plus= ""
+    = t(:'system/group/create_group')
+
+  .y-margin-large= ""
+
+  - if groups.empty?
+    .message.message-warning
+      = t(:'system/group/no_groups')
+
+  - else
+    %table.pure-table.pure-table-bordered.pure-table-striped
+      %thead
+        %tr
+          %th= ""
+          %th= ""
+          %th= t(:'group_name')
+          %th= t(:'system/group/item/member_count')
+
+      %tbody
+        - groups.each do |g|
+          %tr
+            %td
+              %a.pure-button.button{:href => g[:link], :style => 'margin: 0 !important;'}
+                %i.fa.fa-pencil-square-o= ""
+                = t(:'system/group/item/edit')
+
+            %td
+              - if g[:requires_2fa]
+                %span{:title => t(:'system/group/item/requires_2fa')}
+                  %i.fa.fa-lock= ""
+
+            %td
+              &= g[:name]
+
+            %td
+              &= g[:user_count]

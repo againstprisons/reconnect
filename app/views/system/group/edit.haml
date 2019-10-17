@@ -1,0 +1,128 @@
+.system-admin-group-edit
+  %h1= title
+
+  %a.pure-button.button{:href => url("/system/group")}
+    %i.fa.fa-chevron-left= ""
+    = t(:'back')
+
+  %p
+    = t(:'system/group/edit/info',
+      :members => group[:members].count,
+      :created => group[:created])
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => url("/system/group/#{group[:id]}/settings")}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %h1= t(:'system/group/edit/settings/section_title')
+
+        %label{:for => 'group_name_role'}= t(:'system/group/edit/settings/group_name_label')
+        %input#group_name_role{:type => 'text', :name => 'name', :required => true, :value => group[:name]}
+
+        %label{:for => 'edit_2fa'}
+          %input{:type => 'checkbox', :name => '2fa', :checked => group[:requires_2fa]}
+          = t(:'system/group/edit/settings/require_2fa_label')
+
+        %button.pure-button.button.button-success{:type => 'submit'}
+          %i.fa.fa-pencil-square-o= ""
+          = t(:'system/group/edit/settings/submit')
+
+        %a.pure-button.button.button-error{:href => url("/system/group/#{group[:id]}/delete")}
+          %i.fa.fa-trash= ""
+          = t(:'system/group/delete/title')
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/group/edit/roles/section_title')
+
+        - if group[:roles].empty?
+          .message.message-warning
+            = t(:'system/group/edit/roles/no_roles')
+
+        - else
+          %table.pure-table.pure-table-bordered.pure-table-striped
+            %thead
+              %tr
+                %th= ""
+                %th= t(:'role')
+
+            %tbody
+              - group[:roles].each do |role|
+                %tr
+                  %td
+                    %form{:method => 'POST', :action => url("/system/group/#{group[:id]}/roles/delete"), :style => 'display:inline-block'}
+                      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                      %input{:type => 'hidden', :name => 'grid', :value => role[:id]}
+
+                      %button.pure-button.button.button-error{:type => 'submit', :style => 'margin:0 !important'}
+                        %i.fa.fa-trash= ""
+                        = t(:'system/group/edit/roles/remove/submit')
+
+                  %td
+                    %code.code-line
+                      &= role[:role]
+
+          .y-margin-large= ""
+
+        - if group[:requires_2fa]
+          %a.pure-button.button.button-success{:href => url("/system/group/#{group[:id]}/roles/add")}
+            %i.fa.fa-plus= ""
+            = t(:'system/group/edit/roles/add/title')
+
+    .pure-u-1
+      .form-wrapped.x-margin
+        %h1= t(:'system/group/edit/members/section_title')
+
+        - if group[:members].empty?
+          .message.message-warning
+            = t(:'system/group/edit/members/no_members')
+
+        - else
+          %table.pure-table.pure-table-bordered.pure-table-striped
+            %thead
+              %tr
+                %th= ""
+                %th= t(:'name/first')
+                %th= t(:'name/last')
+                %th= t(:'pseudonym')
+                %th= t(:'system/group/edit/members/item/date_added')
+                %th= t(:'totp_enabled')
+                %th= t(:'user_id')
+
+            %tbody
+              - group[:members].each do |u|
+                %tr
+                  %td
+                    %a.pure-button.button{:href => u[:link], :style => 'margin: 0 !important;width:auto'}
+                      %i.fa.fa-link= ""
+                      = t(:'system/group/edit/members/item/view')
+
+                    %form{:method => 'POST', :action => url("/system/group/#{group[:id]}/remove-user"), :style => 'display:inline-block'}
+                      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                      %input{:type => 'hidden', :name => 'ugid', :value => u[:ids][:ug]}
+
+                      %button.pure-button.button.button-error{:type => 'submit', :style => 'margin:0 !important'}
+                        %i.fa.fa-trash= ""
+                        = t(:'system/group/edit/members/item/remove')
+
+                  %td
+                    &= u[:name][:first]
+
+                  %td
+                    &= u[:name][:last]
+
+                  %td
+                    &= u[:pseudonym]
+
+                  %td
+                    &= u[:added].strftime("%Y-%m-%d %H:%M")
+
+                  %td
+                    - if u[:totp_enabled]
+                      = t(:'bool/yes')
+                    - else
+                      = t(:'bool/no')
+
+                  %td
+                    &= u[:ids][:user]
+

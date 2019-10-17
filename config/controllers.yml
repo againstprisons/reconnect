@@ -88,6 +88,19 @@ controllers:
   - path: /system/user/:id
     controller: SystemUserViewController
 
+  - path: /system/group
+    controller: SystemGroupController
+  - path: /system/group/create
+    controller: SystemGroupCreateController
+  - path: /system/group/:id/delete
+    controller: SystemGroupDeleteController
+  - path: /system/group/:id/roles
+    controller: SystemGroupRolesController
+  - path: /system/group/:id/remove-user
+    controller: SystemGroupRemoveUserController
+  - path: /system/group/:id
+    controller: SystemGroupEditController
+
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
   - path: /system/configuration/mail

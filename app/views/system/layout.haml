@@ -22,6 +22,11 @@
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/penpal'}
                 = t :'system/penpal/title'
 
+          - if has_role?("system:group:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/group"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/group'}
+                = t :'system/group/title'
+
           - if has_role?("system:mass_email")
             %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/mass-email"))].compact}
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/mass-email'}
