@@ -96,6 +96,11 @@ class ReConnect::Controllers::SystemGroupEditController < ReConnect::Controllers
 
       @group.requires_2fa = true
     else
+      if @group.group_roles.count.positive?
+        flash :error, t(:'system/group/edit/settings/errors/has_roles_not_disabling_2fa')
+        return redirect url("/system/group/#{@group.id}")
+      end
+
       @group.requires_2fa = false
     end
 

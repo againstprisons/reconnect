@@ -584,6 +584,7 @@
 :'system/group/edit/settings/errors/group_name_none': "A group name must be provided."
 :'system/group/edit/settings/errors/group_name_conflict': "A group already exists with this name."
 :'system/group/edit/settings/errors/users_without_2fa': "Can't make this group require 2FA as there are users in the group who do not have 2FA enabled."
+:'system/group/edit/settings/errors/has_roles_not_disabling_2fa': "Can't disable 2FA for this group as this group has roles assigned."
 :'system/group/edit/settings/success': "Successfully saved settings."
 :'system/group/delete/title': "Delete group <%= group_name %>"
 :'system/group/delete/section_title': "Delete group"
