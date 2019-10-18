@@ -14,6 +14,7 @@ module ReConnect::Helpers::UserHelpers
   end
 
   def current_user
+    return nil unless logged_in?
     current_token.user
   end
 
@@ -35,20 +36,18 @@ module ReConnect::Helpers::UserHelpers
     u.email
   end
 
-  def has_role?(role, opts = {})
-    user = current_user
-    if opts[:user]
-      user = opts[:user]
-    else
-      return false unless logged_in?
+  def role_matches?(query, maybe_matches, opts = {})
+    if opts[:reject]
+      maybe_matches = maybe_matches.map do |m|
+        next nil unless m.start_with?("!")
+        m[1..-1]
+      end.compact
     end
 
-    parts = role.split(':')
-    roleparts = user.user_roles.map do |r|
-      r.role.split(':')
-    end
+    query_parts = query.split(':')
+    maybe_parts = maybe_matches.map{|x| x.split(':')}
 
-    roleparts.each do |rp|
+    maybe_parts.each do |rp|
       skip = false
       oksofar = true
 
@@ -57,7 +56,7 @@ module ReConnect::Helpers::UserHelpers
 
         if oksofar && rp[rpi] == '*'
           return true
-        elsif rp[rpi] != parts[rpi]
+        elsif rp[rpi] != query_parts[rpi]
           oksofar = false
           skip = true
         end
@@ -67,5 +66,20 @@ module ReConnect::Helpers::UserHelpers
     end
 
     false
+  end
+
+  def has_role?(role, opts = {})
+    user = opts[:user] || current_user
+    return false unless user
+
+    user_roles = [
+      user.user_roles.map(&:role),
+    ].flatten
+
+    if role_matches?(role, user_roles, :reject => true)
+      return false
+    end
+
+    return role_matches?(role, user_roles)
   end
 end
