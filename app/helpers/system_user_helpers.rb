@@ -43,9 +43,34 @@ module ReConnect::Helpers::SystemUserHelpers
     # role count
     data[:role_count] = u.user_roles.count
     data[:display_fields] << [
-      t(:'system/user/view/roles'),
+      t(:'system/user/view/role_count'),
       data[:role_count],
     ]
+
+    # group count
+    data[:group_count] = u.user_groups.count
+    data[:display_fields] << [
+      t(:'system/user/view/group_count'),
+      data[:group_count]
+    ]
+
+    # group data
+    data[:groups] = u.user_groups.map do |ug|
+      group = ug.group
+
+      {
+        :objs => {
+          :ug => ug,
+          :group => group,
+        },
+        :ids => {
+          :ug => ug.id,
+          :group => group.id,
+        },
+        :name => group.decrypt(:name),
+        :requires_2fa => group.requires_2fa,
+      }
+    end
 
     data
   end

@@ -2,6 +2,7 @@ require 'addressable'
 
 class ReConnect::Models::User < Sequel::Model
   one_to_many :user_roles
+  one_to_many :user_groups
   one_to_many :tokens
   one_to_one :penpal
 

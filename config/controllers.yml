@@ -69,6 +69,8 @@ controllers:
 
   - path: /system/user
     controller: SystemUserController
+  - path: /system/user/by-role
+    controller: SystemUserByRoleController
   - path: /system/user/create
     controller: SystemUserCreateController
   - path: /system/user/:id/penpal-obj
@@ -79,12 +81,27 @@ controllers:
     controller: SystemUserAuthenticationController
   - path: /system/user/:id/edit-profile
     controller: SystemUserEditProfileController
+  - path: /system/user/:id/groups
+    controller: SystemUserGroupsController
   - path: /system/user/:id/roles
     controller: SystemUserRolesController
   - path: /system/user/:id/roles/adv
     controller: SystemUserRolesAdvancedController
   - path: /system/user/:id
     controller: SystemUserViewController
+
+  - path: /system/group
+    controller: SystemGroupController
+  - path: /system/group/create
+    controller: SystemGroupCreateController
+  - path: /system/group/:id/delete
+    controller: SystemGroupDeleteController
+  - path: /system/group/:id/roles
+    controller: SystemGroupRolesController
+  - path: /system/group/:id/remove-user
+    controller: SystemGroupRemoveUserController
+  - path: /system/group/:id
+    controller: SystemGroupEditController
 
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
