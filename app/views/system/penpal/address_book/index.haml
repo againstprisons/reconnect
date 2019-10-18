@@ -52,7 +52,10 @@
                     = '(unknown)'
                 %td
                   - if pp[:pp_d][:prison]
-                    %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
+                    - if has_role?('system:prison:access')
+                      %a{:href => url("/system/prison/#{pp[:pp_d][:prison][:id]}"), :title => "id #{pp[:pp_d][:prison][:id]}"}
+                        &= pp[:pp_d][:prison][:name]
+                    - else
                       &= pp[:pp_d][:prison][:name]
                   - else
                     = '(unknown)'

@@ -6,43 +6,48 @@
     = t(:'back')
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    - can_edit = has_role?('system:prison:edit')
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/prison/edit/section_title')
 
     %label{:for => 'prison_name'}= t(:'system/prison/edit/name')
-    %input#prison_name{:type => 'text', :name => 'name', :value => prison_name, :required => true}
+    %input#prison_name{:type => 'text', :name => 'name', :value => prison_name, :required => true, :readonly => !can_edit}
 
     %label{:for => 'prison_address'}= t(:'system/prison/edit/address')
-    %textarea#prison_address{:name => 'address'}= prison_address
+    %textarea#prison_address{:name => 'address', :readonly => !can_edit}
+      &= prison_address
 
     %label{:for => 'prison_email'}= t(:'system/prison/edit/email')
-    %input#prison_email{:type => 'email', :name => 'email', :value => prison_email}
+    %input#prison_email{:type => 'email', :name => 'email', :value => prison_email, :readonly => !can_edit}
 
-    %button.pure-button.button.button-primary{:type => 'submit'}
-      %i.fa.fa-pencil
-      = t(:'system/prison/edit/submit')
+    - if can_edit
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-pencil= ""
+        = t(:'system/prison/edit/submit')
 
-  .form-wrapped
-    %h1= t(:'system/prison/edit/actions/section_title')
+  - if has_role?('system:user:access')
+    .form-wrapped
+      %h1= t(:'system/prison/edit/actions/section_title')
 
-    %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/search"}
+      %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/search"}
+        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+        %input{:type => 'hidden', :name => 'type', :value => 'prison'}
+        %input{:type => 'hidden', :name => 'search', :value => prison_id}
+
+        %button.pure-button.button{:type => 'submit'}
+          %i.fa.fa-search
+          = t(:'system/prison/edit/actions/list_penpals')
+
+  - if has_role?('system:prison:delete')
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => "/system/prison/#{prison_id}/delete"}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      %input{:type => 'hidden', :name => 'type', :value => 'prison'}
-      %input{:type => 'hidden', :name => 'search', :value => prison_id}
+      %h1= t(:'system/prison/delete/section_title')
 
-      %button.pure-button.button{:type => 'submit'}
-        %i.fa.fa-search
-        = t(:'system/prison/edit/actions/list_penpals')
+      %label{:for => 'delete_confirm'}
+        %input#delete_confirm{:type => 'checkbox', :required => true, :name => 'confirm'}
+        = t(:'system/prison/delete/confirm')
 
-  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => "/system/prison/#{prison_id}/delete"}
-    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-    %h1= t(:'system/prison/delete/section_title')
-
-    %label{:for => 'delete_confirm'}
-      %input#delete_confirm{:type => 'checkbox', :required => true, :name => 'confirm'}
-      = t(:'system/prison/delete/confirm')
-
-    %button.pure-button.button.button-error{:type => 'submit'}
-      %i.fa.fa-trash
-      = t(:'system/prison/delete/submit')
+      %button.pure-button.button.button-error{:type => 'submit'}
+        %i.fa.fa-trash
+        = t(:'system/prison/delete/submit')
 

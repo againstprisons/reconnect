@@ -5,7 +5,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
 
   def index(pid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:prison:edit")
+    return halt 404 unless has_role?("system:prison:access")
 
     @prison = ReConnect::Models::Prison[pid.to_i]
     return halt 404 unless @prison
@@ -26,6 +26,10 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
         })
       end
     end
+
+    # if we get here, this is a POST - we can view the page without the :edit
+    # permission but we can't make any changes, so reject here
+    return redirect request.path unless has_role?('system:prison:edit')
 
     p_name = request.params["name"]&.strip
     if p_name.nil? || p_name.empty?
@@ -51,7 +55,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
 
   def delete(pid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:prison:edit")
+    return halt 404 unless has_role?("system:prison:delete")
 
     @prison = ReConnect::Models::Prison[pid.to_i]
     return halt 404 unless @prison
