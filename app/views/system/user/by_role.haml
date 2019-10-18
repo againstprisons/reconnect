@@ -40,28 +40,29 @@
 
             %td
               %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
-                %li.y-margin
-                  %strong
-                    &= t(:'system/user/by_role/list/item/roles/user_roles')
+                - if u[:user_roles].count.positive?
+                  %li.y-margin
+                    %strong
+                      &= t(:'system/user/by_role/list/item/roles/user_roles')
 
-                  %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
-                    - u[:user_roles].each do |r|
-                      %li.y-margin
-                        %code.code-line
-                          &= r[:role]
+                    %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
+                      - u[:user_roles].each do |role|
+                        %li.y-margin
+                          %code.code-line
+                            &= role.role
 
-                - u[:groups].each do |r|
+                - u[:groups].each do |gid|
                   %li.y-margin
                     %strong
                       = succeed ':' do
                         = t(:'system/user/by_role/list/item/groups')
 
-                    %a{:href => r[:link]}
-                      &= r[:name]
+                    %a{:href => groups[gid][:link]}
+                      &= groups[gid][:name]
 
                     %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
-                      - r[:roles].each do |role|
+                      - groups[gid][:roles].each do |role|
                         %li.y-margin
                           %code.code-line
-                            &= role[:role]
+                            &= role.role
 
