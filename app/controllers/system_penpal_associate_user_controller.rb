@@ -4,7 +4,7 @@ class ReConnect::Controllers::SystemPenpalAssociateUserController < ReConnect::C
 
   def index(ppid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:user:access")
+    return halt 404 unless has_role?("system:user:association")
     return halt 404 unless has_role?("system:penpal:access")
 
     @penpal = ReConnect::Models::Penpal[ppid.to_i]

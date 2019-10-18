@@ -7,9 +7,11 @@ class ReConnect::Controllers::SystemUserPenpalObjectController < ReConnect::Cont
 
     @user = ReConnect::Models::User[uid.to_i]
     return halt 404 unless @user
-
     @penpal = @user.penpal
+
     unless @penpal
+      return halt 404 unless has_role?('system:user:association')
+
       @penpal = ReConnect::Models::Penpal.new_for_user(@user)
       @penpal.save
 

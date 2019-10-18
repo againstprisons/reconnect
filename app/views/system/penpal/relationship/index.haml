@@ -1,7 +1,7 @@
 .system-admin-penpal-relationship-index
   %h1= title
 
-  - unless relationship.confirmed
+  - if has_role?('system:penpal:relationship:confirm') && !relationship.confirmed
     %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/confirm")}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
       %h1= t(:'system/penpal/relationships/confirm/section_title')
@@ -63,22 +63,26 @@
           - if email_approved[:by]
             %p= t(:'system/penpal/relationships/email_approve/approved_by', :name => email_approved[:by][:name], :id => email_approved[:by][:id])
 
-          %a.pure-button.button.button-warning{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
-            %i.fa.fa-times
-            = t(:'system/penpal/relationships/email_approve/revoke')
+        - if has_role?('system:penpal:relationship:email_approve')
+          - if email_approved[:approved]
+            %a.pure-button.button.button-warning{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
+              %i.fa.fa-times
+              = t(:'system/penpal/relationships/email_approve/revoke')
 
-        - else
-          %a.pure-button.button.button-success{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
-            %i.fa.fa-check
-            = t(:'system/penpal/relationships/email_approve/approve')
+          - else
+            %a.pure-button.button.button-success{:href => url("/system/penpal/relationship/#{relationship.id}/email-approve")}
+              %i.fa.fa-check
+              = t(:'system/penpal/relationships/email_approve/approve')
 
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationships/actions')
 
-        %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
-          %i.fa.fa-list
-          = t(:'system/penpal/relationships/actions/view_correspondence')
+        - if has_role?('system:penpal:relationship:correspondence:access')
+          %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
+            %i.fa.fa-list
+            = t(:'system/penpal/relationships/actions/view_correspondence')
 
-        %a.pure-button.button.button-error{:href => "/system/penpal/relationship/#{relationship.id}/delete"}
-          %i.fa.fa-trash
-          = t(:'system/penpal/relationships/actions/delete')
+        - if has_role?('system:penpal:relationship:delete')
+          %a.pure-button.button.button-error{:href => "/system/penpal/relationship/#{relationship.id}/delete"}
+            %i.fa.fa-trash
+            = t(:'system/penpal/relationships/actions/delete')

@@ -8,7 +8,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
 
   def index(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:access")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -66,7 +66,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
 
   def email_approve(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:email_approve")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -100,7 +100,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
 
   def notes(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:notes")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -120,7 +120,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
 
   def confirm(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:confirm")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship

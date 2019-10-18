@@ -23,30 +23,30 @@
 
         - if has_role?("system:user:edit")
           %a.pure-button.button{:href => "/system/user/#{user.id}/edit-profile"}
-            %i.fa.fa-pencil
+            %i.fa.fa-pencil= ""
             = t(:'system/user/actions/edit_profile')
 
-        - if has_role?("system:penpal:access")
+        - if has_role?("system:penpal:access") && penpal_obj
           %a.pure-button.button{:href => "/system/user/#{user.id}/penpal-obj"}
-            - if penpal_obj.nil?
-              %i.fa.fa-plus
-              = t(:'system/user/actions/create_penpal_obj')
+            %i.fa.fa-user= ""
+            = t(:'system/user/actions/jump_to_penpal')
 
-            - else
-              %i.fa.fa-user
-              = t(:'system/user/actions/jump_to_penpal')
+        - elsif has_role?('system:user:association') && penpal_obj.nil?
+          %a.pure-button.button{:href => "/system/user/#{user.id}/penpal-obj"}
+            %i.fa.fa-plus= ""
+            = t(:'system/user/actions/create_penpal_obj')
 
         - if has_role?("system:user:roles")
           %a.pure-button.button{:href => "/system/user/#{user.id}/roles"}
-            %i.fa.fa-list-alt
+            %i.fa.fa-list-alt= ""
             = t(:'system/user/actions/roles')
 
         - if has_role?("system:user:auth_options")
           %a.pure-button.button.button-warning{:href => "/system/user/#{user.id}/auth"}
-            %i.fa.fa-lock
+            %i.fa.fa-lock= ""
             = t(:'system/user/actions/auth_options')
 
         - if has_role?("system:user:disable")
           %a.pure-button.button.button-error{:href => "/system/user/#{user.id}/disable"}
-            %i.fa.fa-remove
+            %i.fa.fa-remove= ""
             = t(:'system/user/actions/disable_delete')

@@ -21,43 +21,45 @@
               %span
                 &= d.last
 
-      .form-wrapped.x-margin
-        %h1= t(:'system/penpal/view/relationships/create/title')
+      - if has_role?('system:penpal:relationship:create')
+        .form-wrapped.x-margin
+          %h1= t(:'system/penpal/view/relationships/create/title')
 
-        - if copied_link
+          - if copied_link
+            %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/relationship/create"}
+              %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+              %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
+              %input{:type => 'hidden', :name => 'penpal_two', :value => copied_link[:id]}
+
+              %button.pure-button.button.button-primary{:type => 'submit'}
+                %i.fa.fa-link
+                = t(:'system/penpal/view/relationships/create/from_link', copied_link)
+
+            %div{:style => 'border-bottom: 1px solid #000; margin: .5em 0 1em 0'}
+
           %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/relationship/create"}
             %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
             %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
-            %input{:type => 'hidden', :name => 'penpal_two', :value => copied_link[:id]}
 
-            %button.pure-button.button.button-primary{:type => 'submit'}
+            %label{:for => "other_penpal_id"}= t(:'system/penpal/view/relationships/create/from_id')
+            %input#other_penpal_id{:type => 'number', :name => 'penpal_two', :placeholder => t(:'penpal_id')}
+
+            %button.pure-button.button{:type => 'submit'}
               %i.fa.fa-link
-              = t(:'system/penpal/view/relationships/create/from_link', copied_link)
-
-          %div{:style => 'border-bottom: 1px solid #000; margin: .5em 0 1em 0'}
-
-        %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/system/penpal/relationship/create"}
-          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-          %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
-
-          %label{:for => "other_penpal_id"}= t(:'system/penpal/view/relationships/create/from_id')
-          %input#other_penpal_id{:type => 'number', :name => 'penpal_two', :placeholder => t(:'penpal_id')}
-
-          %button.pure-button.button{:type => 'submit'}
-            %i.fa.fa-link
-            = t(:'system/penpal/view/relationships/create/submit')
+              = t(:'system/penpal/view/relationships/create/submit')
 
     .pure-u-1.pure-u-md-1-2
-      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/#{penpal.id}/notes")}
-        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-        %h1= t(:'system/penpal/view/notes/section_title')
+      - if has_role?('system:penpal:notes')
+        %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/#{penpal.id}/notes")}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %h1= t(:'system/penpal/view/notes/section_title')
 
-        %textarea#relationship_notes{:name => "notes"}
-          &= notes
+          %textarea#relationship_notes{:name => "notes"}
+            &= notes
 
-        %button.pure-button.button{:type => 'submit'}
-          %i.fa.fa-pencil
-          = t(:'system/penpal/view/notes/submit')
+          %button.pure-button.button{:type => 'submit'}
+            %i.fa.fa-pencil
+            = t(:'system/penpal/view/notes/submit')
 
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/actions')
@@ -66,20 +68,20 @@
           .message.message-warning
             = t(:'system/penpal/actions/admin_profile_some_unavailable')
 
-        - if !is_admin_profile
+        - if has_role?('system:penpal:relationship:create') && !is_admin_profile
           %form{:method => 'POST', :action => "/system/penpal/#{penpal.id}/copy-link"}
             %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
             %button.pure-button.button.button-primary{:type => 'submit'}
               %i.fa.fa-clipboard
               = t(:'system/penpal/actions/copy_link')
 
-        - unless user
+        - if has_role?('system:penpal:edit') && !user
           %a.pure-button.button.button-primary{:href => "/system/penpal/#{penpal.id}/edit"}
             %i.fa.fa-pencil
             = t(:'system/penpal/actions/edit')
 
         - if !is_admin_profile
-          - if penpal.is_incarcerated && has_role?("system:email")
+          - if penpal.is_incarcerated && has_role?("system:mass_email")
             %a.pure-button.button{:href => url("/system/mass-email?ppid=#{penpal.id}")}
               %i.fa.fa-envelope
               = t(:'system/penpal/actions/send-email')
@@ -90,18 +92,20 @@
                 %i.fa.fa-user
                 = t(:'system/penpal/actions/jump_to_user')
 
-              %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/associate"}
-                %i.fa.fa-chain-broken
-                = t(:'system/penpal/actions/user_association_remove')
+              - if has_role?('system:user:association')
+                %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/associate"}
+                  %i.fa.fa-chain-broken
+                  = t(:'system/penpal/actions/user_association_remove')
 
             - else
               %a.pure-button.button{:href => "#", :disabled => true}
                 %i.fa.fa-user
                 = t(:'system/penpal/actions/jump_to_user/no_associated')
 
-              %a.pure-button.button.button-success{:href => "/system/penpal/#{penpal.id}/associate"}
-                %i.fa.fa-chain
-                = t(:'system/penpal/actions/user_association_add')
+              - if has_role?('system:user:association')
+                %a.pure-button.button.button-success{:href => "/system/penpal/#{penpal.id}/associate"}
+                  %i.fa.fa-chain
+                  = t(:'system/penpal/actions/user_association_add')
 
           - if has_role?("system:penpal:delete")
             %a.pure-button.button.button-error{:href => "/system/penpal/#{penpal.id}/delete"}
@@ -109,52 +113,53 @@
               = t(:'system/penpal/actions/delete')
 
     .pure-u-1
-      .form-wrapped.x-margin
-        %h1= t(:'system/penpal/view/relationships/title')
+      - if has_role?('system:penpal:relationship:access')
+        .form-wrapped.x-margin
+          %h1= t(:'system/penpal/view/relationships/title')
 
-        - if relationships == false
-          %p
-            = t(:'system/penpal/view/relationships/too_many', :count => penpal.relationship_count)
+          - if relationships == false
+            %p
+              = t(:'system/penpal/view/relationships/too_many', :count => penpal.relationship_count)
 
-          %p
-            %a.pure-button.button{:href => url("/system/penpal/#{penpal.id}?allrel=1")}
-              = t(:'system/penpal/view/relationships/view_all')
-
-        - else
-          - if relationships.empty?
-            = t(:'system/penpal/view/relationships/empty')
+            %p
+              %a.pure-button.button{:href => url("/system/penpal/#{penpal.id}?allrel=1")}
+                = t(:'system/penpal/view/relationships/view_all')
 
           - else
-            %table.pure-table.pure-table-bordered.pure-table-striped
-              %thead
-                %tr
-                  %th= ""
-                  %th= t(:'name')
-                  %th= t(:'pseudonym')
-                  %th= t(:'email_address')
-              %tbody
-                - relationships.each do |r|
+            - if relationships.empty?
+              = t(:'system/penpal/view/relationships/empty')
+
+            - else
+              %table.pure-table.pure-table-bordered.pure-table-striped
+                %thead
                   %tr
-                    %td
-                      %a.pure-button.button{:href => r[:link], :style => 'margin: 0 !important;'}
-                        %i.fa.fa-link
-                        = t(:'system/penpal/view/relationships/item/view_relationship')
+                    %th= ""
+                    %th= t(:'name')
+                    %th= t(:'pseudonym')
+                    %th= t(:'email_address')
+                %tbody
+                  - relationships.each do |r|
+                    %tr
+                      %td
+                        %a.pure-button.button{:href => r[:link], :style => 'margin: 0 !important;'}
+                          %i.fa.fa-link
+                          = t(:'system/penpal/view/relationships/item/view_relationship')
 
-                    %td
-                      &= r[:other_party][:name]
+                      %td
+                        &= r[:other_party][:name]
 
-                    %td
-                      &= r[:other_party][:pseudonym]
+                      %td
+                        &= r[:other_party][:pseudonym]
 
-                    %td
-                      - if r[:other_party][:is_incarcerated]
-                        = t(:'system/penpal/view/relationships/item/is_incarcerated')
-                      - else
-                        - if r[:other_party][:email]
-                          %a{:href => "mailto:#{r[:other_party][:email]}"}
-                            &= r[:other_party][:email]
+                      %td
+                        - if r[:other_party][:is_incarcerated]
+                          = t(:'system/penpal/view/relationships/item/is_incarcerated')
                         - else
-                          = t(:'unknown')
+                          - if r[:other_party][:email]
+                            %a{:href => "mailto:#{r[:other_party][:email]}"}
+                              &= r[:other_party][:email]
+                          - else
+                            = t(:'unknown')
 
     .pure-u-1
       - if !intro.strip.empty?

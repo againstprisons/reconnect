@@ -59,7 +59,7 @@ class ReConnect::Controllers::SystemUserController < ReConnect::Controllers::App
 
   def create_invite
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:user:access")
+    return halt 404 unless has_role?("system:user:invite")
 
     # parse expiry
     expiry_s = request.params["expiry"]&.strip&.downcase

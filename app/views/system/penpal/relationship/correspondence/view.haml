@@ -36,7 +36,7 @@
       .form-wrapped.x-margin
         %h1= t(:'system/penpal/relationship/correspondence/view/actions')
 
-        - if is_to_admin_profile
+        - if has_role?('system:penpal:relationship:correspondence:mark') && is_to_admin_profile
           %form.pure-form.pure-form-stacked{:method => 'POST', :action => mark_form_url}
             %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
             %button.pure-button.button{:type => 'submit', :class => [correspondence_d[:actioned] || 'button-success']}
@@ -51,27 +51,29 @@
               = t(:'system/penpal/relationship/correspondence/view/actions/send/already_sent')
 
           - else
-            %form.pure-form.pure-form-stacked{:method => 'POST', :action => send_form_url}
-              %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-              %input{:type => 'hidden', :name => 'send_method', :value => 'post'}
-              %button.pure-button.button{:type => 'submit'}
-                %i.fa.fa-check
-                = t(:'system/penpal/relationship/correspondence/view/actions/send/via_post')
+            - if has_role?('system:penpal:relationship:correspondence:send')
+              %form.pure-form.pure-form-stacked{:method => 'POST', :action => send_form_url}
+                %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                %input{:type => 'hidden', :name => 'send_method', :value => 'post'}
+                %button.pure-button.button{:type => 'submit'}
+                  %i.fa.fa-check
+                  = t(:'system/penpal/relationship/correspondence/view/actions/send/via_post')
 
-            %form.pure-form.pure-form-stacked{:method => 'POST', :action => send_form_url}
-              %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-              %input{:type => 'hidden', :name => 'send_method', :value => 'email'}
-              %button.pure-button.button{:type => 'submit'}
-                %i.fa.fa-check
-                = t(:'system/penpal/relationship/correspondence/view/actions/send/via_email')
+              %form.pure-form.pure-form-stacked{:method => 'POST', :action => send_form_url}
+                %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                %input{:type => 'hidden', :name => 'send_method', :value => 'email'}
+                %button.pure-button.button{:type => 'submit'}
+                  %i.fa.fa-check
+                  = t(:'system/penpal/relationship/correspondence/view/actions/send/via_email')
 
         %a.pure-button.button.button-primary{:href => download_form_url}
           %i.fa.fa-download
           = t(:'system/penpal/relationship/correspondence/view/actions/download')
 
-        %a.pure-button.button.button-error{:href => delete_form_url}
-          %i.fa.fa-trash
-          = t(:'system/penpal/relationship/correspondence/view/actions/delete')
+        - if has_role?('system:penpal:relationship:correspondence:delete')
+          %a.pure-button.button.button-error{:href => delete_form_url}
+            %i.fa.fa-trash
+            = t(:'system/penpal/relationship/correspondence/view/actions/delete')
 
     - if file_d[:display_html]
       .pure-u-1

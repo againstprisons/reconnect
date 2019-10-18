@@ -10,7 +10,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
   def index(rid, cid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:access")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -73,7 +73,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
   def mark(rid, cid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:mark")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -113,7 +113,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
   def send_form(rid, cid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:send")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -174,7 +174,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
   def download(rid, cid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:access")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -199,7 +199,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
   def delete(rid, cid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:delete")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship

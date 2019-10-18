@@ -6,7 +6,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipDeleteController < ReConne
 
   def index(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:relationship")
+    return halt 404 unless has_role?("system:penpal:relationship:delete")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship

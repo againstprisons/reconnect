@@ -8,7 +8,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
 
   def index(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:create")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship
@@ -135,7 +135,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
 
   def text(rid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:relationship:correspondence:create")
 
     @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
     return halt 404 unless @relationship

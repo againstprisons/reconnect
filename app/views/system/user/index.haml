@@ -30,14 +30,15 @@
           %i.fa.fa-search
           = t(:search)
 
-    .pure-u-1.pure-u-md-1-2
-      %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/user/create-invite'}
-        %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-        %h1= t(:'system/user/create_invite/title')
+    - if has_role?('system:user:invite')
+      .pure-u-1.pure-u-md-1-2
+        %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/user/create-invite'}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %h1= t(:'system/user/create_invite/title')
 
-        %label{:for => "invite_expiry"}= t(:'system/user/create_invite/expiry')
-        %input#invite_expiry{:name => 'expiry', :type => 'text', :value => 'in 1 day', :placeholder => t(:'system/user/create_invite/expiry')}
+          %label{:for => "invite_expiry"}= t(:'system/user/create_invite/expiry')
+          %input#invite_expiry{:name => 'expiry', :type => 'text', :value => 'in 1 day', :placeholder => t(:'system/user/create_invite/expiry')}
 
-        %button.pure-button.button.button-primary{:type => 'submit'}
-          %i.fa.fa-id-badge
-          = t(:'system/user/create_invite/submit')
+          %button.pure-button.button.button-primary{:type => 'submit'}
+            %i.fa.fa-id-badge= ""
+            = t(:'system/user/create_invite/submit')

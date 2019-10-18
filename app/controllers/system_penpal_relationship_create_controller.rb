@@ -4,7 +4,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCreateController < ReConne
 
   def index()
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:relationship")
+    return halt 404 unless has_role?("system:penpal:relationship:create")
 
     @title = t(:'system/penpal/relationships/create/title')
 

@@ -84,7 +84,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
 
   def notes(uid)
     return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:access")
+    return halt 404 unless has_role?("system:penpal:notes")
 
     @penpal = ReConnect::Models::Penpal[uid.to_i]
     return halt 404 unless @penpal
