@@ -1,0 +1,67 @@
+.system-admin-user-by-role
+  %h1= title
+
+  %a.pure-button.button{:href => to("/system/user")}
+    %i.fa.fa-chevron-left= ""
+    = t(:'new_search')
+
+  .form-wrapped
+    %h1= t(:'system/user/by_role/list/section_title')
+
+    %table.pure-table.pure-table-bordered.pure-table-striped
+      %thead
+        %tr
+          %th= ''
+          %th= t(:'name/first')
+          %th= t(:'name/last')
+          %th= t(:'pseudonym')
+          %th= t(:'user_id')
+          %th= t(:'system/user/by_role/list/item/roles')
+
+      %tbody
+        - users.each do |u|
+          %tr
+            %td
+              %a.pure-button.button{:href => u[:link], :style => 'margin: 0 !important;'}
+                %i.fa.fa-link
+                = t(:'system/user/by_role/list/item/view_user')
+
+            %td
+              &= u[:name].first
+
+            %td
+              &= u[:name].last
+
+            %td
+              &= u[:pseudonym]
+
+            %td
+              &= u[:user].id
+
+            %td
+              %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
+                %li.y-margin
+                  %strong
+                    &= t(:'system/user/by_role/list/item/roles/user_roles')
+
+                  %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
+                    - u[:user_roles].each do |r|
+                      %li.y-margin
+                        %code.code-line
+                          &= r[:role]
+
+                - u[:groups].each do |r|
+                  %li.y-margin
+                    %strong
+                      = succeed ':' do
+                        = t(:'system/user/by_role/list/item/groups')
+
+                    %a{:href => r[:link]}
+                      &= r[:name]
+
+                    %ul{:style => 'padding:0;margin:0 0 0 0.5em'}
+                      - r[:roles].each do |role|
+                        %li.y-margin
+                          %code.code-line
+                            &= role[:role]
+

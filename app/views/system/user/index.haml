@@ -15,7 +15,7 @@
         %input#user_id{:type => 'number', :name => 'id', :required => true, :placeholder => t(:user_id)}
 
         %button.pure-button.button.button-primary{:type => 'submit'}
-          %i.fa.fa-search
+          %i.fa.fa-search= ""
           = t(:search)
 
     .pure-u-1.pure-u-md-1-2
@@ -27,7 +27,7 @@
         %input#user_email{:type => 'email', :name => 'email', :required => true, :placeholder => t(:email_address)}
 
         %button.pure-button.button.button-primary{:type => 'submit'}
-          %i.fa.fa-search
+          %i.fa.fa-search= ""
           = t(:search)
 
     - if has_role?('system:user:invite')
@@ -42,3 +42,16 @@
           %button.pure-button.button.button-primary{:type => 'submit'}
             %i.fa.fa-id-badge= ""
             = t(:'system/user/create_invite/submit')
+
+    - if has_role?('system:user:roles')
+      .pure-u-1.pure-u-md-1-2
+        %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :action => '/system/user/by-role'}
+          %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+          %h1= t(:'system/user/by_role/title')
+
+          %label{:for => "role_search"}= t(:'system/user/by_role/role_label')
+          %input#role_search{:name => 'role', :type => 'text', :value => '*', :placeholder => t(:'system/user/by_role/role_label')}
+
+          %button.pure-button.button.button-primary{:type => 'submit'}
+            %i.fa.fa-search= ""
+            = t(:'system/user/by_role/submit')

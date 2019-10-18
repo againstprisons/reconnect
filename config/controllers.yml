@@ -69,6 +69,8 @@ controllers:
 
   - path: /system/user
     controller: SystemUserController
+  - path: /system/user/by-role
+    controller: SystemUserByRoleController
   - path: /system/user/create
     controller: SystemUserCreateController
   - path: /system/user/:id/penpal-obj
