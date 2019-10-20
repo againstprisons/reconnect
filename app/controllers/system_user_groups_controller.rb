@@ -59,7 +59,7 @@ class ReConnect::Controllers::SystemUserGroupsController < ReConnect::Controller
       return redirect url("/system/user/#{@user.id}/groups")
     end
 
-    if @group.requires_2fa && !totp_enabled
+    if @group.requires_2fa && !@totp_enabled
       flash :error, t(:'system/user/groups/available/errors/no_twofactor', :group_name => @group_name)
       return redirect url("/system/user/#{@user.id}/groups")
     end
