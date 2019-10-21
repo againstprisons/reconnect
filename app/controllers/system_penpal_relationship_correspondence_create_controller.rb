@@ -75,6 +75,19 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       params[:file][:tempfile].rewind
       data = params[:file][:tempfile].read
 
+      # Do a check for file size - if the file is over 15MB then outright reject it
+      if data.length > (15 * 1024 * 1024)
+        mime = MimeMagic.by_magic(data)
+        if mime == 'application/pdf' 
+          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large_pdf')
+        else
+          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large')
+        end
+
+        return redirect to request.path
+      end
+
+
       obj = ReConnect::Models::File.upload(data, :filename => fn)
 
       # do a quick check here to see if the data has "<p>" in it. if it does,

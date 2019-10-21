@@ -475,6 +475,8 @@
 :'system/penpal/relationship/correspondence/create/errors/no_text': "No text was provided."
 :'system/penpal/relationship/correspondence/create/errors/no_file': "No file was provided."
 :'system/penpal/relationship/correspondence/create/errors/archive_mode_no_date': "Archive mode is enabled but no date was provided for the correspondence."
+:'system/penpal/relationship/correspondence/create/errors/file_too_large': "The file you are trying to upload is too large."
+:'system/penpal/relationship/correspondence/create/errors/file_too_large_pdf': "The file you are trying to upload is too large. Because this is a PDF file, you can run the file through a PDF compression tool to reduce the file size. When you have done this, try uploading the compressed file."
 :'system/penpal/relationship/correspondence/create/errors/upload_failed': "The upload failed, please try again."
 :'system/penpal/relationship/correspondence/create/success': "The correspondence was created with ID <%= id %>."
 :'system/penpal/relationship/correspondence/view/title': "Viewing correspondence <%= id %>"
