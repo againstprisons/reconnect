@@ -75,18 +75,22 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
       params[:file][:tempfile].rewind
       data = params[:file][:tempfile].read
 
-      # Do a check for file size - if the file is over 15MB then outright reject it
-      if data.length > (15 * 1024 * 1024)
+      # Do a check for file size, with a maximum of 15MB. At the moment, we
+      # outright reject files over the limit, but in future we will attempt to
+      # compress/optimize PDF files if they're over the limit and then reject
+      # if the optimized file is over the limit.
+      max_length = (15 * 1024 * 1024)
+      if data.length > max_length
         mime = MimeMagic.by_magic(data)
-        if mime == 'application/pdf' 
-          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large_pdf')
+        if mime == 'application/pdf'
+          # TODO: PDF optimization
+          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large_pdf', :size => data.length, :max => max_length)
+          return redirect to request.path
         else
-          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large')
+          flash :error, t(:'system/penpal/relationship/correspondence/create/errors/file_too_large', :size => data.length, :max => max_length)
+          return redirect to request.path
         end
-
-        return redirect to request.path
       end
-
 
       obj = ReConnect::Models::File.upload(data, :filename => fn)
 
@@ -105,6 +109,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceCreateContro
 
       obj.save
     rescue => e
+      raise e
       flash :error, t(:'system/penpal/relationship/correspondence/create/errors/upload_failed')
       return redirect to request.path
     end
