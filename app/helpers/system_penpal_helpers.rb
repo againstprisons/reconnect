@@ -13,6 +13,7 @@ module ReConnect::Helpers::SystemPenpalHelpers
     name = "(unknown)" if name.nil? || name&.strip&.empty?
     data[:name] = name
     data[:display_fields] << [t(:'name/first'), name_a.first]
+    data[:display_fields] << [t(:'name/middle'), name_a[1]] if name_a.length == 3
     data[:display_fields] << [t(:'name/last'), name_a.last]
 
     # pseudonym

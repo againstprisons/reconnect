@@ -8,7 +8,12 @@ class ReConnect::Models::Penpal < Sequel::Model
 
   def get_name
     return self.user.get_name if self.user
-    [self.decrypt(:first_name), self.decrypt(:last_name)]
+
+    [
+      self.decrypt(:first_name),
+      self.decrypt(:middle_name),
+      self.decrypt(:last_name)
+    ]
   end
 
   def get_pseudonym

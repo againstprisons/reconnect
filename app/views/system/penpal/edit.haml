@@ -16,8 +16,11 @@
           %input#edit_first_name{:type => 'text', :name => 'first_name', :required => true, :placeholder => t(:'name/first'), :value => pp_data[:name_a].first}
       .pure-u-1.pure-u-md-1-2
         .x-margin
-          %label{:for => "edit_last_name"}= t(:'name/last')
-          %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last'), :value => pp_data[:name_a].last}
+          %label{:for => "edit_middle_name"}= t(:'name/middle')
+          %input#edit_middle_name{:type => 'text', :name => 'middle_name', :required => false, :placeholder => t(:'name/middle'), :value => pp_data[:name_a].length == 3 ? pp_data[:name_a][1] : nil}
+
+    %label{:for => "edit_last_name"}= t(:'name/last')
+    %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last'), :value => pp_data[:name_a].last}
 
     %label{:for => "edit_pseudonym"}= t(:'pseudonym')
     %input#edit_pseudonym{:type => 'text', :name => 'pseudonym', :required => false, :placeholder => t(:'pseudonym'), :value => pseudonym}

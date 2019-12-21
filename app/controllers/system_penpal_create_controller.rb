@@ -26,6 +26,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     end
 
     pp_first_name = request.params["first_name"]&.strip
+    pp_middle_name = request.params["middle_name"]&.strip
     pp_last_name = request.params["last_name"]&.strip
     if pp_first_name.nil? || pp_first_name.empty? || pp_last_name.nil? || pp_last_name.empty?
       flash :error, t(:'system/penpal/create/must_provide_name')
@@ -52,6 +53,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     @penpal = ReConnect::Models::Penpal.new(:user_id => nil, :is_incarcerated => true, :creation => Time.now)
     @penpal.save
     @penpal.encrypt(:first_name, pp_first_name)
+    @penpal.encrypt(:middle_name, pp_middle_name)
     @penpal.encrypt(:last_name, pp_last_name)
     @penpal.encrypt(:pseudonym, pp_pseudonym) if pp_pseudonym
     @penpal.encrypt(:prisoner_number, pp_prisoner_number)

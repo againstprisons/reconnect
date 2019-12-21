@@ -30,6 +30,7 @@
 :'password/change': "Change password"
 :'name': "Name"
 :'name/first': "First name"
+:'name/middle': "Middle name"
 :'name/last': "Last name"
 :'name/change': "Change your name"
 :'pseudonym': "Pseudonym"

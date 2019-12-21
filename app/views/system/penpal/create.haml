@@ -18,8 +18,11 @@
           %input#edit_first_name{:type => 'text', :name => 'first_name', :required => true, :placeholder => t(:'name/first')}
       .pure-u-1.pure-u-md-1-2
         .x-margin
-          %label{:for => "edit_last_name"}= t(:'name/last')
-          %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last')}
+          %label{:for => "edit_middle_name"}= t(:'name/middle')
+          %input#edit_middle_name{:type => 'text', :name => 'middle_name', :required => false, :placeholder => t(:'name/middle')}
+
+    %label{:for => "edit_last_name"}= t(:'name/last')
+    %input#edit_last_name{:type => 'text', :name => 'last_name', :required => true, :placeholder => t(:'name/last')}
 
     %label{:for => "edit_prisoner_number"}= t(:'prisoner_number')
     %input#edit_prisoner_number{:type => 'text', :name => 'prisoner_number', :required => false, :placeholder => t(:'prisoner_number')}
