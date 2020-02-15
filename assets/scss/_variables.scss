@@ -55,3 +55,9 @@ $color_warning_announcement_border: $color_symbolic_success_border;
 $color_codeline_fg: #000;
 $color_codeline_bg: #ddd;
 $color_codeline_border: #888;
+
+/* Blockquote stuff */
+$blockquote_quote_color: $color_dimmed_fg;
+$blockquote_left_margin: 1em;
+$blockquote_left_border: 6px solid $blockquote_quote_color;
+
