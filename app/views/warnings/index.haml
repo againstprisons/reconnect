@@ -1,3 +1,5 @@
+= haml :'warnings/announcements', :layout => false
+
 - if logged_in?
   - if has_role?("system:configuration:refresh")
     - if ReConnect.app_config_refresh_pending.count.positive? || session[:we_changed_app_config]

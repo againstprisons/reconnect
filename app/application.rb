@@ -25,6 +25,12 @@ class ReConnect::Application < Sinatra::Base
         :reason => current_user.decrypt(:disabled_reason),
       })
     end
+    
+    if logged_in?
+      @announcements = ReConnect::Models::Announcement.where(valid: true).all
+    else
+      @announcements = ReConnect::Models::Announcement.where(valid: true, only_logged_in: false).all
+    end
   end
 
   not_found do

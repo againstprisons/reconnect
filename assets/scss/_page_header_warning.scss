@@ -44,4 +44,11 @@
     background: $color_warning_system_penpal_copied_link_bg;
     border-bottom-color: $color_warning_system_penpal_copied_link_border;
   }
+  
+  &.announcement
+  {
+    color: $color_warning_announcement_fg;
+    background: $color_warning_announcement_bg;
+    border-bottom-color: $color_warning_announcement_border;
+  }
 }
