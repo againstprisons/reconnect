@@ -3,6 +3,8 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
 
   add_route :get, "/"
   add_route :post, "/"
+  add_route :get, "/rmincflag", :method => :rmincflag
+  add_route :post, "/rmincflag", :method => :rmincflag
 
   def index(ppid)
     return halt 404 unless logged_in?
@@ -83,7 +85,14 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     end
     @penpal.encrypt(:status, pp_status)
 
-    @penpal.is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
+    do_remove_incarcerated = false
+    is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"
+    if @penpal.is_incarcerated && !is_incarcerated
+      do_remove_incarcerated = true
+    else
+      @penpal.is_incarcerated = is_incarcerated
+    end
+
     @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
     @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
 
@@ -119,7 +128,70 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     ReConnect::Models::PenpalFilter.clear_filters_for(@penpal)
     ReConnect::Models::PenpalFilter.create_filters_for(@penpal)
 
+    if do_remove_incarcerated
+      flash :warning, t(:'system/penpal/edit/success_remove_incarcerated')
+      return redirect url("/system/penpal/#{@penpal.id}/edit/rmincflag")
+    end
+
     flash :success, t(:'system/penpal/edit/success')
     return redirect request.path
+  end
+
+  def rmincflag(ppid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:edit")
+
+    @penpal = ReConnect::Models::Penpal[ppid.to_i]
+    return halt 404 unless @penpal
+    return halt 418 unless @penpal.is_incarcerated
+
+    @penpal_name_a = @penpal.get_name
+    @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
+    @penpal_pseudonym = @penpal.decrypt(:pseudonym)
+    @penpal_pseudonym = nil if @penpal_pseudonym&.empty?
+    @title = t(:'system/penpal/edit/rmincflag/title', :name => @penpal_name, :pseudonym => @penpal_pseudonym, :id => @penpal.id)
+
+    # Generate a verification code and store it in the session if one
+    # doesn't already exist there
+    if session.key?(:rmincflag_apply_code)
+      @verify_code = session[:rmincflag_apply_code]
+    else
+      @verify_code = Random.new.rand(100000000 .. 999999999).to_s
+      session[:rmincflag_apply_code] = @verify_code
+    end
+    
+    if request.get?
+      return haml(:'system/layout', :locals => {:title => @title}) do
+        haml(:'system/penpal/edit_rmincflag', :layout => false, :locals => {
+          :title => @title,
+          :penpal => @penpal,
+          :pp_data => @pp_data,
+          :pseudonym => @penpal_pseudonym,
+          :name => @penpal_name,
+          :name_a => @penpal_name_a,
+          :verify_code => @verify_code,
+        })
+      end
+    end
+
+    # Check verification code
+    form_verify = request.params['verify']&.strip
+    if form_verify
+      form_verify = form_verify.split(' ').map{|x| x.split('-')}.flatten.join('')
+    end
+    if form_verify != session[:rmincflag_apply_code]
+      flash :error, t(:'system/penpal/edit/rmincflag/invalid_code')
+      return redirect request.path
+    end
+    session.delete(:rmincflag_apply_code)
+
+    # Remove incarcerated flag
+    @penpal.is_incarcerated = false
+    @penpal.save
+    ReConnect::Models::PenpalFilter.clear_filters_for(@penpal)
+    ReConnect::Models::PenpalFilter.create_filters_for(@penpal)
+
+    flash :success, t(:'system/penpal/edit/rmincflag/success')
+    redirect url("/system/penpal/#{@penpal.id}/edit")
   end
 end

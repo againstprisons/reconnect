@@ -24,6 +24,11 @@ gem 'mimemagic', '~> 0.3.3'
 gem 'chronic', '~> 0.10.2'
 gem 'reverse_markdown', '~> 1.1.0'
 
+if RUBY_VERSION >= '2.7'
+  gem 'e2mmap'
+  gem 'thwait'
+end
+
 group :development do
   gem 'sqlite3', '~> 1.3.13'
   gem 'pry', '~> 0.12.2'

@@ -1,0 +1,21 @@
+.system-admin-penpal-edit
+  %h1= title
+
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    %p
+      - code_display = verify_code.split('').each_slice(3).to_a.map(&:join).join('-')
+      = t(:'system/penpal/edit/rmincflag/content', :verify_code => code_display)
+
+    %label{:for => 'verify_code'}= t(:'system/penpal/edit/rmincflag/field')
+    %input#verify_code{:type => 'text', :required => true, :name => 'verify', :placeholder => '123-456-789'}
+      
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-pencil
+      = t(:'system/penpal/edit/rmincflag/submit')
+      
+    %a.pure-button.button{:href => "/system/penpal/#{penpal.id}/edit"}
+      %i.fa.fa-chevron-left
+      = t(:'system/penpal/edit/rmincflag/cancel')
+      
