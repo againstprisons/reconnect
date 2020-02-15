@@ -103,6 +103,8 @@ controllers:
   - path: /system/group/:id
     controller: SystemGroupEditController
 
+  - path: /system/configuration/announcements
+    controller: SystemConfigurationAnnouncementsController
   - path: /system/configuration/site-org-name
     controller: SystemConfigurationSiteOrgNameController
   - path: /system/configuration/mail

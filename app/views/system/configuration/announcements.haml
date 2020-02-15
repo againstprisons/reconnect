@@ -1,0 +1,64 @@
+.system-admin-configuration-announcement
+  %h1= title
+
+  %a.pure-button.button{:href => to('/system/configuration')}
+    %i.fa.fa-chevron-left
+    = t :back
+
+  .form-wrapped
+    %h1= t(:'system/configuration/announcements/view/section_title')
+    
+    - if announcements.empty?
+      .message.message-warning
+        = t(:'system/configuration/announcements/view/none')
+
+    %ul.block-list
+      - announcements.each do |an|
+        %li.system-configuration-announcement-entry
+          %ul.inline-list
+            %li
+              = t(:'system/configuration/announcements/view/created', :ts => an.created)
+            - if an.only_logged_in
+              %li
+                = t(:'system/configuration/announcements/view/only_logged_in')
+            %li
+              = t(:'system/configuration/announcements/view/announcement_id', :id => an.id)
+
+          %blockquote.blockquote-plain
+            = an.message
+          
+          - if has_role?("system:configuration:announcements:modify")
+            %form.inline-form{:method => 'POST', :action => to("/system/configuration/announcements/delete")}
+              %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+              %input{:type => 'hidden', :name => 'id', :value => an.id}
+              %button.pure-button.button.button-error{:type => 'submit'}
+                %i.fa.fa-trash= ""
+                = t(:'system/configuration/announcements/view/actions/delete')
+
+            %form.inline-form{:method => 'POST', :action => to("/system/configuration/announcements/toggle")}
+              %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+              %input{:type => 'hidden', :name => 'id', :value => an.id}
+              %button.pure-button.button{:type => 'submit', :class => (an.valid ? 'button-warning' : 'button-primary')}
+                - if an.valid
+                  %i.fa.fa-times= ""
+                  = t(:'system/configuration/announcements/view/actions/disable')
+                - else
+                  %i.fa.fa-check= ""
+                  = t(:'system/configuration/announcements/view/actions/enable')
+
+  - if has_role?("system:configuration:announcements:create")
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => to("/system/configuration/announcements/create")}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %h1= t(:'system/configuration/announcements/create/section_title')
+      
+      %label{:for => 'message'}
+        = t(:'system/configuration/announcements/create/message')
+      %input#message{:name => 'message', :type => 'text', :required => 'true'}
+      
+      %label{:for => 'only_logged_in'}
+        %input#only_logged_in{:name => 'only_logged_in', :type => 'checkbox'}
+        = t(:'system/configuration/announcements/create/only_logged_in')
+        
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        %i.fa.fa-plus= ""
+        = t(:'system/configuration/announcements/create/submit')
