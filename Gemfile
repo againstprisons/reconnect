@@ -23,11 +23,8 @@ gem 'sidekiq-scheduler', '~> 3.0.0'
 gem 'mimemagic', '~> 0.3.3'
 gem 'chronic', '~> 0.10.2'
 gem 'reverse_markdown', '~> 1.1.0'
-
-if RUBY_VERSION >= '2.7'
-  gem 'e2mmap'
-  gem 'thwait'
-end
+gem 'e2mmap', '~> 0.1.0'
+gem 'thwait', '~> 0.1.0'
 
 group :development do
   gem 'sqlite3', '~> 1.3.13'
