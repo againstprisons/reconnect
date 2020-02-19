@@ -4,6 +4,7 @@ class ReConnect::Controllers::SystemFilesInspectController < ReConnect::Controll
   add_route :get, "/delete", :method => :delete
   add_route :post, "/delete", :method => :delete
   add_route :post, "/mime-type", :method => :mime_type
+  add_route :post, "/replace", :method => :replace
 
   def index(fid)
     return halt 404 unless logged_in?
@@ -83,6 +84,46 @@ class ReConnect::Controllers::SystemFilesInspectController < ReConnect::Controll
     @file.save
 
     flash :success, t(:'system/files/inspect/mime_type/success', :old => old, :new => mime)
+    return redirect to("/system/files/#{@file.file_id}")
+  end
+  
+  def replace(fid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:files:inspect")
+    return halt 500 unless params[:file]
+    
+    @file = ReConnect::Models::File.where(:file_id => fid).first
+    return halt 404 unless @file
+    
+    # Save old file hash so we can delete the file
+    old_digest = @file.file_hash
+
+    begin
+      fn = params[:file][:filename]
+      params[:file][:tempfile].rewind
+      data = params[:file][:tempfile].read
+
+      # Replace file
+      @file.replace(fn, data)
+      @file.save
+
+    rescue => e
+      flash :error, t(:'system/files/inspect/replace/upload_exception', :err => e)
+      return redirect to("/system/files/#{@file.file_id}")
+    end
+    
+    begin
+      # Delete old file
+      old_dirname = File.join(ReConnect.app_config["file-storage-dir"], old_digest[0..1])
+      old_filepath = File.join(old_dirname, old_digest)
+      File.delete(old_filepath)
+      
+    rescue => e
+      flash :error, t(:'system/files/inspect/replace/unlink_exception', :err => e)
+      return redirect to("/system/files/#{@file.file_id}")
+    end
+
+    flash :success, t(:'system/files/inspect/replace/success')
     return redirect to("/system/files/#{@file.file_id}")
   end
 end

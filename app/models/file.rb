@@ -4,13 +4,25 @@ require 'digest'
 
 class ReConnect::Models::File < Sequel::Model
   def self.upload(data, opts = {})
-    filename = opts[:filename]
-
     fileid = ReConnect::Crypto.generate_token
-    mime = MimeMagic.by_magic(data)
+    obj = self.new(file_id: fileid, creation: DateTime.now)
+    obj.replace(opts[:filename], data)
+    obj.save
 
+    obj
+  end
+  
+  def replace(filename, data)
+    mime = MimeMagic.by_magic(data)
+    unless filename
+      filename = "unknown"
+      if mime && mime.extensions.count.positive?
+        filename = "#{filename}.#{mime.extensions.first}"
+      end
+    end
+    
     # Encrypt file
-    encrypted = ReConnect::Crypto.encrypt("file", fileid, nil, data)
+    encrypted = ReConnect::Crypto.encrypt("file", self.file_id, nil, data)
 
     # Hash it
     digest = Digest::SHA512.hexdigest(encrypted)
@@ -27,17 +39,10 @@ class ReConnect::Models::File < Sequel::Model
     File.open(filepath, "wb+") do |f|
       f.write(encrypted)
     end
-
-    obj = self.new({
-      :file_id => fileid,
-      :creation => DateTime.now,
-      :file_hash => digest,
-      :mime_type => mime,
-      :original_fn => filename,
-    })
-
-    obj.save
-    obj
+    
+    self.file_hash = digest
+    self.mime_type = mime
+    self.original_fn = filename
   end
 
   def generate_download_token(user)
