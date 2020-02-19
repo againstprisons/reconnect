@@ -1,3 +1,5 @@
+require 'mimemagic'
+
 class ReConnect::Controllers::StaticController < ReConnect::Controllers::ApplicationController
   VENDOR_WHITELIST = [
     "/purecss/build",
@@ -33,6 +35,7 @@ class ReConnect::Controllers::StaticController < ReConnect::Controllers::Applica
     return halt 404, "" unless VENDOR_WHITELIST.map{|x| fn.start_with?(x)}.any?
 
     return halt 404, "" unless File.file? path
+    content_type MimeMagic.by_path(path)
     send_file path
   end
 
@@ -46,6 +49,7 @@ class ReConnect::Controllers::StaticController < ReConnect::Controllers::Applica
     end
 
     return halt 404, "" unless File.file? path
+    content_type MimeMagic.by_path(path)
     send_file path
   end
 end
