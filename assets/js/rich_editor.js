@@ -6,7 +6,6 @@ let genericErrorMessage = (
 )
 
 let editorMaxTries = 10
-var editors = {}
 let editorConfig = {
   removePlugins: ['ImagePlugin'],
   toolbar: [
@@ -25,12 +24,14 @@ let editorConfig = {
 }
 
 export const enableEditor = (editorElement) => {
+  window.reconnect.rich_editors = window.reconnect.rich_editors || {}
+
   if (typeof(editorElement) !== "object") return
 
-  if (typeof(editors[editorElement]) === "undefined") {
+  if (typeof(window.reconnect.rich_editors[editorElement]) === "undefined") {
     var messageElement = document.createElement('div')
     editorElement.insertAdjacentElement('beforebegin', messageElement)
-    editors[editorElement] = {
+    window.reconnect.rich_editors[editorElement] = {
       messageElement: messageElement,
       editorTries: 1,
     }
@@ -38,7 +39,7 @@ export const enableEditor = (editorElement) => {
 
   const setMessage = (classes, message) => {
     if (typeof(classes) === "undefined") var classes = ""
-    var el = editors[editorElement].messageElement
+    var el = window.reconnect.rich_editors[editorElement].messageElement
     el.className = `message js-message ${classes}`
 
     if (message) {
@@ -50,12 +51,12 @@ export const enableEditor = (editorElement) => {
     }
   }
 
-  console.log("Trying to load editor on element", editorElement, "try number", editors[editorElement].editorTries)
+  console.log("Trying to load editor on element", editorElement, "try number", window.reconnect.rich_editors[editorElement].editorTries)
   setMessage('message-warning', loadingMessage)
 
   if (typeof(ClassicEditor) === "undefined") {
-    editors[editorElement].editorTries = editors[editorElement].editorTries + 1
-    if (editors[editorElement].editorTries > editorMaxTries) {
+    window.reconnect.rich_editors[editorElement].editorTries = window.reconnect.rich_editors[editorElement].editorTries + 1
+    if (window.reconnect.rich_editors[editorElement].editorTries > editorMaxTries) {
       console.error("Timed out trying to load editor on element", editorElement)
       setMessage('message-error', genericErrorMessage)
       return
@@ -68,7 +69,7 @@ export const enableEditor = (editorElement) => {
   console.log("ClassicEditor loaded, creating on element", editorElement)
   ClassicEditor.create(editorElement, editorConfig)
     .then((editor) => {
-      editors[editorElement].editorObject = editor
+      window.reconnect.rich_editors[editorElement].editorObject = editor
 
       console.log("Editor created on element", editorElement)
       setMessage(undefined, undefined)
