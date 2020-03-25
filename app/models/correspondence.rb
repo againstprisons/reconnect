@@ -71,6 +71,10 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     return unless relationship
 
     if penpal_receiving.is_incarcerated
+      if ReConnect.app_config['disable-email-to-prisons']
+        return self.send_alert!
+      end
+
       if relationship.email_approved
         out = self.send_email_to_prison!
         if out.is_a? ReConnect::Models::EmailQueue
@@ -152,6 +156,8 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     data = {
       :link_to_correspondence => url.to_s,
       :relationship_confirmed => relationship.confirmed,
+      :email_approved => relationship.email_approved,
+      :email_to_prison_disabled => ReConnect.app_config['disable-email-to-prisons'],
       :penpal_sending => {
         :id => penpal_sending.id,
         :name => {

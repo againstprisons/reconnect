@@ -20,6 +20,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @penpal_status = @penpal.decrypt(:status)&.strip
     @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
+    @sending_enabled = false if ReConnect.app_config['disable-outside-correspondence-creation']
     return halt 418 unless @sending_enabled
 
     @penpal_name = @penpal.get_pseudonym
@@ -117,6 +118,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @penpal_status = @penpal.decrypt(:status)&.strip
     @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
+    @sending_enabled = false if ReConnect.app_config['disable-outside-correspondence-creation']
     return halt 418 unless @sending_enabled
 
     @penpal_name = @penpal.get_pseudonym

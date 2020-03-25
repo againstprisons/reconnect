@@ -8,6 +8,13 @@ and
 
 <%= penpal_receiving[:name][:joined] %> <% if penpal_receiving[:name][:pseudonym] %>(<%= penpal_receiving[:name][:pseudonym] %>) <% end %>(ID <%= penpal_receiving[:id] %>)
 
+<% if email_to_prison_disabled %>
+This alert is being sent as emails into prisons are disabled site-wide.
+<% if email_approved %>
+This relationship has email approval, but an email is not being sent into the 
+prison because of the site configuration.
+<% end %><% end %>
+
 <% unless relationship_confirmed %>
 This correspondence is in a relationship that is unconfirmed.
 <% end %>

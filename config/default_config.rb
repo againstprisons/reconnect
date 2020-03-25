@@ -89,7 +89,15 @@ module ReConnect
     "admin-profile-id" => {
       :type => :number,
       :default => 0,
-    }
+    },
+    "disable-email-to-prisons" => {
+      :type => :bool,
+      :default => false,
+    },
+    "disable-outside-correspondence-creation" => {
+      :type => :bool,
+      :default => false,
+    },
   }
 
   class Application

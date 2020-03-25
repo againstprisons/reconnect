@@ -510,6 +510,7 @@
 :'system/penpal/relationship/correspondence/view/actions/send/via_email/success': "This correspondence has been queued for sending via email."
 :'system/penpal/relationship/correspondence/view/actions/send/via_email/invalid_prison': "Failed to send via email as the receiving penpal does not have a prison set, or the prison does not have an email address set."
 :'system/penpal/relationship/correspondence/view/actions/send/can_not_mark_outside': "Can't send correspondence where the receiving penpal is not incarcerated."
+:'system/penpal/relationship/correspondence/view/actions/send/prison_email_disabled_warning': "Automatic emails into prisons are disabled, however you can override this and send this correspondence as an email to the prison by clicking the \"Send correspondence to prison via email\" button below."
 :'system/penpal/relationship/correspondence/view/actions/send/invalid_method': "An invalid sending method was selected. Please try again."
 :'system/penpal/relationship/correspondence/view/actions/download': "Download correspondence"
 :'system/penpal/relationship/correspondence/view/actions/delete': "Delete"

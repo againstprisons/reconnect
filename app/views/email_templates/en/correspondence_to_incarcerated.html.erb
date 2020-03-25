@@ -14,6 +14,19 @@
   (ID <%= penpal_receiving[:id] %>)
 </p>
 
+<% if email_to_prison_disabled %>
+  <p>
+    <strong>
+      This alert is being sent as emails into prisons are disabled site-wide.
+    </strong>
+
+    <% if email_approved %>
+      This relationship has email approval, but an email is not being sent
+      into the prison because of the site configuration.
+    <% end %>
+  </p>
+<% end %>
+
 <% unless relationship_confirmed %>
   <p>
     <strong>This correspondence is in a relationship that is unconfirmed.</strong>

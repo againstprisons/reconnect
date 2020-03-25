@@ -51,6 +51,10 @@
               = t(:'system/penpal/relationship/correspondence/view/actions/send/already_sent')
 
           - else
+            - if ReConnect.app_config['disable-email-to-prisons']
+              .message.message-warning
+                = t(:'system/penpal/relationship/correspondence/view/actions/send/prison_email_disabled_warning')
+
             - if has_role?('system:penpal:relationship:correspondence:send')
               %form.pure-form.pure-form-stacked{:method => 'POST', :action => send_form_url}
                 %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
