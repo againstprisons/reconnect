@@ -30,6 +30,14 @@ module ReConnect
       :type => :text,
       :default => '18 years ago',
     },
+    "signup-terms-agree-enabled" => {
+      :type => :bool,
+      :default => false,
+    },
+    "signup-terms-agree-text" => {
+      :type => :text,
+      :default => 'I confirm that I am over 18 years old',
+    },
     "email-from" => {
       :type => :text,
       :default => 'reconnect@example.com',

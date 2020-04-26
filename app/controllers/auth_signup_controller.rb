@@ -72,6 +72,13 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
         return redirect request.path
       end
     end
+    
+    if ReConnect.app_config['signup-terms-agree-enabled']
+      if request.params["terms_agree"]&.strip&.downcase != 'on'
+        flash :error, t(:required_field_missing)
+        return redirect request.path
+      end
+    end
 
     user_first_name = request.params["first_name"]&.strip
     user_last_name = request.params["last_name"]&.strip
