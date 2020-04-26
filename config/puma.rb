@@ -15,7 +15,7 @@ if env == 'development'
     def generate_cert(key)
       crt = OpenSSL::X509::Certificate.new
       crt.version = 2
-      crt.serial = 1
+      crt.serial = rand(1000000000)
       crt.subject = OpenSSL::X509::Name.parse '/C=A/O=A/OU=A/CN=localhost'
       crt.issuer = crt.subject
       crt.public_key = key.public_key
