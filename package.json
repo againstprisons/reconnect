@@ -1,21 +1,10 @@
 {
   "name": "reconnect",
-  "version": "1.0.0",
-  "description": "A penpal network management system",
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/againstprisons/reconnect.git"
-  },
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "webpack"
   },
-  "author": "People Against Prisons Aotearoa",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://gitlab.com/againstprisons/reconnect/issues"
-  },
-  "homepage": "https://gitlab.com/againstprisons/reconnect#readme",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^12.4.0",
     "font-awesome": "^4.7.0",
@@ -24,9 +13,9 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.0.6",
     "terser-webpack-plugin": "^1.4.1",
-    "webpack": "^4.42.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }
 }
