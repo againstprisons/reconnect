@@ -44,6 +44,7 @@
 :'last_correspondence': "Last correspondence"
 :'birthday': "Birthday"
 :'penpal_status': "Penpal status"
+:'penpal_status_override': "Override automatic penpal status modification?"
 :'penpals': "Penpals"
 :'outside_penpals': "Outside penpals"
 :'is_advocacy': "Advocacy case?"

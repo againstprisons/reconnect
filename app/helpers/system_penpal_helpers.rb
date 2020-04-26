@@ -91,6 +91,10 @@ module ReConnect::Helpers::SystemPenpalHelpers
       data[:status] = status
       data[:display_fields] << [t(:'penpal_status'), status]
 
+      # status override
+      data[:status_override] = pp.status_override
+      data[:display_fields] << [t(:'penpal_status_override'), pp.status_override ? 'yes' : 'no']
+      
       # advocacy
       data[:is_advocacy] = pp.is_advocacy
       data[:display_fields] << [t(:'is_advocacy'), pp.is_advocacy ? 'yes' : 'no']

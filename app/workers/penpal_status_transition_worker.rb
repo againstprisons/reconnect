@@ -34,6 +34,10 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
 
         begin
           do_transition = []
+          
+          if pp.status_override
+            do_transition << false
+          end
 
           modes.each do |mode|
             case mode
