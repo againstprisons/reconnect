@@ -20,7 +20,6 @@
     .message.message-warning
       = t(:'system/penpal/relationship/correspondence/create/archive_mode/warning')
 
-
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/penpal/relationship/correspondence/create/section_title')
@@ -36,13 +35,11 @@
       %label{:for => 'ul_date'}= t(:'system/penpal/relationship/correspondence/create/date')
       %input#ul_date{:type => 'date', :name => 'date', :required => true, :value => ul_date&.strftime("%Y-%m-%d")}
 
-    %label{:for => "content"}= t(:'penpal/view/correspondence/create/compose/content_label')
-    %textarea#content.rich-editor{:name => "content"}
-      &= content || ""
+    = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'content', :editor_label => t(:'penpal/view/correspondence/create/compose/content_label'), :editor_data => content}
 
     .y-margin= ""
 
     %button.pure-button.button.button-primary{:type => 'submit'}
       = t(:'system/penpal/relationship/correspondence/create/submit')
 
-%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}

@@ -17,9 +17,7 @@
     %label{:for => "email_subject"}= t(:'system/mass_email/subject')
     %input#email_subject{:type => 'text', :name => 'subject', :value => subject, :required => true}
 
-    %label{:for => "email_content"}= t(:'system/mass_email/content')
-    %textarea#email_content.rich-editor{:name => 'content', :value => content}
-      &= content
+    = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'content', :editor_label => t(:'system/mass_email/content'), :editor_data => content || ""}
 
     .y-margin= ""
 
@@ -27,4 +25,4 @@
       %i.fa.fa-arrow-right=""
       = t(:'system/mass_email/continue_to_verify')
 
-%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}

@@ -55,7 +55,7 @@
     %label{:for => "edit_penpal_status_override"}
       %input#edit_penpal_status_override{:type => 'checkbox', :name => 'status_override', :checked => pp_data[:status_override]}
       = t(:'penpal_status_override')
-        
+
     %label{:for => "edit_prison"}= t(:'prison')
     %select#edit_prison{:name => 'prison', :required => true}
       %option{:value => '0', :selected => !(pp_data.key?(:prison))}= t(:'unknown_prison')
@@ -68,9 +68,7 @@
     %label{:for => "edit_creation"}= t(:'creation')
     %input#edit_creation{:type => 'date', :name => 'creation', :required => true, :value => pp_data[:creation]&.strftime("%Y-%m-%d")}
 
-    %label{:for => "edit_intro"}= t(:'penpal_intro')
-    %textarea#edit_intro.rich-editor{:name => "intro"}
-      &= intro
+    = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'intro', :editor_label => t(:'penpal_intro'), :editor_data => intro}
 
     .y-margin= ""
 
@@ -78,4 +76,4 @@
       %i.fa.fa-pencil
       = t(:'save_changes')
 
-%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}

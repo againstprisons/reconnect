@@ -5,7 +5,6 @@ class ReConnect::Controllers::StaticController < ReConnect::Controllers::Applica
     "/purecss/build",
     "/font-awesome/css",
     "/font-awesome/fonts",
-    "/@ckeditor/ckeditor5-build-classic/build",
   ]
 
   add_route :get, "/css/:name.css", :method => :css

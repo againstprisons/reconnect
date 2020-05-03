@@ -7,10 +7,14 @@ const config = {
   target: 'web',
   mode: 'production',
 
-  entry: path.resolve(__dirname, 'assets', 'js', 'index.js'),
+  entry: {
+    index: path.resolve(__dirname, 'assets', 'js', 'index.js'),
+    editor: path.resolve(__dirname, 'assets', 'js', 'editor.js'),
+  },
+ 
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   },
 
   module: {

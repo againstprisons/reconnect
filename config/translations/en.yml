@@ -81,6 +81,10 @@
 :'errors/internal_server_error/title': "Internal server error"
 :'errors/internal_server_error/content': "Something went wrong while processing your request. Please contact the site administrator and tell them about this, including what you were trying to do that lead you to this error."
 
+# Rich text editor warnings
+:'editor/loading': "Please wait while we load the text editor. If you see this message for more than a few seconds, try refreshing the page."
+:'editor/failed': "Failed to load the text editor. Any text you enter may not be saved correctly. Refresh the page to try loading the editor again."
+
 # Maintenance
 :'maintenance/warning': "Maintenance mode is enabled!"
 

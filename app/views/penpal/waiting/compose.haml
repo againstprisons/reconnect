@@ -9,8 +9,7 @@
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'penpal/waiting/compose/section_title')
 
-    %textarea#content.rich-editor{:name => "content"}
-      &= content || ""
+    = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'content', :editor_label => t(:'penpal/view/correspondence/create/compose/content_label'), :editor_data => content || ""}
 
     .y-margin= ""
 
@@ -18,4 +17,4 @@
       %i.fa.fa-upload
       = t(:'penpal/waiting/compose/submit')
 
-%script{:src => "/static/vendor/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"}
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}
