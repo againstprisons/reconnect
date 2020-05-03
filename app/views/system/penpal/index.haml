@@ -16,7 +16,7 @@
         %h1= t(:'system/penpal/find_by_id')
 
         %label{:for => 'penpal_id'}= t(:'penpal_id')
-        %input#user_id{:type => 'number', :name => 'id', :required => true, :placeholder => t(:'penpal_id')}
+        %input#user_id{:type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :name => 'id', :required => true, :placeholder => t(:'penpal_id')}
 
         %button.pure-button.button.button-primary{:type => 'submit'}
           %i.fa.fa-search

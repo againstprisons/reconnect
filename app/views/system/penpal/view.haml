@@ -42,7 +42,7 @@
             %input{:type => 'hidden', :name => 'penpal_one', :value => penpal.id}
 
             %label{:for => "other_penpal_id"}= t(:'system/penpal/view/relationships/create/from_id')
-            %input#other_penpal_id{:type => 'number', :name => 'penpal_two', :placeholder => t(:'penpal_id')}
+            %input#other_penpal_id{:type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :name => 'penpal_two', :placeholder => t(:'penpal_id')}
 
             %button.pure-button.button{:type => 'submit'}
               %i.fa.fa-link

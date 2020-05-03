@@ -34,7 +34,7 @@
       %input#smtp_address{:name => 'smtp_address', :type => 'text', :value => smtp_uri[:address]}
 
       %label{:for => 'smtp_port'}= t(:'system/configuration/mail/smtp/port')
-      %input#smtp_port{:name => 'smtp_port', :type => 'number', :value => smtp_uri[:port]}
+      %input#smtp_port{:name => 'smtp_port', :type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :value => smtp_uri[:port]}
 
       %label{:for => 'smtp_authentication'}= t(:'system/configuration/mail/smtp/authentication')
       %input#smtp_authentication{:name => 'smtp_authentication', :type => 'text', :value => smtp_uri[:authentication]}

@@ -9,7 +9,7 @@
         = t(:'auth/login/twofactor/enter_code')
 
       %label{:for => "totp"}= t(:'auth/login/twofactor/code')
-      %input#totp{:name => 'totp_code', :type => 'number', :required => true, :placeholder => t(:'auth/login/twofactor/code')}
+      %input#totp{:name => 'totp_code', :type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :required => true, :placeholder => t(:'auth/login/twofactor/code')}
 
       %button.pure-button.button.button-primary{:type => 'submit'}
         = t(:'auth/login/title')

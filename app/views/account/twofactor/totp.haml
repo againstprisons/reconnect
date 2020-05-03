@@ -16,7 +16,7 @@
       = t(:'account/twofactor/totp/setup/enter_code_below')
 
     %label{:for => 'totp'}= t(:'account/twofactor/totp/setup/code')
-    %input#totp{:name => 'code', :type => 'number', :required => true, :placeholder => t(:'account/twofactor/totp/setup/code')}
+    %input#totp{:name => 'code', :type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :required => true, :placeholder => t(:'account/twofactor/totp/setup/code')}
 
     %button.pure-button.button.button-primary{:type => 'submit'}
       = t(:'account/twofactor/totp/setup/submit')
