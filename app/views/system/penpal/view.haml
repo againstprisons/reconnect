@@ -54,8 +54,9 @@
           %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
           %h1= t(:'system/penpal/view/notes/section_title')
 
-          %textarea#relationship_notes{:name => "notes"}
-            &= notes
+          = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'notes', :editor_label => '', :editor_data => notes}
+
+          .y-margin= ""
 
           %button.pure-button.button{:type => 'submit'}
             %i.fa.fa-pencil
@@ -168,3 +169,5 @@
 
           .rich-text-container
             != intro
+
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}

@@ -90,10 +90,16 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     return halt 404 unless @penpal
 
     notes = request.params["notes"]&.strip
-    if notes.nil? || notes.empty?
+    if notes.nil? || notes&.empty?
       @penpal.notes = nil
     else
-      @penpal.encrypt(:notes, notes)
+      html = Sanitize.fragment(notes, Sanitize::Config::RESTRICTED)
+      if html.gsub('&nbsp', '').empty?
+        @penpal.notes = nil
+      else
+        html = Sanitize.fragment(notes, Sanitize::Config::BASIC)
+        @penpal.encrypt(:notes, html)
+      end
     end
 
     @penpal.save

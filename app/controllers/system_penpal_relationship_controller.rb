@@ -106,10 +106,16 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     return halt 404 unless @relationship
 
     notes = request.params["notes"]&.strip
-    if notes.nil? || notes.empty?
+    if notes.nil? || notes&.empty?
       @relationship.notes = nil
     else
-      @relationship.encrypt(:notes, notes)
+      html = Sanitize.fragment(notes, Sanitize::Config::RESTRICTED)
+      if html.gsub('&nbsp', '').empty?
+        @relationship.notes = nil
+      else
+        html = Sanitize.fragment(notes, Sanitize::Config::BASIC)
+        @relationship.encrypt(:notes, html)
+      end
     end
 
     @relationship.save

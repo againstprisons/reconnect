@@ -48,8 +48,9 @@
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
         %h1= t(:'system/penpal/relationships/notes/section_title')
 
-        %textarea#relationship_notes{:name => "notes"}
-          &= notes
+        = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'notes', :editor_label => '', :editor_data => notes}
+
+        .y-margin= ""
 
         %button.pure-button.button{:type => 'submit'}
           %i.fa.fa-pencil
@@ -86,3 +87,5 @@
           %a.pure-button.button.button-error{:href => "/system/penpal/relationship/#{relationship.id}/delete"}
             %i.fa.fa-trash
             = t(:'system/penpal/relationships/actions/delete')
+
+.async-load{:'data-sources' => JSON.generate(['/static/editor.bundle.js'])}
