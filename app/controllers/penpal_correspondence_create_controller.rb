@@ -50,7 +50,8 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       return redirect to("/penpal/#{ppid}/correspondence/create")
     end
 
-    # Do a sanitize run
+    # Remove invalid characters and do a sanitize run
+    content.gsub!(/[^[:print:]]/, "\uFFFD")
     content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
 
     # Run content filter

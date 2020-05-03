@@ -108,7 +108,8 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       return redirect to(request.path)
     end
 
-    # Do a sanitize run
+    # Remove invalid characters and do a sanitize run
+    content.gsub!(/[^[:print:]]/, "\uFFFD")
     content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
 
     # Run content filter
