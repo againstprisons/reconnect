@@ -5,6 +5,7 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
   add_route :get, "/email-approve", :method => :email_approve
   add_route :post, "/notes", :method => :notes
   add_route :post, "/confirm", :method => :confirm
+  add_route :post, "/archive", :method => :archive
 
   def index(rid)
     return halt 404 unless logged_in?
@@ -135,6 +136,29 @@ class ReConnect::Controllers::SystemPenpalRelationshipController < ReConnect::Co
     @relationship.save
 
     flash :success, t(:'system/penpal/relationships/confirm/success')
+    return redirect back
+  end
+
+  def archive(rid)
+    unless ReConnect.app_config["penpal-relationship-allow-archive"]
+      return halt 404
+    end
+
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:relationship:archive")
+
+    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
+    return halt 404 unless @relationship
+
+    @relationship.status_override = !(@relationship.status_override)
+    @relationship.save
+
+    if @relationship.status_override
+      flash :success, t(:'system/penpal/relationships/archive/enabled')
+    else
+      flash :success, t(:'system/penpal/relationships/archive/disabled')
+    end
+
     return redirect back
   end
 end

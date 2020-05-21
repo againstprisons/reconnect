@@ -52,9 +52,10 @@
       - ReConnect.app_config['penpal-statuses'].each do |s|
         %option{:value => s, :selected => pp_data.key?(:status) ? pp_data[:status] == s : false}= s
 
-    %label{:for => "edit_penpal_status_override"}
-      %input#edit_penpal_status_override{:type => 'checkbox', :name => 'status_override', :checked => pp_data[:status_override]}
-      = t(:'penpal_status_override')
+    - if ReConnect.app_config["penpal-allow-status-override"]
+      %label{:for => "edit_penpal_status_override"}
+        %input#edit_penpal_status_override{:type => 'checkbox', :name => 'status_override', :checked => pp_data[:status_override]}
+        = t(:'penpal_status_override')
 
     %label{:for => "edit_prison"}= t(:'prison')
     %select#edit_prison{:name => 'prison', :required => true}

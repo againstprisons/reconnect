@@ -35,7 +35,7 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
         begin
           do_transition = []
           
-          if pp.status_override
+          if ReConnect.app_config["penpal-allow-status-override"] && pp.status_override
             do_transition << false
           end
 
@@ -67,6 +67,9 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
                   other_party == ReConnect.app_config['admin-profile-id']
                 end
               end
+
+              # filter out relationships with override set
+              rels = rels.reject(&:status_override)
 
               do_transition << (rels.count > transition["when"]["penpal_count"])
             end

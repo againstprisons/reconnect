@@ -86,6 +86,14 @@ module ReConnect
       :type => :text,
       :default => "Application pending",
     },
+    "penpal-allow-status-override" => {
+      :type => :bool,
+      :default => true,
+    },
+    "penpal-relationship-allow-archive" => {
+      :type => :bool,
+      :default => true,
+    },
     "site-alert-emails" => {
       :type => :json,
       :default => '{"email": null, "alerts": ["*"]}',

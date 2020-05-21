@@ -85,8 +85,10 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     end
     @penpal.encrypt(:status, pp_status)
 
-    pp_status_override = request.params["status_override"]&.strip&.downcase == "on"
-    @penpal.status_override = pp_status_override
+    if ReConnect.app_config["penpal-allow-status-override"]
+      pp_status_override = request.params["status_override"]&.strip&.downcase == "on"
+      @penpal.status_override = pp_status_override
+    end
     
     do_remove_incarcerated = false
     is_incarcerated = request.params["is_incarcerated"]&.strip&.downcase == "on"

@@ -1,6 +1,10 @@
 .system-admin-penpal-relationship-index
   %h1= title
 
+  - if relationship.status_override
+    .message.message-warning
+      = t(:'system/penpal/relationships/archive/banner')
+
   - if has_role?('system:penpal:relationship:confirm') && !relationship.confirmed
     %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/confirm")}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
@@ -43,7 +47,6 @@
             - else
               = t(:'system/penpal/relationships/stats/last_correspondence/unknown')
 
-
       %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => "POST", :action => url("/system/penpal/relationship/#{relationship.id}/notes")}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
         %h1= t(:'system/penpal/relationships/notes/section_title')
@@ -82,6 +85,18 @@
           %a.pure-button.button{:href => "/system/penpal/relationship/#{relationship.id}/correspondence"}
             %i.fa.fa-list
             = t(:'system/penpal/relationships/actions/view_correspondence')
+
+        - if ReConnect.app_config["penpal-relationship-allow-archive"] && has_role?('system:penpal:relationship:archive')
+          %form.pure-form{:method => 'POST', :action => "/system/penpal/relationship/#{relationship.id}/archive"}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+            %button.pure-button.button{:type => 'submit'}
+              %i.fa.fa-book
+              = t(:'system/penpal/relationships/actions/archive')
+              = surround '(', ')' do
+                - if relationship.status_override
+                  = t(:'enabled/yes')
+                - else
+                  = t(:'enabled/no')
 
         - if has_role?('system:penpal:relationship:delete')
           %a.pure-button.button.button-error{:href => "/system/penpal/relationship/#{relationship.id}/delete"}

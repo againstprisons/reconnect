@@ -92,8 +92,10 @@ module ReConnect::Helpers::SystemPenpalHelpers
       data[:display_fields] << [t(:'penpal_status'), status]
 
       # status override
-      data[:status_override] = pp.status_override
-      data[:display_fields] << [t(:'penpal_status_override'), pp.status_override ? 'yes' : 'no']
+      if ReConnect.app_config["penpal-allow-status-override"] || pp.status_override
+        data[:status_override] = pp.status_override
+        data[:display_fields] << [t(:'penpal_status_override'), pp.status_override ? 'yes' : 'no']
+      end
       
       # advocacy
       data[:is_advocacy] = pp.is_advocacy
