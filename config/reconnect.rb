@@ -92,10 +92,6 @@ module ReConnect
     # and then load the controllers
     ReConnect::Controllers.load_controllers
 
-    # language support
-    @default_language = 'en'
-    self.load_languages
-
     @database = Sequel.connect(ENV["DATABASE_URL"])
     @database.extension(:pagination)
     ReConnect::Models.load_models unless opts[:no_load_models]
@@ -111,6 +107,10 @@ module ReConnect
       self.app_config_refresh(:force => true) unless opts[:no_load_models]
     end
 
+    # language support
+    @default_language = 'en'
+    self.load_languages
+
     @app = ReConnect::Application.new
   end
 
@@ -121,6 +121,27 @@ module ReConnect
 
       [name, strings]
     end.to_h
+
+    # Allow themes to override translation keys
+    if @theme_dir
+      @languages.keys.each do |tlname|
+        override_file = File.join(@theme_dir, 'translations', "#{tlname}.yml")
+        if File.exists?(override_file)
+          strings = YAML.load_file(override_file)
+          next unless strings
+
+          strings.each do |key, value|
+            @languages[tlname][key] = value
+          end
+        end
+      end
+    end
+
+    # Filter out languages that have their `:meta_description` set to nil or
+    # an empty string
+    @languages.reject! do |name, strings|
+      strings[:meta_description].nil? || strings[:meta_description]&.empty?
+    end
 
     # In development mode, add a "language" that has no translated text, which
     # when t() is called, will display the translation key rather than any text
