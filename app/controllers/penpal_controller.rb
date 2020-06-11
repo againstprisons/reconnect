@@ -19,6 +19,7 @@ class ReConnect::Controllers::PenpalController < ReConnect::Controllers::Applica
     @sending_enabled = !(ReConnect.app_config['penpal-status-disable-sending'].include?(@penpal_status))
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
     @sending_enabled = false unless @relationship.confirmed
+    @sending_enabled = false if @relationship.status_override
     @sending_enabled = false if ReConnect.app_config['disable-outside-correspondence-creation']
 
     @penpal_name = @penpal.get_pseudonym
