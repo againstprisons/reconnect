@@ -114,6 +114,10 @@ module ReConnect
       :type => :bool,
       :default => true,
     },
+    "volunteer-group-ids" => {
+      :type => :json,
+      :default => '[]',
+    },
   }
 
   class Application
