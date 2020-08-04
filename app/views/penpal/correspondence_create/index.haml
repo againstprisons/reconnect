@@ -6,7 +6,7 @@
     = t(:'back')
 
   .pure-g
-    .pure-u-1{:class => ReConnect.app_config['allow-outside-file-upload'] && 'pure-u-lg-3-4'}
+    .pure-u-1{:class => ReConnect.app_config['disable-outside-file-upload'] ? '' : 'pure-u-lg-3-4'}
       %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :enctype => 'multipart/form-data'}
         %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
         %h1= t(:'penpal/view/correspondence/create/compose/section_title')
@@ -19,7 +19,7 @@
           %i.fa.fa-upload
           = t(:'penpal/view/correspondence/create/compose/submit')
 
-    - if ReConnect.app_config['allow-outside-file-upload']
+    - unless ReConnect.app_config['disable-outside-file-upload']
       .pure-u-1.pure-u-lg-1-4
         %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST', :enctype => 'multipart/form-data', :action => url("/penpal/#{penpal.id}/correspondence/create/file")}
           %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}

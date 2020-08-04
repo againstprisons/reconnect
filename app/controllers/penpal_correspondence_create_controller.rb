@@ -22,7 +22,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
     @sending_enabled = false if @relationship.status_override
     @sending_enabled = false if ReConnect.app_config['disable-outside-correspondence-creation']
-    return halt 418 unless @sending_enabled
+    return halt 404 unless @sending_enabled
 
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
@@ -108,7 +108,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       return redirect to("/auth")
     end
 
-    return halt 404 unless ReConnect.app_config['allow-outside-file-upload']
+    return halt 404 if ReConnect.app_config['disable-outside-file-upload']
 
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
@@ -122,7 +122,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @sending_enabled = false if @penpal_status.nil? || @penpal_status.empty?
     @sending_enabled = false if @relationship.status_override
     @sending_enabled = false if ReConnect.app_config['disable-outside-correspondence-creation']
-    return halt 418 unless @sending_enabled
+    return halt 404 unless @sending_enabled
 
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?

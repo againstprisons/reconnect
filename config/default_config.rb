@@ -98,10 +98,6 @@ module ReConnect
       :type => :json,
       :default => '{"email": null, "alerts": ["*"]}',
     },
-    "allow-outside-file-upload" => {
-      :type => :bool,
-      :default => false,
-    },
     "admin-profile-id" => {
       :type => :number,
       :default => 0,
@@ -113,6 +109,10 @@ module ReConnect
     "disable-outside-correspondence-creation" => {
       :type => :bool,
       :default => false,
+    },
+    "disable-outside-file-upload" => {
+      :type => :bool,
+      :default => true,
     },
   }
 
