@@ -4,9 +4,9 @@ require 'typhoeus'
 require 'memoist'
 
 module ReConnect::Crypto
-  @opslimit = 2**20
-  @memlimit = 2**24
-  @tokenlength = 32
+  TOKEN_LENGTH = 32
+  OPS_LIMIT = 2**20
+  MEM_LIMIT = 2**24
 
   class << self
     extend Memoist
@@ -102,7 +102,7 @@ module ReConnect::Crypto
 
     def index(table, column, data)
       key = self.get_index_key(table, column)
-      index = RbNaCl::PasswordHash.scrypt(data, ReConnect::Utils.hex_to_bin(key), @opslimit, @memlimit, 64)
+      index = RbNaCl::PasswordHash.scrypt(data, ReConnect::Utils.hex_to_bin(key), OPS_LIMIT, MEM_LIMIT, 64)
       return ReConnect::Utils.bin_to_hex(index)
     end
 
@@ -116,7 +116,7 @@ module ReConnect::Crypto
         salt = RbNaCl::Random.random_bytes(saltbytes)
       end
 
-      hash = RbNaCl::PasswordHash.scrypt(password, salt, @opslimit, @memlimit, 64)
+      hash = RbNaCl::PasswordHash.scrypt(password, salt, OPS_LIMIT, MEM_LIMIT, 64)
 
       return ReConnect::Utils.bin_to_hex(salt + hash)
     end
@@ -135,7 +135,7 @@ module ReConnect::Crypto
     #####
 
     def generate_token
-      return ReConnect::Utils.bin_to_hex(RbNaCl::Random.random_bytes(@tokenlength))
+      return ReConnect::Utils.bin_to_hex(RbNaCl::Random.random_bytes(TOKEN_LENGTH))
     end
   end
 end
