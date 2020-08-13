@@ -13,11 +13,13 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
 
     @title = t(:'system/configuration/key_value/title')
     @entries = config_keyvalue_entries
+    @has_deprecated = @entries.keys.map{|k| ReConnect::APP_CONFIG_DEPRECATED_ENTRIES.key?(k)}.any?
 
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/configuration/keyvalue/list', :layout => false, :locals => {
         :title => @title,
         :entries => @entries,
+        :has_deprecated => @has_deprecated,
       })
     end
   end
@@ -52,6 +54,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
           :is_new => entry.nil?,
           :type => type,
           :value => value,
+          :deprecated => ReConnect::APP_CONFIG_DEPRECATED_ENTRIES[key],
           :delete_url => "/system/configuration/keys/#{key}/delete",
         })
       end

@@ -8,20 +8,39 @@
   .form-wrapped
     %h1= t(:'system/configuration/key_value/keys/section_title')
 
+    - if has_deprecated
+      .message.message-warning
+        = succeed ' ' do
+          = t(:'system/configuration/key_value/deprecated/one_or_more')
+
+        %span.badge
+          %i.fa.fa-exclamation-circle= ""
+          = t(:'system/configuration/key_value/deprecated/badge', :dep_in => ReConnect::VERSION)
+
     %ul.block-list
       - entries.each do |k, v|
         %li
+          .cfgkvlist-name.y-margin
+            %strong
+              &= k
+
+            = surround '(', ')' do
+              &= v[:type]
+
+            - if v[:deprecated]
+              %span.badge
+                %i.fa.fa-exclamation-circle= ""
+                = t(:'system/configuration/key_value/deprecated/badge', :dep_in => v[:deprecated][:in])
+
+          .cfgkvlist-value.y-margin
+            %code.code-line
+              &= v[:value_truncated]
+
           - if has_role?("system:configuration:edit")
-            .block-form
+            .block-form.cfgkvlist-form
               %a.block-button.pure-button.button{:href => v[:edit_link], :title => t(:edit)}
-                %i.fa.fa-pencil
-
-          %span
-            %strong= k
-            = "(#{v[:type]}): "
-
-          %code.code-line
-            &= v[:value_truncated]
+                %i.fa.fa-pencil= ""
+                = t(:'system/configuration/key_value/keys/edit')
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => "GET", :action => url("/system/configuration/keys/new-key")}
     %h1= t(:'system/configuration/key_value/new_key/section_title')

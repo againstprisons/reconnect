@@ -9,6 +9,13 @@
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/configuration/key_value/edit_key/edit')
 
+    - if deprecated
+      .message.message-warning
+        = succeed ': ' do
+          = t(:'system/configuration/key_value/edit_key/deprecated_message', :dep_in => deprecated[:in])
+        %span
+          &= deprecated[:reason]
+
     %label{:for => 'type'}= t(:'system/configuration/key_value/edit_key/type')
     %select#type{:name => 'type', :required => true}
       %option{:value => 'bool', :selected => (type == "bool")}

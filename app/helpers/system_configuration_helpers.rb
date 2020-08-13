@@ -13,6 +13,7 @@ module ReConnect::Helpers::SystemConfigurationHelpers
           :type => e.type,
           :value => value,
           :value_truncated => truncated,
+          :deprecated => ReConnect::APP_CONFIG_DEPRECATED_ENTRIES[e.key],
           :edit_link => "/system/configuration/keys/#{e.key}",
         }
       ]

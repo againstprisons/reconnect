@@ -120,6 +120,16 @@ module ReConnect
     },
   }
 
+  APP_CONFIG_DEPRECATED_ENTRIES = {
+    "allow-outside-file-upload" => {
+      :in => "1.1.1",
+      :reason => (
+         "Moved to 'disable-outside-file-upload', keeping the name in line " \
+         "with other 'disable-*' configuration entries."
+      ),
+    },
+  }
+
   class Application
     configure do
       set :session_secret, ENV.fetch('SESSION_SECRET') {SecureRandom.hex(32)}
