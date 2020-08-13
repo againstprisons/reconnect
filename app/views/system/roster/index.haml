@@ -35,7 +35,9 @@
 
           %span
             - if e[:roster_entry].nil?
-              .system-admin-roster-unassigned-marker= ""
+              - unless e[:past]
+                .system-admin-roster-unassigned-marker= ""
               = t(:'system/roster/assignment/unassigned')
+  
             - else
               = t(:'system/roster/assignment/assigned', :name => e[:roster_entry].get_user_name)
