@@ -5,7 +5,9 @@
     %h1= t(:'system/mass_email/confirm/section_title')
 
     %p
-      - if penpal
+      - if to_groups.first&.count&.positive?
+        = t(:'system/mass_email/sending_to/groups', :groups => to_groups.last)
+      - elsif penpal
         = t(:'system/mass_email/sending_to/penpal', penpal)
       - else
         = t(:'system/mass_email/sending_to/all')
@@ -16,7 +18,9 @@
 
     %form{:method => "POST", :action => url("/system/mass-email")}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      - if penpal
+      - if to_groups.first&.count&.positive?
+        %input{:type => 'hidden', :name => 'grp', :value => to_groups&.first&.join(',')}
+      - elsif penpal
         %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
 
       %input{:type => 'hidden', :name => 'subject', :value => subject}
@@ -28,7 +32,9 @@
 
     %form{:method => "POST", :action => url("/system/mass-email/send")}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-      - if penpal
+      - if to_groups.first&.count&.positive?
+        %input{:type => 'hidden', :name => 'grp', :value => to_groups&.first&.join(',')}
+      - elsif penpal
         %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
 
       %input{:type => 'hidden', :name => 'subject', :value => subject}

@@ -8,7 +8,9 @@
     %p
       = t(:'system/mass_email/incomplete/content')
 
-    - if penpal
+    - if to_groups.first&.count&.positive?
+      %input{:type => 'hidden', :name => 'grp', :value => to_groups&.first&.join(',')}
+    - elsif penpal
       %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
 
     %input{:type => 'hidden', :name => 'subject', :value => subject}

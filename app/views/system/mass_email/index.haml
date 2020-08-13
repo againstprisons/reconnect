@@ -2,16 +2,29 @@
   %h1= title
 
   %p
-    - if penpal
+    - if to_groups.first&.count&.positive?
+      = t(:'system/mass_email/sending_to/groups', :groups => to_groups.last)
+    - elsif penpal
       = t(:'system/mass_email/sending_to/penpal', penpal)
     - else
       = t(:'system/mass_email/sending_to/all')
+
+  - if to_groups.first&.count&.positive? || penpal
+    %a.pure-button.button{:href => '/system/mass-email'}
+      %i.fa.fa-comments-o= ""
+      = t(:'system/mass_email/switch/to_all')
+  - else
+    %a.pure-button.button{:href => '/system/mass-email?grp=vl'}
+      %i.fa.fa-comments-o= ""
+      = t(:'system/mass_email/switch/to_volunteers')
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST", :action => url("/system/mass-email/confirm")}
     %h1= t(:'system/mass_email/section_title')
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
 
-    - if penpal
+    - if to_groups.first&.count&.positive?
+      %input{:type => 'hidden', :name => 'grp', :value => to_groups&.first&.join(',')}
+    - elsif penpal
       %input{:type => 'hidden', :name => 'ppid', :value => penpal[:id]}
 
     %label{:for => "email_subject"}= t(:'system/mass_email/subject')

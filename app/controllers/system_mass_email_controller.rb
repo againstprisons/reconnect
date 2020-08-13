@@ -1,5 +1,6 @@
 class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers::ApplicationController
   include ReConnect::Helpers::EmailTemplateHelpers
+  include ReConnect::Helpers::MassEmailHelpers
 
   add_route :get, "/"
   add_route :post, "/"
@@ -17,8 +18,8 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     @content = request["content"]
     @content = nil if @content&.empty?
 
-    @penpal = nil
-    if request["ppid"]&.strip.to_i.positive?
+    @to_groups = mass_email_groups(request["grp"])
+    if !@to_groups && request["ppid"]&.strip.to_i.positive?
       pp = ReConnect::Models::Penpal[request.params["ppid"]&.strip.to_i]
       unless pp.nil? || !pp.is_incarcerated
         @penpal = {
@@ -32,6 +33,7 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/mass_email/index', :layout => false, :locals => {
         :title => @title,
+        :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
         :penpal => @penpal,
         :subject => @subject,
         :content => @content,
@@ -50,8 +52,8 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     @content = request["content"]
     @content = nil if @content&.empty?
 
-    @penpal = nil
-    if request["ppid"]&.strip.to_i.positive?
+    @to_groups = mass_email_groups(request["grp"])
+    if !@to_groups && request["ppid"]&.strip.to_i.positive?
       pp = ReConnect::Models::Penpal[request.params["ppid"]&.strip.to_i]
       unless pp.nil? || !pp.is_incarcerated
         @penpal = {
@@ -66,6 +68,7 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
       return haml(:'system/layout', :locals => {:title => @title}) do
         haml(:'system/mass_email/incomplete', :layout => false, :locals => {
           :title => @title,
+          :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
           :penpal => @penpal,
           :subject => @subject,
           :content => @content,
@@ -96,6 +99,7 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/mass_email/confirm', :layout => false, :locals => {
         :title => @title,
+        :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
         :penpal => @penpal,
         :subject => @subject,
         :content => @content,
@@ -115,8 +119,8 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     @content = request["content"]
     @content = nil if @content&.empty?
 
-    @penpal = nil
-    if request["ppid"]&.strip.to_i.positive?
+    @to_groups = mass_email_groups(request["grp"])
+    if !@to_groups && request["ppid"]&.strip.to_i.positive?
       pp = ReConnect::Models::Penpal[request.params["ppid"]&.strip.to_i]
       unless pp.nil? || !pp.is_incarcerated
         @penpal = {
@@ -131,6 +135,7 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
       return haml(:'system/layout', :locals => {:title => @title}) do
         haml(:'system/mass_email/incomplete', :layout => false, :locals => {
           :title => @title,
+          :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
           :penpal => @penpal,
           :subject => @subject,
           :content => @content,
@@ -141,6 +146,14 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     # sanitize run
     @content = Sanitize.fragment(@content, Sanitize::Config::RELAXED)
     @content_text = ReverseMarkdown.convert(@content, :unknown_tags => :bypass)
+
+    # if we're sending to volunteers, get the emails of all members of the
+    # volunteer groups
+    if @to_groups
+      @grp_emails = @to_groups.map do |gid|
+        ReConnect::Models::Group[gid.to_i]&.user_groups&.map(&:user)&.map(&:email)
+      end.flatten.compact.uniq
+    end
 
     # if we have a penpal, get the emails of their relationships
     if @penpal
@@ -171,12 +184,18 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
 
     # construct recipients
     recipients = {"mode" => "all"}
-    if @penpal
+    if @to_groups
+      recipients = {
+        "mode" => "list",
+        "list" => @grp_emails,
+      }
+    elsif @penpal
       recipients = {
         "mode" => "list",
         "list" => @penpal[:r_emails],
       }
     end
+
     recipients = JSON.generate(recipients)
 
     # create emailqueue entry
@@ -192,6 +211,7 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
     haml(:'system/layout', :locals => {:title => @title}) do
       haml(:'system/mass_email/sent', :layout => false, :locals => {
         :title => @title,
+        :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
         :penpal => @penpal,
         :queue_id => @queued.id,
       })
