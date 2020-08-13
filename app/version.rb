@@ -1,7 +1,7 @@
 require 'memoist'
 
 module ReConnect
-  VERSION = "1.1.1"
+  VERSION = "1.2.0"
 
   class << self
     extend Memoist
