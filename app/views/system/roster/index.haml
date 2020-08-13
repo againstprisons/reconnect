@@ -1,0 +1,40 @@
+#system-admin-roster-index
+  %h1= title
+
+  - if can_override
+    %a.pure-button.button{:href => "/system/roster?start=#{(roster[:ts_start] - 5).strftime("%Y-%m-01")}"}
+      %i.fa.fa-chevron-left= ""
+      = t(:'system/roster/navigate/previous')
+
+    %a.pure-button.button{:href => "/system/roster?start=#{(roster[:ts_end] + 5).strftime("%Y-%m-01")}"}
+      %i.fa.fa-chevron-right= ""
+      = t(:'system/roster/navigate/next')
+
+  .form-wrapped
+    %h1= t(:'system/roster/section_title', :start => roster[:ts_start])
+
+    %ul#system-admin-roster-days.block-list
+      - roster[:entries].each do |e|
+        %li
+          - if can_override || can_assign
+            - disabled = !(e[:roster_entry].nil? && can_assign)
+            - disabled = false if can_override
+            - disabled = true if e[:past]
+            %form.block-form{:method => 'POST', :action => '/system/roster'}
+              - unless disabled
+                %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+                %input{:type => 'hidden', :name => 'start', :value => roster[:ts_start].strftime("%Y-%m-%d")}
+                %input{:type => 'hidden', :name => 'date', :value => e[:day].strftime("%Y-%m-%d")}
+
+              %button.pure-button.button.block-button{:type => 'submit', :disabled => disabled}
+                %i.fa.fa-pencil= ""
+
+          %strong
+            = succeed ': ' do
+              &= e[:day_friendly]
+
+          %span
+            - if e[:roster_entry].nil?
+              = t(:'system/roster/assignment/unassigned')
+            - else
+              = t(:'system/roster/assignment/assigned', :name => e[:roster_entry].get_user_name)

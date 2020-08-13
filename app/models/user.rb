@@ -81,6 +81,13 @@ class ReConnect::Models::User < Sequel::Model
     self.tokens.map(&:delete)
     self.user_roles.map(&:delete)
 
+    my_name = self.get_name.join(' ')
+    ReConnect::Models::VolunteerRosterEntry.where(user_id: self.id).each do |vre|
+      vre.user_id = nil
+      vre.user_name = my_name
+      vre.save
+    end
+
     self.delete
   end
 end

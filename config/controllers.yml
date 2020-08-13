@@ -31,6 +31,9 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/roster
+    controller: SystemVolunteerRosterController
+
   - path: /system/files
     controller: SystemFilesController
   - path: /system/files/:id
