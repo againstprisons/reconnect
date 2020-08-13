@@ -1,3 +1,17 @@
+.badge
+{
+  display: inline-block;
+  padding: .125em .25em;
+  font-size: 0.8em;
+  vertical-align: baseline;
+
+  background: $color_badge_background;
+  color: $color_badge_foreground;
+
+  border: 1px solid $color_badge_border;
+  border-radius: .25em;
+}
+
 .x-margin
 {
   margin-left: 0.5em;
