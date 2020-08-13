@@ -10,3 +10,7 @@
   duplicate_check:
     cron: '*/10 * * * *'
     class: "ReConnect::Workers::PenpalDuplicateCheckWorker"
+
+  volunteer_reminder:
+    cron: '0 0 * * *'
+    class: "ReConnect::Workers::VolunteerRosterReminderWorker"
