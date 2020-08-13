@@ -28,7 +28,7 @@
         %label{:for => "choose_user"}= t(:'system/roster/override/choose/users')
         %select#choose_user{:name => 'user', :required => true}
           - users.each do |u|
-            %option{:value => u.id, :selected => (vre.user_id == u.id)}
+            %option{:value => u.id, :selected => (!vre.nil?() && vre&.user_id == u.id)}
               = t(:'system/roster/override/choose/user_entry', :name => u.get_name.join(' '), :uid => u.id)
 
         %button.pure-button.button.button-primary{:type => 'submit'}

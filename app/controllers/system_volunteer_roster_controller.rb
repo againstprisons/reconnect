@@ -102,7 +102,7 @@ class ReConnect::Controllers::SystemVolunteerRosterController < ReConnect::Contr
     # POST actions follow
 
     if request.params['delete']&.strip.to_i.positive?
-      @vre.delete
+      @vre&.delete
 
       flash :success, t(:'system/roster/override/delete/success', :date => @date)
       return redirect @back
@@ -114,7 +114,7 @@ class ReConnect::Controllers::SystemVolunteerRosterController < ReConnect::Contr
       return redirect request.path
     end
 
-    @vre.delete
+    @vre&.delete
     @nvre = ReConnect::Models::VolunteerRosterEntry.new(user_id: override_user.id, roster_day: @date)
     @nvre.is_admin_override = true
     @nvre.save
