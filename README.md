@@ -39,6 +39,16 @@ The first runs the application web server (and will echo the port number that
 the application is running on), and the second runs the background job
 worker.
 
+## Sponsors
+
+Development of re:connect has been funded in part by [Ruby New Zealand][rbnz],
+through their 2020 Community Grants program.
+
+[![Ruby New Zealand logo][rbnz_logo]][rbnz]
+
+[rbnz]: https://ruby.nz
+[rbnz_logo]: https://papa-opensource-assets.ams3.cdn.digitaloceanspaces.com/rubynz-logo.png
+
 ## License
 
 re:connect is licensed under the MIT license. See the LICENSE file in the root
