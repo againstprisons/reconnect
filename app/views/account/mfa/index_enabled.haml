@@ -1,0 +1,57 @@
+.account-settings-mfa-index.account-settings-mfa-index-enabled
+  %h1= title
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'account/mfa/totp/title')
+        %p
+          = t(:'account/mfa/totp/enabled')
+
+        %a.pure-button.button.button-primary{:href => '/account/mfa/totp'}
+          %i.fa.fa-mobile= ""
+          = t(:'account/mfa/totp/new_device')
+
+      - if false # TODO: U2F
+        .form-wrapped.x-margin
+          %h1= t(:'account/mfa/security_key/title')
+
+          %p= t(:'account/mfa/security_key/content/one', :count => security_keys)
+          %p= t(:'account/mfa/security_key/content/two')
+
+          %form.pure-form.pure-form-stacked{:method => 'POST', :action => '/account/mfa/key'}
+            %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+            %label{:for => 'key_name'}= t(:'account/mfa/security_key/register/key_name')
+            %input#key_name{:type => 'text', :name => 'key_name', :required => true, :placeholder => t(:'account/mfa/security_key/register/key_name')}
+
+            %button.pure-button.button.button-success{:type => 'submit'}
+              %i.fa.fa-plus= ""
+              = t(:'account/mfa/security_key/register/submit')
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'account/mfa/recovery/title')
+
+        - if !has_recovery
+          .message.message-warning
+            = t(:'account/mfa/recovery/warning')
+
+        %p= t(:'account/mfa/recovery/content')
+
+        %a.pure-button.button.button-primary{:href => '/account/mfa/recovery'}
+          %i.fa.fa-list
+          = t(:'account/mfa/recovery/submit')
+
+      .form-wrapped.x-margin
+        %h1= t(:'account/mfa/remove/title')
+
+        - if has_roles
+          .message.message-warning
+            = t(:'account/mfa/remove/cannot_disable_have_roles')
+
+        - else
+          %p= t(:'account/mfa/remove/content')
+          %a.pure-button.button.button-error{:href => '/account/mfa/disable'}
+            %i.fa.fa-times
+            = t(:'account/mfa/remove/submit')

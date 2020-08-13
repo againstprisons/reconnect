@@ -60,7 +60,7 @@ class ReConnect::Controllers::AuthLoginTotpController < ReConnect::Controllers::
     # redirect away to MFA settings if recovery code was used
     if is_recovery
       flash :success, t(:'auth/login/mfa/recovery/success', :site_name => site_name)
-      return redirect to("/account/twofactor")
+      return redirect to("/account/mfa")
     end
 
     flash :success, t(:'auth/login/success', :site_name => site_name)

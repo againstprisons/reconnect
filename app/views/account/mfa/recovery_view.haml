@@ -1,0 +1,17 @@
+.account-settings-mfa-recovery-view
+  %h1= t(:'account/mfa/recovery/title')
+
+  .form-wrapped
+    %h1= title
+    %p= t(:'account/mfa/recovery/view/preamble')
+
+    %ul.twofactor-recovery-codes
+      - codes.each do |t|
+        %li
+          %span.y-margin-large{:style => 'display:block'}
+            %code.code-line
+              &= t
+
+    %a.pure-button.button{:href => "/account/mfa"}
+      %i.fa.fa-chevron-left
+      = t(:'account/mfa/recovery/view/back')

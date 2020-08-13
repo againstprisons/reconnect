@@ -1,0 +1,22 @@
+.account-settings-twofactor-totp
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= title
+
+    %p
+      = t(:'account/mfa/totp/setup/get_app')
+
+    %p
+      = t(:'account/mfa/totp/setup/scan_qr_or_enter_secret', :secret => secret)
+
+    .account-settings-twofactor-totp-qr{:style => 'text-align:center'}
+      %img{:src => svg, :style => 'max-width:75%;width:350px;height:auto'}
+
+    %p
+      = t(:'account/mfa/totp/setup/enter_code_below')
+
+    %label{:for => 'totp'}= t(:'account/mfa/totp/setup/code')
+    %input#totp{:name => 'code', :type => 'text', :inputmode => "numeric", :pattern => "[0-9]*", :required => true, :placeholder => t(:'account/mfa/totp/setup/code')}
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      = t(:'account/mfa/totp/setup/submit')

@@ -1,0 +1,17 @@
+.account-settings-twofactor-disable
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= title
+
+    %p= t(:'account/mfa/remove/form/content')
+
+    %label{:for => 'password'}= t(:'account/mfa/remove/form/password')
+    %input#password{:name => 'password', :type => 'password', :required => true, :placeholder => t(:'account/mfa/remove/form/password')}
+
+    %button.pure-button.button.button-error{:type => 'submit'}
+      %i.fa.fa-times= ""
+      = t(:'account/mfa/remove/form/submit')
+
+    %a.pure-button.button.button-primary{:href => '/account/mfa'}
+      %i.fa.fa-chevron-left= ""
+      = t(:'account/mfa/remove/form/cancel')

@@ -1,0 +1,9 @@
+.account-settings-mfa-index.account-settings-mfa-index-disabled
+  %h1= title
+
+  %p= t(:'account/mfa/disabled')
+  %p= t(:'account/mfa/disabled/click_to_set_up')
+
+  %a.pure-button.button.button-primary{:href => '/account/mfa/totp'}
+    %i.fa.fa-lock
+    = t(:'account/mfa/disabled/enable')

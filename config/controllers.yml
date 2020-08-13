@@ -22,8 +22,12 @@ controllers:
   - path: /penpal/:ppid
     controller: PenpalController
 
-  - path: /account/twofactor
-    controller: AccountTwoFactorController
+  - path: /account/mfa/recovery
+    controller: AccountMfaRecoveryController
+  - path: /account/mfa/totp
+    controller: AccountMfaTotpController
+  - path: /account/mfa
+    controller: AccountMfaController
   - path: /account
     controller: AccountIndexController
 

@@ -1,0 +1,21 @@
+.account-settings-mfa-recovery-splash
+  %h1= t(:'account/mfa/recovery/title')
+
+  %a.pure-button.button{:href => "/account/mfa"}
+    %i.fa.fa-chevron-left
+    = t(:'back')
+
+  .form-wrapped
+    %h1= title
+
+    %p
+      - if has_codes
+        = t(:'account/mfa/recovery/splash/content/has_codes')
+      - else
+        = t(:'account/mfa/recovery/splash/content/no_codes')
+
+    %form.pure-form.pure-form-stacked{:method => 'POST', :action => "/account/mfa/recovery"}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %button.pure-button.button{:type =>  'submit'}
+        %i.fa.fa-cog
+        = t(:'account/mfa/recovery/splash/generate')
