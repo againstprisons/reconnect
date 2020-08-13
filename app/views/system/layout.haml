@@ -7,6 +7,11 @@
             %a.pure-menu-link.sidebar-menu-link{:href => '/system'}
               = t :'system/index/title'
 
+          - if has_role?("system:roster:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/roster"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/roster'}
+                = t :'system/roster/title'
+
           - if has_role?("system:prison:access")
             %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/prison"))].compact}
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/prison'}
