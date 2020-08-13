@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require File.expand_path(File.join('..', '..', '..', 'config', 'reconnect.rb'), __FILE__)
+ReConnect.initialize
+
+token = ReConnect::Crypto.generate_token[0..6]
+
+# create user
+user = ReConnect::Models::User.new(email: "test.#{token}@example.com")
+user.save # save to get ID
+user.encrypt(:first_name, "Test User #{token}")
+user.encrypt(:last_name, "Last-Name")
+user.save
+
+# create penpal
+penpal = ReConnect::Models::Penpal.new_for_user(user)
+penpal.save
+user.penpal_id = penpal.id
+user.save
+
+# generate filters
+ReConnect::Models::PenpalFilter.create_filters_for(penpal)
+
+puts "Created new test user!"
+puts "User pseudonym: #{user.get_pseudonym}"
+puts "User email: #{user.email}"
+puts "User ID: #{user.id}"
