@@ -1,7 +1,9 @@
 # re:connect
 
-re:connect is a penpal network automation platform, designed and built for the
-[Prisoner Correspondence Network][pcn].
+re:connect is the user-facing site and automation suite powering the
+[Prisoner Correspondence Network][pcn]. re:connect is developed and
+maintained by [People Against Prisons Aotearoa][papa]'s Technology
+Working Group.
 
 This documentation acts as both a reference for administrators of a re:connect
 installation, as well as a reference for developers contributing to re:connect.
@@ -15,9 +17,9 @@ GitLab.com at [againstprisons/reconnect][git]. The documentation lives in the
 
 ## License
 
-Both re:connect itself, and this documentation, are released under the
-[MIT License][license].
+Both re:connect itself, and this documentation, are released under the MIT
+license.
 
 [pcn]: https://pcn.nz
+[papa]: https://papa.org.nz
 [git]: https://gitlab.com/againstprisons/reconnect
-[license]: https://gitlab.com/againstprisons/reconnect/blob/master/LICENSE

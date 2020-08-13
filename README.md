@@ -1,15 +1,16 @@
 # re:connect
 
-## Repository info
+re:connect is the user-facing site and automation suite powering the
+[Prisoner Correspondence Network][pcn]. re:connect is developed and
+maintained by [People Against Prisons Aotearoa][papa]'s Technology
+Working Group.
 
-re:connect lives on GitLab.com at [againstprisons/reconnect][gitlab]. If you
-wish to contribute or report an issue, GitLab is the place to do it. There is
-also a read-only mirror on GitHub at [peopleagainstprisons/reconnect][github].
-
-[gitlab]: https://gitlab.com/againstprisons/reconnect
-[github]: https://github.com/peopleagainstprisons/reconnect
+[pcn]: https://pcn.nz
+[papa]: https://papa.org.nz
 
 ## Setting up
+
+Install the dependencies and build the static assets:
 
 ```
 $ bundle install
@@ -17,22 +18,28 @@ $ npm install
 $ npm run build
 ```
 
-[Set up your environment variables][envvars], then:
+[Set up your environment variables][envvars], then run the database migrations:
 
 ```
 $ bundle exec rake db:migrate
 ```
 
-To run the app, run both of these commands in separate windows:
+[envvars]: https://againstprisons.gitlab.io/reconnect/app-config/environment.html
+
+## Running
+
+To run the application, run both of these commands:
 
 ```
 $ bundle exec puma -v
 $ bundle exec sidekiq -r ./config/reconnect.rb
 ```
 
-[envvars]: https://againstprisons.gitlab.io/reconnect/app-config/environment.html
+The first runs the application web server (and will echo the port number that
+the application is running on), and the second runs the background job
+worker.
 
 ## License
 
-re:connect is licensed under the MIT license, see [the LICENSE file](./LICENSE)
-for more details.
+re:connect is licensed under the MIT license. See the LICENSE file in the root
+of the repository for details.
