@@ -1,0 +1,20 @@
+.auth-login-mfa-totp
+  .form-wrapped
+    %h1= title
+
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+      %p= t(:'auth/login/mfa/totp/content/one')
+      %p= t(:'auth/login/mfa/totp/content/two')
+
+      %label{:for => "code"}= t(:'auth/login/mfa/totp/code')
+      %input#code{:name => 'code', :type => 'text', :required => true, :placeholder => t(:'auth/login/mfa/totp/code')}
+
+      %button.pure-button.button.button-primary{:type => 'submit'}
+        = t(:'auth/login/title')
+
+      .auth-mfa-options
+        - if has_security_key
+          %a{:href => to('/auth/mfa/key')}
+            = t(:'auth/login/mfa/switch_to/security_key')

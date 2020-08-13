@@ -8,6 +8,8 @@ controllers:
     controller: AuthSignupController
   - path: /auth/logout
     controller: AuthLogoutController
+  - path: /auth/mfa/totp
+    controller: AuthLoginTotpController
   - path: /auth
     controller: AuthLoginController
 
