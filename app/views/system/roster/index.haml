@@ -13,13 +13,16 @@
   .form-wrapped
     %h1= t(:'system/roster/section_title', :start => roster[:ts_start])
 
+    - if can_assign
+      %p= t(:'system/roster/content/assign')
+    - if can_override
+      %p= t(:'system/roster/content/override')
+
     %ul#system-admin-roster-days.block-list
       - roster[:entries].each do |e|
         %li
           - if can_override || can_assign
-            - disabled = !(e[:roster_entry].nil? && can_assign)
-            - disabled = false if can_override
-            - disabled = true if e[:past]
+            - disabled = e[:past] || !(e[:roster_entry].nil? && can_assign)
             %form.block-form{:method => 'POST', :action => '/system/roster'}
               - unless disabled
                 %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
@@ -28,6 +31,11 @@
 
               %button.pure-button.button.block-button{:type => 'submit', :disabled => disabled}
                 %i.fa.fa-pencil= ""
+
+            - if can_override
+              .block-form
+                %a.pure-button.button.block-button{:href => "/system/roster/override/#{e[:day].strftime('%Y-%m-%d')}", :disabled => e[:past]}
+                  %i.fa.fa-cog= ""
 
           %strong
             = succeed ': ' do

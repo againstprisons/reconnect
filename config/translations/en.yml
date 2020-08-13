@@ -265,6 +265,8 @@
 :'system/roster/section_title': "Roster for <%= e(start.strftime('%B %Y')) %>"
 :'system/roster/navigate/previous': "Previous month"
 :'system/roster/navigate/next': "Next month"
+:'system/roster/content/assign': "Click the pencil icon <i class=\"fa fa-pencil\"></i> beside a day to roster yourself for that day."
+:'system/roster/content/override': "Since you have permission to override volunteers, clicking the cog icon <i class=\"fa fa-cog\"></i> beside a day that has already been assigned will allow you to change or remove the rostered volunteer for that day."
 :'system/roster/assignment/unassigned': "Unassigned"
 :'system/roster/assignment/assigned': "Assigned to <%= e(name) %>"
 :'system/roster/assign/errors/invalid_date': "The specified date was invalid."
