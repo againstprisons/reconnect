@@ -110,6 +110,7 @@
 :'penpal/view/correspondence/actions/create': "Send correspondence to this penpal"
 :'penpal/view/correspondence/create/title': "Send correspondence to <%= name %>"
 :'penpal/view/correspondence/create/back_to_list': "See all correspondence with this penpal"
+:'penpal/view/correspondence/create/profanity_warning': "Please note that messages containing swear words and/or profanity are blocked by Corrections, and will not be delivered to your pen pal. If your message contains any inappropriate language, please be sure to remove it before sending the message."
 :'penpal/view/correspondence/create/compose/section_title': "Type a letter"
 :'penpal/view/correspondence/create/compose/content_label': "Type your letter:"
 :'penpal/view/correspondence/create/compose/submit': "Send this letter"
