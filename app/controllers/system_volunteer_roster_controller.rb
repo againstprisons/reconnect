@@ -14,10 +14,7 @@ class ReConnect::Controllers::SystemVolunteerRosterController < ReConnect::Contr
     @can_assign = has_role?('system:roster:self_assign')
     @can_override = has_role?('system:roster:admin')
 
-    if @can_override
-      @roster_start = Chronic.parse(request.params['start']&.strip) if request.params['start']
-    end
-
+    @roster_start = Chronic.parse(request.params['start']&.strip) if request.params['start']
     @roster_start ||= DateTime.now
     @roster = roster_month(@roster_start)
 
