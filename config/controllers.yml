@@ -1,5 +1,6 @@
 preload:
   - ApplicationController
+  - ApiController
 
 controllers:
   - path: /auth/reset
@@ -147,3 +148,6 @@ controllers:
     controller: StaticController
   - path: /
     controller: IndexController
+
+  - path: /api/meta
+    controller: ApiMetaController
