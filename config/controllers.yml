@@ -151,3 +151,5 @@ controllers:
 
   - path: /api/meta
     controller: ApiMetaController
+  - path: /api/prisons
+    controller: ApiPrisonsController
