@@ -57,5 +57,10 @@
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/jobqueue'}
                 = t :'system/job_queue/title'
 
+          - if has_role?("system:apikey:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/apikey"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/apikey'}
+                = t :'system/apikey/title'
+
     .pure-u-1.pure-u-md-3-4
       = yield

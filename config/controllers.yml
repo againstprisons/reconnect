@@ -31,6 +31,9 @@ controllers:
   - path: /account
     controller: AccountIndexController
 
+  - path: /system/apikey
+    controller: SystemApiKeyController
+
   - path: /system/roster
     controller: SystemVolunteerRosterController
 
