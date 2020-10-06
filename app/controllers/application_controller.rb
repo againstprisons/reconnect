@@ -10,4 +10,24 @@ class ReConnect::Controllers::ApplicationController
       self.send(meth, *args, &bk)
     end
   end
+
+  def preflight
+    # Check if maintenance mode
+    if is_maintenance? && !maintenance_path_allowed?
+      return halt 503, maintenance_render
+    end
+
+    # Set and check CSRF
+    csrf_set!
+    unless request.safe?
+      return halt 403, "CSRF failed" unless csrf_ok?
+    end
+
+    if current_user_is_disabled?
+      return halt haml(:'auth/user_disabled', :layout => :layout_minimal, :locals => {
+        :title => t(:'auth/user_disabled/title'),
+        :reason => current_user.decrypt(:disabled_reason),
+      })
+    end
+  end
 end

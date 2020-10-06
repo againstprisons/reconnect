@@ -8,24 +8,6 @@ class ReConnect::Application < Sinatra::Base
   enable :sessions
 
   before do
-    # Check if maintenance mode
-    if is_maintenance? && !maintenance_path_allowed?
-      next halt 503, maintenance_render
-    end
-
-    # Set and check CSRF
-    csrf_set!
-    unless request.safe?
-      next halt 403, "CSRF failed" unless csrf_ok?
-    end
-
-    if current_user_is_disabled?
-      next halt haml(:'auth/user_disabled', :layout => :layout_minimal, :locals => {
-        :title => t(:'auth/user_disabled/title'),
-        :reason => current_user.decrypt(:disabled_reason),
-      })
-    end
-    
     if logged_in?
       @announcements = ReConnect::Models::Announcement.where(valid: true).all
     else
