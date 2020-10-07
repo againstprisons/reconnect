@@ -14,12 +14,10 @@ class ReConnect::Controllers::FileDownloadController < ReConnect::Controllers::A
     return halt 404 unless @file
     return halt 404 unless @token.extra_data == @file.file_id
 
-    @token.invalidate!
-
     data = @file.decrypt_file
 
     content_type @file.mime_type
-    attachment @file.generate_fn
+    attachment @file.generate_fn unless request.params['v'].to_i.positive?
     return data
   end
 end
