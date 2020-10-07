@@ -153,3 +153,5 @@ controllers:
     controller: ApiMetaController
   - path: /api/prisons
     controller: ApiPrisonsController
+  - path: /api/dltoken
+    controller: ApiDownloadTokenController
