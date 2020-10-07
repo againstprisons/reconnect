@@ -155,3 +155,5 @@ controllers:
     controller: ApiPrisonsController
   - path: /api/dltoken
     controller: ApiDownloadTokenController
+  - path: /api/correspondence/get
+    controller: ApiCorrespondenceGetController
