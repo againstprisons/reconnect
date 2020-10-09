@@ -157,3 +157,5 @@ controllers:
     controller: ApiDownloadTokenController
   - path: /api/correspondence/get
     controller: ApiCorrespondenceGetController
+  - path: /api/correspondence/list
+    controller: ApiCorrespondenceListController
