@@ -2,11 +2,33 @@ class ReConnect::Controllers::ApiPenpalController < ReConnect::Controllers::ApiC
   add_route :post, '/'
 
   def index
-    @penpal = ReConnect::Models::Penpal[request.params['cid'].to_i]
+
+    @cid = request.params['cid'].to_i
+    if @cid.positive?
+      @penpal = ReConnect::Models::Penpal[@cid]
+
+    # search by PRN
+    else
+      @prn = request.params['prn']&.strip&.downcase
+      @prn = nil if @prn&.empty?
+      if @prn
+        ids = ReConnect::Models::PenpalFilter.perform_filter('prisoner_number', @prn).all.map(&:penpal_id).uniq
+
+        if ids.count > 1
+          return api_json({
+            success: false,
+            message: 'ambiguous PRN',
+          })
+        end
+
+        @penpal = ReConnect::Models::Penpal[ids.first]
+      end
+    end
+
     unless @penpal
       return api_json({
         success: false,
-        message: 'no penpal with that ID',
+        message: 'no penpal found',
       })
     end
 
@@ -28,6 +50,7 @@ class ReConnect::Controllers::ApiPenpalController < ReConnect::Controllers::ApiC
 
     api_json({
       id: @penpal.id,
+      prn: @penpal.decrypt(:prisoner_number),
       name: @penpal.get_name,
       pseudonym: @penpal.get_pseudonym,
       is_incarcerated: @penpal.is_incarcerated,
