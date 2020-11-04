@@ -12,6 +12,10 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       return redirect to("/auth")
     end
 
+    if ReConnect.app_config['disable-outside-correspondence-creation']
+      return halt 404
+    end
+
     # get the current user's penpal object, and then get the list of all
     # penpal IDs that the current user has a relationship with
     @our_penpal = current_user.penpal
@@ -45,6 +49,10 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       session[:after_login] = request.path
       flash :error, t(:must_log_in)
       return redirect to("/auth")
+    end
+
+    if ReConnect.app_config['disable-outside-correspondence-creation']
+      return halt 404
     end
 
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
