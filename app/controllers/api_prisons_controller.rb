@@ -12,6 +12,7 @@ class ReConnect::Controllers::ApiPrisonsController < ReConnect::Controllers::Api
     end
 
     api_json({
+      success: true,
       prisons: @prisons,
     })
   end

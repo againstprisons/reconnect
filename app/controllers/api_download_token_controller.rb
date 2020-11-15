@@ -17,6 +17,7 @@ class ReConnect::Controllers::ApiDownloadTokenController < ReConnect::Controller
     @download_url += "/filedl/#{@file.file_id}/#{@token.token}"
 
     api_json({
+      success: true,
       token: @token.token,
       url: @download_url.to_s,
     })

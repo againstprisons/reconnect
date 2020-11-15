@@ -12,6 +12,8 @@ class ReConnect::Controllers::ApiCorrespondenceGetController < ReConnect::Contro
 
     @c_data = @correspondence.get_data()
     api_json({
+      success: true,
+
       id: @correspondence.id,
       creation: @correspondence.creation,
       file_id: @correspondence.file_id,

@@ -35,6 +35,8 @@ class ReConnect::Controllers::ApiCorrespondenceListController < ReConnect::Contr
     end
 
     api_json({
+      success: true,
+
       relationship: {
         id: @relationship.id,
 

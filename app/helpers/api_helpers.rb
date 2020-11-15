@@ -9,6 +9,11 @@ module ReConnect::Helpers::ApiHelpers
 
   def api_json(data)
     content_type 'application/json'
+
+    unless data.key?(:success) || data.key?('success')
+      data[:success] = true
+    end
+
     JSON.generate(data)
   end
 end

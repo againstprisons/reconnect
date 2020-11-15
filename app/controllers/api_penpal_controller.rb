@@ -43,12 +43,13 @@ class ReConnect::Controllers::ApiPenpalController < ReConnect::Controllers::ApiC
           id: other.id,
           name: other.get_name,
           pseudonym: other.get_pseudonym,
-          is_incarcerated: other.is_incarcerated,          
+          is_incarcerated: other.is_incarcerated,
         },
       }
     end
 
     api_json({
+      success: true,
       id: @penpal.id,
       prn: @penpal.decrypt(:prisoner_number),
       name: @penpal.get_name,

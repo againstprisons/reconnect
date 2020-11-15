@@ -3,6 +3,7 @@ class ReConnect::Controllers::ApiMetaController < ReConnect::Controllers::ApiCon
 
   def index
     data = {
+      success: true,
       site_name: ReConnect.app_config['site-name'],
       org_name: ReConnect.app_config['org-name'],
       base_url: ReConnect.app_config['base-url'],
