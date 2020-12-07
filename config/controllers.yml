@@ -161,3 +161,6 @@ controllers:
     controller: ApiCorrespondenceGetController
   - path: /api/correspondence/list
     controller: ApiCorrespondenceListController
+  - path: /api/correspondence/create
+    controller: ApiCorrespondenceCreateController
+

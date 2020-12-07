@@ -7,6 +7,7 @@ class ReConnect::Models::File < Sequel::Model
     fileid = ReConnect::Crypto.generate_token
     obj = self.new(file_id: fileid, creation: DateTime.now)
     obj.replace(opts[:filename], data)
+    obj.mime_type = opts[:mime_type] if opts[:mime_type]
     obj.save
 
     obj
