@@ -5,7 +5,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
   add_route :get, "/:ppid", :method => :compose
   add_route :post, "/:ppid", :method => :compose
 
-  def index
+  def before
     unless logged_in?
       session[:after_login] = request.path
       flash :error, t(:must_log_in)
@@ -15,12 +15,19 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     if ReConnect.app_config['disable-outside-correspondence-creation']
       return halt 404
     end
-
+    
+    @can_send_to_waiting = (current_user.disable_sending_to_waiting == false)
+    unless @can_send_to_waiting
+      return halt 404
+    end
+    
     # get the current user's penpal object, and then get the list of all
     # penpal IDs that the current user has a relationship with
     @our_penpal = current_user.penpal
     return halt 404 unless @our_penpal
+  end
 
+  def index
     @our_relationships = []
     if @our_penpal
       @our_relationships = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@our_penpal)
@@ -45,16 +52,6 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
   end
 
   def compose(ppid)
-    unless logged_in?
-      session[:after_login] = request.path
-      flash :error, t(:must_log_in)
-      return redirect to("/auth")
-    end
-
-    if ReConnect.app_config['disable-outside-correspondence-creation']
-      return halt 404
-    end
-
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
     return halt 404 unless @penpal.is_incarcerated

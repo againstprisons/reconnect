@@ -1,10 +1,11 @@
 .index-logged-in
   %h1= title
 
-  - unless ReConnect.app_config['disable-outside-correspondence-creation']
-    %a.pure-button.button{:href => url("/penpal/waiting")}
-      %i.fa.fa-pencil-square-o= ""
-      = t(:'penpal/waiting/title')
+  - if can_send_to_waiting
+    - unless ReConnect.app_config['disable-outside-correspondence-creation']
+      %a.pure-button.button{:href => url("/penpal/waiting")}
+        %i.fa.fa-pencil-square-o= ""
+        = t(:'penpal/waiting/title')
 
   .pure-g
     .pure-u-1.pure-u-md-1-2

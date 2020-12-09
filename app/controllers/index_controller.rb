@@ -10,6 +10,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       }
     end
 
+    @can_send_to_waiting = (current_user.disable_sending_to_waiting == false)
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
 
     @penpals = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@current_penpal).map do |pr|
@@ -55,6 +56,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       :title => @title,
       :penpals => @penpals,
       :new_received => @new_received,
+      :can_send_to_waiting => @can_send_to_waiting,
     }
   end
 end
