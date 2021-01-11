@@ -37,6 +37,13 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       actioning_user_name = "(unknown)" if actioning_user_name.nil? || actioning_user_name&.strip&.empty?
     end
 
+    creating_user = ReConnect::Models::User[self.creating_user]
+    creating_user_name = nil
+    if creating_user
+      creating_user_name = creating_user.get_name.map{|x| x == "" ? nil : x}.compact.join(" ")
+      creating_user_name = "(unknown)" if creating_user_name.nil? || creating_user_name&.strip&.empty?
+    end
+
     has_been_sent = self.sent.nil? || self.sent != "no"
     sending_method = has_been_sent ? self.sent.to_s : nil
 
@@ -59,6 +66,9 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       :actioned => actioned || (sending_method == "email"),
       :actioning_user => actioning_user,
       :actioning_user_name => actioning_user_name,
+
+      :creating_user => creating_user,
+      :creating_user_name => creating_user_name,
     }
   end
 

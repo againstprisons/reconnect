@@ -19,6 +19,9 @@
           %li= t(:'system/penpal/relationship/correspondence/view/to', :name => correspondence_d[:receiving_penpal_name])
           %li= t(:'system/penpal/relationship/correspondence/view/uploaded', :date => correspondence_d[:creation])
 
+          - if correspondence_d[:creating_user]
+            %li= t(:'system/penpal/relationship/correspondence/view/uploaded_by', :name => correspondence_d[:creating_user_name], :id => correspondence_d[:creating_user].id)
+
           - if correspondence_d[:receiving_is_incarcerated]
             %li
               = t(:'system/penpal/relationship/correspondence/view/sent')
