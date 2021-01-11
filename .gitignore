@@ -2,6 +2,7 @@
 vendor/bundle/
 .ruby-version
 .env
+.envrc
 .powenv
 tmp/
 .sass[-_]cache/
