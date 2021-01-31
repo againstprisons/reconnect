@@ -1,3 +1,5 @@
+require 'json'
+
 module ReConnect::Config::JSON
   module_function
 
