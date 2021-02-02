@@ -48,19 +48,17 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       request.params["password_confirm"]&.empty?,
     ]
 
-    if ReConnect.app_config['signup-age-gate-enabled']
-      errs << request.params["age_verify"].nil?
-      errs << request.params["age_verify"]&.empty?
-    end
-
     if errs.any?
       flash :error, t(:required_field_missing)
       return redirect request.path
     end
 
     if ReConnect.app_config['signup-age-gate-enabled']
-      user_dob = request.params["age_verify"]&.strip&.downcase
-      user_dob = Chronic.parse(user_dob, :guess => true)
+      age_day = sprintf("%02d", request.params["age_day"].to_i)
+      age_month = sprintf("%02d", request.params["age_month"].to_i)
+      age_year = sprintf("%04d", request.params["age_year"].to_i)
+
+      user_dob = Chronic.parse("#{age_year}-#{age_month}-#{age_day} 00:00:00")
       unless user_dob
         flash :error, t(:required_field_missing)
         return redirect request.path
