@@ -26,6 +26,9 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
           :user_pseudonym => @pseudonym,
           :user_pseudonym_r => @pseudonym_r,
           :user_email => @email,
+          :user_flags => {
+            :disable_sending_to_waiting => @user.disable_sending_to_waiting,
+          }
         })
       end
     end
@@ -51,12 +54,12 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
       return redirect request.path
     end
 
-    changed = false
+    do_regen = false
 
     if @name_a != new_name_a
       @user.encrypt(:first_name, new_name_first)
       @user.encrypt(:last_name, new_name_last)
-      changed = true
+      do_regen = true
     end
 
     if @pseudonym_r != new_pseudonym
@@ -66,24 +69,29 @@ class ReConnect::Controllers::SystemUserEditProfileController < ReConnect::Contr
         @user.pseudonym = nil
       end
 
-      changed = true
+      do_regen = true
     end
 
     if @user.email != new_email
       # check no user already exists with this email address
       if ReConnect::Models::User.where(:email => new_email).count.positive?
-        flash :error, t(:'system/user/edit_profile/email_already_used')
+        flash :error, t(:'system/user/edit_profile/errors/email_already_used')
         return redirect request.path
       end
 
       # set email
       @user.email = new_email
-      changed = true
+      do_regen = true
     end
 
-    if changed
-      @user.save
+    # set flags
+    @user.disable_sending_to_waiting = request.params['disable_sending_to_waiting']&.strip&.downcase == "on"
 
+    # save the user object
+    @user.save
+
+    # regenerate filters if profile info has changed
+    if do_regen
       penpal = ReConnect::Models::Penpal[@user.penpal_id]
       if penpal
         ReConnect::Models::PenpalFilter.clear_filters_for(penpal)
