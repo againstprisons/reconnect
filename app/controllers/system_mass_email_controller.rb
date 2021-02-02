@@ -161,6 +161,9 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
         .find_for_single_penpal(@penpal[:id])
 
       emails = rs.map do |r|
+        # don't include archived relationships in mass emails to penpals
+        next nil if r.status_override
+
         if r.penpal_one == @penpal[:id]
           other = r.penpal_two
         else
