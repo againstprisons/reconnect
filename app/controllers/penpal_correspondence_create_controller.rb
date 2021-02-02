@@ -32,6 +32,15 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     @title = t(:'penpal/view/correspondence/create/title', :name => @penpal_name)
 
+    # Check if prison requires a PRN, and if it does, check that this penpal has one set
+    if @penpal_prison.require_prn
+      prn = @penpal.decrypt(:prisoner_number)
+      if prn.nil? || prn&.empty?
+        flash :error, t(:'penpal/view/correspondence/create/errors/prison_requires_prn')
+        return redirect back
+      end
+    end
+
     force_compose = request.params["compose"]&.strip&.downcase == "1"
     content = nil
     if request.post?

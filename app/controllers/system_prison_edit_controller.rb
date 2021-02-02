@@ -25,6 +25,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
           :prison_address => @prison_address,
           :prison_email => @prison_email,
           :prison_word_limit => @prison_word_limit,
+          :prison_require_prn => @prison.require_prn,
         })
       end
     end
@@ -53,6 +54,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
     @prison.encrypt(:physical_address, p_address)
     @prison.encrypt(:email_address, p_email)
     @prison.word_limit = p_word_limit
+    @prison.require_prn = request.params['require_prn']&.strip&.downcase == 'on'
     @prison.save
 
     flash :success, t(:'system/prison/edit/success')

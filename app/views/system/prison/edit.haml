@@ -22,6 +22,10 @@
     %label{:for => 'prison_word_limit'}= t(:'system/prison/edit/word_limit')
     %input#prison_word_limit{:type => 'number', :name => 'word_limit', :value => prison_word_limit, :min => 0, :readonly => !can_edit}
 
+    %label{:for => 'prison_require_prn'}
+      %input#prison_require_prn{:type => 'checkbox', :name => 'require_prn', :checked => prison_require_prn, :readonly => !can_edit}
+      = t(:'system/prison/edit/require_prn')
+
     - if can_edit
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
       %button.pure-button.button.button-primary{:type => 'submit'}
