@@ -25,25 +25,24 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     # penpal IDs that the current user has a relationship with
     @our_penpal = current_user.penpal
     return halt 404 unless @our_penpal
-  end
 
-  def index
-    @our_relationships = []
-    if @our_penpal
-      @our_relationships = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@our_penpal)
-      @our_relationships = @our_relationships.map do |r|
-        other_party = r.penpal_one
-        other_party = r.penpal_two if other_party == @our_penpal.id
+    # get the current user's relationships
+    @our_relationships = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@our_penpal)
+    @our_relationships = @our_relationships.map do |r|
+      other_party = r.penpal_one
+      other_party = r.penpal_two if other_party == @our_penpal.id
 
-        other_party
-      end
+      other_party
     end
-
+    
     # get penpals waiting for relationships, excluding penpals that the
     # current user already has a relationship with
     @waiting_penpals = get_waiting_penpals
       .reject{|pp| @our_relationships.include? pp[:id]}
+    @waiting_penpal_ids = @waiting_penpals.map{|x| x[:id]}
+  end
 
+  def index
     @title = t(:'penpal/waiting/title')
     return haml(:'penpal/waiting/index', :locals => {
       :title => @title,
@@ -56,32 +55,12 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     return halt 404 unless @penpal
     return halt 404 unless @penpal.is_incarcerated
 
+    @penpal_prison = ReConnect::Models::Prison[@penpal.decrypt(:prison_id).to_i]
+    return halt 404 unless @penpal_prison
+
     @penpal_name = @penpal.get_pseudonym
     @penpal_name = "(unknown)" if @penpal_name.nil? || @penpal_name.empty?
     @title = t(:'penpal/waiting/compose/title', :name => @penpal_name)
-
-    # get the current user's penpal object, and then get the list of all
-    # penpal IDs that the current user has a relationship with
-    @our_penpal = current_user.penpal
-    return halt 404 unless @our_penpal
-
-    @our_relationships = []
-    if @our_penpal
-      @our_relationships = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@our_penpal)
-      @our_relationships = @our_relationships.map do |r|
-        other_party = r.penpal_one
-        other_party = r.penpal_two if other_party == @our_penpal.id
-
-        other_party
-      end
-    end
-
-    # get penpals waiting for relationships, excluding penpals that the
-    # current user already has a relationship with
-    @waiting_penpals = get_waiting_penpals
-      .reject{|pp| @our_relationships.include? pp[:id]}
-
-    @waiting_penpal_ids = @waiting_penpals.map{|x| x[:id]}
 
     unless @waiting_penpal_ids.include?(@penpal.id)
       @title = t(:'penpal/waiting/satisfied/title')
@@ -116,6 +95,22 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     # Remove invalid characters and do a sanitize run
     content.gsub!(/[^[:print:]]/, "\uFFFD")
     content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
+
+    # Get word count
+    wordcount = Sanitize.fragment(content).scan(/\w+/).count
+    
+    # If the prison being sent to has a word count limit, check the limit
+    if @penpal_prison.word_limit&.positive?
+      if wordcount > @penpal_prison.word_limit
+        flash :error, t(:'penpal/waiting/compose/errors/over_prison_word_limit')
+        return haml(:'penpal/waiting/compose', :locals => {
+          :title => @title,
+          :penpal => @penpal,
+          :penpal_name => @penpal_name,
+          :content => content,
+        })
+      end
+    end
 
     # Run content filter
     filter = ReConnect.new_content_filter

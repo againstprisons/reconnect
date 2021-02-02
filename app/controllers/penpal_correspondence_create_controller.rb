@@ -13,6 +13,9 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
+    
+    @penpal_prison = ReConnect::Models::Prison[@penpal.decrypt(:prison_id).to_i]
+    return halt 404 unless @penpal_prison
 
     @relationship = ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, @current_penpal)
     return halt 404 unless @relationship
@@ -54,6 +57,23 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     # Remove invalid characters and do a sanitize run
     content.gsub!(/[^[:print:]]/, "\uFFFD")
     content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
+
+    # Get word count
+    wordcount = Sanitize.fragment(content).scan(/\w+/).count
+    
+    # If the prison being sent to has a word count limit, check the limit
+    if @penpal_prison.word_limit&.positive?
+      if wordcount > @penpal_prison.word_limit
+        flash :error, t(:'penpal/view/correspondence/create/errors/over_prison_word_limit')
+        return haml :'penpal/correspondence_create/index', :locals => {
+          :title => @title,
+          :penpal => @penpal,
+          :penpal_name => @penpal_name,
+          :relationship => @relationship,
+          :content => content,
+        }
+      end
+    end
 
     # Run content filter
     filter = ReConnect.new_content_filter

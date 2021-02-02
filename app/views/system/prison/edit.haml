@@ -7,7 +7,6 @@
 
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     - can_edit = has_role?('system:prison:edit')
-    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/prison/edit/section_title')
 
     %label{:for => 'prison_name'}= t(:'system/prison/edit/name')
@@ -20,7 +19,11 @@
     %label{:for => 'prison_email'}= t(:'system/prison/edit/email')
     %input#prison_email{:type => 'email', :name => 'email', :value => prison_email, :readonly => !can_edit}
 
+    %label{:for => 'prison_word_limit'}= t(:'system/prison/edit/word_limit')
+    %input#prison_word_limit{:type => 'number', :name => 'word_limit', :value => prison_word_limit, :min => 0, :readonly => !can_edit}
+
     - if can_edit
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
       %button.pure-button.button.button-primary{:type => 'submit'}
         %i.fa.fa-pencil= ""
         = t(:'system/prison/edit/submit')

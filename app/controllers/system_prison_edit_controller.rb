@@ -13,6 +13,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
     @prison_name = @prison.decrypt(:name)
     @prison_address = @prison.decrypt(:physical_address)
     @prison_email = @prison.decrypt(:email_address)
+    @prison_word_limit = @prison.word_limit || 0
     @title = t(:'system/prison/edit/title', :name => @prison_name)
 
     if request.get?
@@ -23,6 +24,7 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
           :prison_name => @prison_name,
           :prison_address => @prison_address,
           :prison_email => @prison_email,
+          :prison_word_limit => @prison_word_limit,
         })
       end
     end
@@ -43,10 +45,14 @@ class ReConnect::Controllers::SystemPrisonEditController < ReConnect::Controller
       flash :error, t(:'required_field_missing')
       return redirect request.path
     end
+    
+    p_word_limit = request.params["word_limit"].to_i
+    p_word_limit = nil if p_word_limit.zero?
 
     @prison.encrypt(:name, p_name)
     @prison.encrypt(:physical_address, p_address)
     @prison.encrypt(:email_address, p_email)
+    @prison.word_limit = p_word_limit
     @prison.save
 
     flash :success, t(:'system/prison/edit/success')
