@@ -118,6 +118,10 @@ module ReConnect
       :type => :json,
       :default => '[]',
     },
+    "advocacy-profile-id" => {
+      :type => :number,
+      :default => 0,
+    }
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {
