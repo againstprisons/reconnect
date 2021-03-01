@@ -98,7 +98,6 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
       @penpal.is_incarcerated = is_incarcerated
     end
 
-    @penpal.is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
     @penpal.correspondence_guide_sent = request.params["correspondence_guide_sent"]&.strip&.downcase == "on"
 
     pp_release_date = request.params["release_date"]&.strip&.downcase
@@ -112,13 +111,39 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     if ReConnect.app_config['penpal-status-advocacy']
       if pp_status == ReConnect.app_config['penpal-status-advocacy']
         unless @penpal.is_advocacy
-          @penpal.is_advocacy = true
+          @is_advocacy = true
           flash :warning, t(:'system/penpal/edit/auto_set_advocacy_case', {
             :status => ReConnect.app_config['penpal-status-advocacy'],
           })
         end
       end
     end
+
+    if @is_advocacy.nil?
+      @is_advocacy = request.params["is_advocacy"]&.strip&.downcase == "on"
+    end
+
+    if @is_advocacy && !@penpal.is_advocacy
+      # advocacy box just checked, so add a relationship with the advocacy
+      # profile if one doesn't already exist
+
+      advo_profile = ReConnect::Models::Penpal[ReConnect.app_config['advocacy-profile-id']]
+      if advo_profile
+        # check for relationship
+        unless ReConnect::Models::PenpalRelationship.find_for_penpals(@penpal, advo_profile)
+          relationship = ReConnect::Models::PenpalRelationship.new
+          relationship.penpal_one = advo_profile.id
+          relationship.penpal_two = @penpal.id
+          relationship.confirmed = true
+          relationship.save
+          relationship.encrypt(:notes, t(:'system/penpal/edit/auto_create_advocacy_relationship/relationship_note'))
+
+          flash :warning, t(:'system/penpal/edit/auto_create_advocacy_relationship')
+        end
+      end
+    end
+
+    @penpal.is_advocacy = @is_advocacy
 
     pp_prison = request.params["prison"]&.strip&.downcase.to_i
     if pp_prison.nil? || pp_prison.zero?

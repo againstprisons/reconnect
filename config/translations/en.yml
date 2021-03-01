@@ -447,6 +447,8 @@
 :'system/penpal/edit/associated_user': "Can't edit this penpal's information directly as this penpal has an associated user. Please edit that user instead."
 :'system/penpal/edit/name_required': "A name is required for this penpal."
 :'system/penpal/edit/auto_set_advocacy_case': "Automatically set the \"Advocacy case?\" flag as this penpal's status has been changed to <%= status %>."
+:'system/penpal/edit/auto_create_advocacy_relationship': "Automatically created relationship with the advocacy profile because the \"Advocacy case?\" box has been checked."
+:'system/penpal/edit/auto_create_advocacy_relationship/relationship_note': "<p>This relationship was created automatically when setting the advocacy case flag.</p>"
 :'system/penpal/edit/success': "Successfully saved changes to this penpal."
 :'system/penpal/edit/success_remove_incarcerated': "Successfully saved changes to this penpal, except for the removal of the incarcerated status flag."
 :'system/penpal/edit/rmincflag/title': "Removing incarcerated flag for penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
