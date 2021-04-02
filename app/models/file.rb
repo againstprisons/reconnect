@@ -1,5 +1,4 @@
 require 'mimemagic'
-require 'mimemagic/overlay'
 require 'digest'
 
 class ReConnect::Models::File < Sequel::Model
