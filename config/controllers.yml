@@ -157,6 +157,10 @@ controllers:
     controller: ApiDownloadTokenController
   - path: /api/penpal
     controller: ApiPenpalController
+  - path: /api/penpal/create
+    controller: ApiPenpalCreateController
+  - path: /api/penpal/relationship/create
+    controller: ApiPenpalRelationshipCreateController
   - path: /api/correspondence/get
     controller: ApiCorrespondenceGetController
   - path: /api/correspondence/list
