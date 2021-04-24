@@ -26,7 +26,7 @@ class ReConnect::Controllers::ApiPenpalRelationshipCreateController < ReConnect:
     @note = [
       "<p>This relationship was created by an API request at #{DateTime.now.to_s}</p>",
       @user_note,
-    ].compact.join('\n')
+    ].compact.join("\n")
     
     @relationship = ReConnect::Models::PenpalRelationship.new
     @relationship.penpal_one = @penpal_one.id

@@ -49,7 +49,7 @@ class ReConnect::Controllers::ApiPenpalCreateController < ReConnect::Controllers
     @note = [
       "<p>This penpal was created by an API request at #{DateTime.now.to_s}</p>",
       @user_note,
-    ].compact.join('\n')
+    ].compact.join("\n")
 
     # Create the penpal
     @penpal = ReConnect::Models::Penpal.new(:user_id => nil, :is_incarcerated => true, :creation => Time.now)
