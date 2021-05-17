@@ -57,14 +57,18 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
               rels = ReConnect::Models::PenpalRelationship
                 .find_for_single_penpal(pp)
 
-              # filter out admin profile if it exists
-              admin_pid = ReConnect.app_config['admin-profile-id']
-              if !admin_pid.nil? && !admin_pid.zero?
+              # filter out relationships with admin/advocacy profiles
+              reject_pids = [
+                ReConnect.app_config['admin-profile-id'].to_i,
+                ReConnect.app_config['advocacy-profile-id'].to_i,
+              ].compact.uniq
+
+              if !reject_pids.empty?
                 rels = rels.reject do |r|
                   other_party = r.penpal_one
                   other_party = r.penpal_two if other_party = pp.id
 
-                  other_party == ReConnect.app_config['admin-profile-id']
+                  reject_pids.include?(other_party)
                 end
               end
 
