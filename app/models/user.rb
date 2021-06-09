@@ -74,6 +74,33 @@ class ReConnect::Models::User < Sequel::Model
     to_invalidate.map(&:invalidate!)
   end
 
+  def ip_ban_from_tokens!(banning_user)
+    banning_user = banning_user.id if banning_user.respond_to?(:id)
+
+    self.tokens.map do |token|
+      next nil unless token.use == 'session'
+
+      if !(token.extra_data.nil?())
+        begin
+          token_data = JSON.parse(token.extra_data)
+
+          next nil if ReConnect::Models::IpBlock
+            .where(ip_address: token_data['ip_address'])
+            .count
+            .positive?
+
+          ReConnect::Models::IpBlock.new({
+            ip_address: token_data['ip_address'],
+            reason: "User#ip_ban_from_tokens! on User[#{self.id}] (#{self.get_name.join(' ')}) (#{self.email})",
+            creator: banning_user,
+          }).save
+        rescue
+          next nil
+        end
+      end
+    end.compact
+  end
+
   def delete!
     self.penpal&.delete!
     self.penpal_id = nil
