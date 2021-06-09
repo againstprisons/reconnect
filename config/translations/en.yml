@@ -359,6 +359,7 @@
 :'system/user/disable_delete/disable/disable_success': "Successfully disabled user."
 :'system/user/disable_delete/disable/enable_success': "Successfully enabled user."
 :'system/user/disable_delete/delete': "Delete user"
+:'system/user/disable_delete/delete/ipban': "Check this box to additionally ban all IP addresses this user has logged in from."
 :'system/user/disable_delete/delete/confirm': "Are you sure? Check this box to confirm you want to PERMANENTLY delete this user."
 :'system/user/disable_delete/delete/confirm_not_checked': "Refusing to delete user as the confirm box was not checked."
 :'system/user/disable_delete/delete/enter_email': "To delete this user, enter the user's email address (<%= email %>) in the box below."

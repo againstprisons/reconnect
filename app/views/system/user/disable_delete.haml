@@ -27,6 +27,11 @@
     %input{:type => 'email', :name => 'email', :placeholder => t(:'email_address'), :required => true}
 
     .y-margin-large
+      %label{:for => "delete_ipban"}
+        %input#delete_ipban{:type => 'checkbox', :name => 'ipban'}
+        = t(:'system/user/disable_delete/delete/ipban')
+
+    .y-margin-large
       %label{:for => "delete_confirm"}
         %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
         = t(:'system/user/disable_delete/delete/confirm')
