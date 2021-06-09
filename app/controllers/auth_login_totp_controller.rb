@@ -51,6 +51,10 @@ class ReConnect::Controllers::AuthLoginTotpController < ReConnect::Controllers::
     session.delete(:twofactor_uid)
     token = user.login!
     session[:token] = token.token
+    token.update(extra_data: JSON.generate({
+      ip_address: request.ip,
+      user_agent: request.user_agent,
+    }))
 
     if user.preferred_language
       lang = user.decrypt(:preferred_language)

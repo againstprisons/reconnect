@@ -156,6 +156,10 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     # log the user in
     token = user.login!
     session[:token] = token.token
+    token.update(extra_data: JSON.generate({
+      ip_address: request.ip,
+      user_agent: request.user_agent,
+    }))
 
     flash :success, t(:'auth/signup/success', :site_name => site_name)
 
