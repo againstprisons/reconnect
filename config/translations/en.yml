@@ -194,6 +194,8 @@
 :'auth/reset/success': "Your password has been successfully reset. You can now log in."
 :'auth/user_disabled/title': "Account disabled"
 :'auth/user_disabled/content': "Sorry, your user account has been disabled. The following reason was given:"
+:'auth/banned/title': "Banned"
+:'auth/banned/content': "Sorry, you have been banned from <%= site_name %>."
 
 # Account settings
 :'account/title': "Account settings"
