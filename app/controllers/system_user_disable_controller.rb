@@ -61,6 +61,11 @@ class ReConnect::Controllers::SystemUserDisableController < ReConnect::Controlle
         return redirect request.path
       end
 
+      if request.params["ipban"]&.strip&.downcase == "on"
+        cu = current_user
+        @user.ip_ban_from_tokens!(cu)
+      end
+
       @user.delete!
       flash :success, t(:'system/user/disable_delete/delete/success')
 

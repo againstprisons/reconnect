@@ -54,6 +54,10 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
     # if we get here, user has successfully logged in
     token = user.login!
     session[:token] = token.token
+    token.update(extra_data: JSON.generate({
+      ip_address: request.ip,
+      user_agent: request.user_agent,
+    }))
 
     if user.preferred_language
       lang = user.decrypt(:preferred_language)

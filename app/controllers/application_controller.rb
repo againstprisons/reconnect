@@ -23,6 +23,12 @@ class ReConnect::Controllers::ApplicationController
       return halt 403, "CSRF failed" unless csrf_ok?
     end
 
+    if ReConnect::Models::IpBlock.is_blocked?(request.ip) && !current_prefix?('/static')
+      return halt haml(:'auth/banned', :layout => :layout_minimal, :locals => {
+        :title => t(:'auth/banned/title'),
+      })
+    end
+
     if current_user_is_disabled?
       return halt haml(:'auth/user_disabled', :layout => :layout_minimal, :locals => {
         :title => t(:'auth/user_disabled/title'),
