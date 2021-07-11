@@ -62,8 +62,16 @@ class ReConnect::Controllers::SystemUserDisableController < ReConnect::Controlle
       end
 
       if request.params["ipban"]&.strip&.downcase == "on"
-        cu = current_user
-        @user.ip_ban_from_tokens!(cu)
+        @user.ip_ban_from_tokens!(current_user)
+      end
+
+      if request.params["emailban"]&.strip&.downcase == "on"
+        ReConnect::Models::EmailBlock.new({
+          email: @user.email.split('@', 2).last,
+          is_domain: true,
+          reason: "Domain block when deleting User[#{@user.id}] (#{@user.get_name.join(' ')}) (#{@user.email})",
+          creator: current_user.id,
+        }).save
       end
 
       @user.delete!

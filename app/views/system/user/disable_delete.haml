@@ -32,6 +32,11 @@
         = t(:'system/user/disable_delete/delete/ipban')
 
     .y-margin-large
+      %label{:for => "delete_emailban"}
+        %input#delete_emailban{:type => 'checkbox', :name => 'emailban'}
+        = t(:'system/user/disable_delete/delete/emailban')
+
+    .y-margin-large
       %label{:for => "delete_confirm"}
         %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
         = t(:'system/user/disable_delete/delete/confirm')
