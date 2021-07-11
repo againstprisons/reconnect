@@ -122,6 +122,14 @@ class ReConnect::Models::User < Sequel::Model
       vre.save
     end
 
+    ReConnect::Models::Correspondence
+      .where(creating_user: self.id)
+      .update(creating_user: nil)
+    
+    ReConnect::Models::Correspondence
+      .where(actioning_user: self.id)
+      .update(actioning_user: nil)
+
     self.delete
   end
 end
