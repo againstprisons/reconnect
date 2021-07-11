@@ -183,6 +183,7 @@
 :'auth/signup/age_gate': "Date of birth (only for the purpose of age verification, will not be stored):"
 :'auth/signup/age_gate/error': "Sorry, but you don't meet the age requirement to join <%= site_name %>."
 :'auth/signup/email_already_used': "The provided email is already in use. Try <a href=\"/auth\">logging in</a>."
+:'auth/signup/email_block': "The provided email address can not be used to register with <%= site_name %>."
 :'auth/signup/password_confirm_incorrect': "Please enter the same password in both fields."
 :'auth/signup/success': "Your sign up was successful. Welcome to <%= site_name %>!"
 :'auth/reset/title': "Reset password"

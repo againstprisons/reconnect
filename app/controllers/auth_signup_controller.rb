@@ -83,6 +83,11 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     email = request.params["email"].strip.downcase
     password = request.params["password"]
     password_confirm = request.params["password_confirm"]
+    
+    if ReConnect::Models::EmailBlock.is_blocked?(email)
+      flash :error, t(:'auth/signup/email_block')
+      return redirect request.path
+    end
 
     # check if user exists with this email
     user_exists = ReConnect::Models::User.where(email: email).count.positive?
