@@ -77,6 +77,13 @@ class ReConnect::Models::User < Sequel::Model
   def ip_ban_from_tokens!(banning_user)
     banning_user = banning_user.id if banning_user.respond_to?(:id)
 
+    ReConnect::Models::EmailBlock.new({
+      email: self.email,
+      is_domain: false,
+      reason: "User#ip_ban_from_tokens! on User[#{self.id}] (#{self.get_name.join(' ')}) (#{self.email})",
+      creator: banning_user,
+    }).save
+
     self.tokens.map do |token|
       next nil unless token.use == 'session'
 
