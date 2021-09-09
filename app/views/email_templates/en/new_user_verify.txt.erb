@@ -1,0 +1,17 @@
+Thanks for signing up to <%= site_name %>, <%= name.first %>!
+
+To continue creating your <%= site_name %> account, please visit
+the following link in your browser:
+
+> <%= verify_url %>
+
+
+This verification link will expire in 3 days
+<%= token_expiry.strftime("(on %Y-%m-%d at %H:%M %Z)") %>,
+after which you will have to fill out the <%= site_name %>
+sign up form again if you wish to continue your signup.
+
+If you did not request to sign up to <%= site_name %>, you can
+safely ignore this email.
+
+Have a great day!
