@@ -1,6 +1,7 @@
 class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::ApplicationController
   add_route :get, "/"
   add_route :post, "/"
+  add_route :get, "/verify/:token", method: :verify
 
   def index
     return redirect "/" if logged_in?
@@ -19,7 +20,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     unless signups_enabled? || (@invite && @invite.valid)
       return haml(:'auth/layout', :locals => {:title => @title}) do
-        haml(:'auth/signup_disabled', :layout => false, :locals => {
+        haml(:'auth/signup/disabled', :layout => false, :locals => {
           :title => @title,
           :invite => @invite_data,
         })
@@ -28,7 +29,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
 
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title}) do
-        haml(:'auth/signup', :layout => false, :locals => {
+        haml(:'auth/signup/index', :layout => false, :locals => {
           :title => @title,
           :invite => @invite_data,
         })
@@ -70,7 +71,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
         return redirect request.path
       end
     end
-    
+
     if ReConnect.app_config['signup-terms-agree-enabled']
       if request.params["terms_agree"]&.strip&.downcase != 'on'
         flash :error, t(:required_field_missing)
@@ -83,7 +84,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     email = request.params["email"].strip.downcase
     password = request.params["password"]
     password_confirm = request.params["password_confirm"]
-    
+
     if ReConnect::Models::EmailBlock.is_blocked?(email)
       flash :error, t(:'auth/signup/email_block')
       return redirect request.path
@@ -102,16 +103,73 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       return redirect request.path
     end
 
-    # if we get here, we can create the new user
-    user = ReConnect::Models::User.new(email: email)
-    user.password = password
+    # invalidate the invite if we're using one
+    if @invite
+      @invite.invalidate!
+      @invite.save
+    end
 
-    # save to get an ID
-    user.save
+    # hash password
+    pwhash = ReConnect::Crypto.password_hash(password)
 
-    # save name
-    user.encrypt(:first_name, user_first_name)
-    user.encrypt(:last_name, user_last_name)
+    # gather our user information
+    user_data = {
+      'email_address' => email,
+      'password_hash' => pwhash,
+      'name_first' => user_first_name,
+      'name_last' => user_last_name,
+      'invite' => @invite&.id,
+    }
+
+    # create an email verify token and store our user's data on that
+    # as a JSON dump in the token extra data field
+    verify_token = ReConnect::Models::Token.generate.update(use: 'user_create_verify').save
+    verify_token.encrypt(:extra_data, JSON.generate(user_data))
+    verify_token.save
+
+    # send confirmation email
+    verify_email = ReConnect::Models::EmailQueue.new_from_template("new_user_verify", {
+      :name => [user_first_name, user_last_name],
+      :email => email,
+      :verify_url => url("/auth/signup/verify/#{verify_token.token}"),
+    })
+    verify_email.queue_status = "queued"
+    verify_email.encrypt(:subject, "Verify your #{site_name} account")
+    verify_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [email]}))
+    verify_email.save
+
+    # render confirmation page
+    return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
+      haml(:'auth/signup/verify_sent', :layout => false, :locals => {
+        :title => @title,
+      })
+    end
+  end
+
+  def verify(token)
+    begin
+      token = ReConnect::Models::Token.where(token: token, use: 'user_create_verify').first
+      throw "aaaaa" unless token
+
+      user_data = JSON.parse(token.decrypt(:extra_data))
+      throw "?????" unless user_data.keys.include?("email_address")
+      throw "?????" unless user_data.keys.include?("password_hash")
+
+    rescue
+      return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
+        haml(:'auth/signup/verify_invalid', :layout => false, :locals => {
+          :title => @title,
+        })
+      end
+    end
+
+    # create the user
+    user = ReConnect::Models::User.new({
+      email: user_data['email_address'],
+      password_hash: user_data['password_hash'],
+    }).save
+    user.encrypt(:first_name, user_data['name_first'])
+    user.encrypt(:last_name, user_data['name_last'])
     user.save
 
     # create penpal and generate filters
@@ -121,29 +179,33 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     user.save
     ReConnect::Models::PenpalFilter.create_filters_for(penpal)
 
-    # invalidate the invite if we're using one
-    if @invite
-      @invite.user_id = user.id
-      @invite.invalidate!
-      @invite.save
+    # if there was an invite ID in the data, invalidate that invite
+    invite = ReConnect::Models::Token[user_data['invite']]
+    if invite
+      invite.user_id = user.id
+      invite.invalidate!
+      invite.save
     end
+
+    # we haven't failed! delete the user_create_verify token
+    token.delete
 
     # send welcome email
     email_data = {
-      :name => [user_first_name, user_last_name],
-      :email => email,
+      :name => user.get_name,
+      :email => user.email,
     }
 
     welcome_email = ReConnect::Models::EmailQueue.new_from_template("new_user_welcome", email_data)
     welcome_email.queue_status = "queued"
     welcome_email.encrypt(:subject, "Welcome to #{site_name}!") # TODO: translation
-    welcome_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [email]}))
+    welcome_email.encrypt(:recipients, JSON.generate({"mode" => "list", "list" => [user.email]}))
     welcome_email.save
 
     # generate new user alert email, if enabled
     if should_send_alert_email('new_user')
       alert_data = {
-        :name => [user_first_name, user_last_name].compact.join(" "),
+        :name => user.get_name.compact.join(" "),
         :email => user.email,
         :userlink => url("/system/user/#{user.id}"),
       }
