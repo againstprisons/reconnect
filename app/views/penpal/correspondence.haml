@@ -36,6 +36,10 @@
       .correspondence-html.rich-text-container
         = file_d[:html_content]
 
+  - elsif file_d[:display_embed]
+    .form-wrapped
+      %iframe.correspondence-iframe{src: file_d[:view_url]}= ""
+
   - if settings.development? || has_role?("system:debugging")
     .page-footer.y-margin-large
       %ul.inline-list

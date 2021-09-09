@@ -31,10 +31,15 @@ class ReConnect::Controllers::PenpalCorrespondenceController < ReConnect::Contro
 
     @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
     return halt 404 unless @file
+    @file_token = @file.generate_download_token(current_user)
     @file_d = {
       :mime_type => @file.mime_type,
+      :display_embed => @file.mime_type == 'application/pdf',
       :display_html => @file.mime_type == 'text/html',
       :html_content => @file.mime_type == 'text/html' ? @file.decrypt_file : nil,
+      :download_token => @file_token,
+      :download_url => url("/filedl/#{@file.file_id}/#{@file_token.token}?v=0"),
+      :view_url => url("/filedl/#{@file.file_id}/#{@file_token.token}?v=1"),
     }
 
     haml :'penpal/correspondence', :locals => {
