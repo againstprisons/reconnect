@@ -74,10 +74,14 @@ class ReConnect::Controllers::SystemUserDisableController < ReConnect::Controlle
         }).save
       end
 
-      @user.delete!
-      flash :success, t(:'system/user/disable_delete/delete/success')
+      do_purge = request.params['purge']&.strip&.downcase == "on"
+      @user.soft_delete!(purge: do_purge)
 
-      return redirect "/system/user"
+      if do_purge
+        flash :success, t(:'system/user/disable_delete/delete/success')
+      else
+        flash :success, t(:'system/user/disable_delete/delete/success_soft')
+      end
     end
 
     return redirect request.path

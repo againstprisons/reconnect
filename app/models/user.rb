@@ -108,6 +108,16 @@ class ReConnect::Models::User < Sequel::Model
     end.compact
   end
 
+  def soft_delete!(opts = {})
+    self.soft_deleted = true
+
+    if opts[:purge]
+      self.purge_at_next_opportunity = true
+    end
+
+    self.save
+  end
+
   def delete!
     self.penpal&.delete!
     self.penpal_id = nil

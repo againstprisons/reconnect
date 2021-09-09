@@ -148,6 +148,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
       else
         user_receiving = ReConnect::Models::User[penpal_receiving.user_id]
         return unless user_receiving
+        return if user_receiving.soft_deleted
 
         template = "correspondence_to_user"
 

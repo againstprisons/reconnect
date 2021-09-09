@@ -14,3 +14,7 @@
   volunteer_reminder:
     cron: '0 0 * * *'
     class: "ReConnect::Workers::VolunteerRosterReminderWorker"
+
+  account_purge:
+    cron: '30 */8 * * *'
+    class: "ReConnect::Workers::AccountPurgeWorker"

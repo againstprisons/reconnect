@@ -40,6 +40,11 @@ class ReConnect::Controllers::AuthLoginController < ReConnect::Controllers::Appl
       return redirect request.path
     end
 
+    if user.soft_deleted
+      flash :error, t(:'auth/login/failure')
+      return redirect request.path
+    end
+
     # check password confirmation
     unless user.password_correct?(password)
       flash :error, t(:'auth/login/failure')

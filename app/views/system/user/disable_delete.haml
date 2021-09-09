@@ -5,42 +5,53 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
-  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
-    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-    %input{:type => 'hidden', :name => 'action', :value => 'disable'}
-    %h1= t(:'system/user/disable_delete/disable')
+  - if user.soft_deleted
+    .message.message-warning
+      %i.fa.fa-trash= ""
+      = t(:'system/user/soft_deleted')
 
-    %label{:for => 'disable_reason'}= t(:'system/user/disable_delete/disable/reason')
-    %input{:type => 'text', :name => 'reason', :placeholder => t(:'system/user/disable_delete/disable/reason'), :value => disabled_reason}
+  - else
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'action', :value => 'disable'}
+      %h1= t(:'system/user/disable_delete/disable')
 
-    %button.pure-button.button.button-error{:type => 'submit'}
-      %i.fa.fa-lock
-      = t(:'system/user/disable_delete/disable')
+      %label{:for => 'disable_reason'}= t(:'system/user/disable_delete/disable/reason')
+      %input{:type => 'text', :name => 'reason', :placeholder => t(:'system/user/disable_delete/disable/reason'), :value => disabled_reason}
 
-  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
-    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
-    %input{:type => 'hidden', :name => 'action', :value => 'delete'}
-    %h1= t(:'system/user/disable_delete/delete')
+      %button.pure-button.button.button-error{:type => 'submit'}
+        %i.fa.fa-lock
+        = t(:'system/user/disable_delete/disable')
 
-    %label{:for => "delete_email"}
-      = t(:'system/user/disable_delete/delete/enter_email', :email => user_email)
-    %input{:type => 'email', :name => 'email', :placeholder => t(:'email_address'), :required => true}
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'action', :value => 'delete'}
+      %h1= t(:'system/user/disable_delete/delete')
 
-    .y-margin-large
-      %label{:for => "delete_ipban"}
-        %input#delete_ipban{:type => 'checkbox', :name => 'ipban'}
-        = t(:'system/user/disable_delete/delete/ipban')
+      %label{:for => "delete_email"}
+        = t(:'system/user/disable_delete/delete/enter_email', :email => user_email)
+      %input{:type => 'email', :name => 'email', :placeholder => t(:'email_address'), :required => true}
 
-    .y-margin-large
-      %label{:for => "delete_emailban"}
-        %input#delete_emailban{:type => 'checkbox', :name => 'emailban'}
-        = t(:'system/user/disable_delete/delete/emailban')
+      .y-margin-large
+        %label{:for => "delete_ipban"}
+          %input#delete_ipban{:type => 'checkbox', :name => 'ipban'}
+          = t(:'system/user/disable_delete/delete/ipban')
 
-    .y-margin-large
-      %label{:for => "delete_confirm"}
-        %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
-        = t(:'system/user/disable_delete/delete/confirm')
+      .y-margin-large
+        %label{:for => "delete_emailban"}
+          %input#delete_emailban{:type => 'checkbox', :name => 'emailban'}
+          = t(:'system/user/disable_delete/delete/emailban')
 
-    %button.pure-button.button.button-error{:type => 'submit'}
-      %i.fa.fa-trash
-      = t(:'system/user/disable_delete/delete')
+      .y-margin-large
+        %label{:for => "delete_purge"}
+          %input#delete_purge{:type => 'checkbox', :name => 'purge'}
+          = t(:'system/user/disable_delete/delete/purge')
+
+      .y-margin-large
+        %label{:for => "delete_confirm"}
+          %input#delete_confirm{:type => 'checkbox', :name => 'confirm', :required => true}
+          = t(:'system/user/disable_delete/delete/confirm')
+
+      %button.pure-button.button.button-error{:type => 'submit'}
+        %i.fa.fa-trash
+          = t(:'system/user/disable_delete/delete')
