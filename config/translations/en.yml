@@ -68,6 +68,7 @@
 :'role': "Role"
 :'unknown': "(unknown)"
 :'unconfirmed': "(unconfirmed)"
+:'must_log_in': "You must log in to <%= site_name %> to perform that action."
 
 # Some generic stuff
 :'required_field_missing': "A required field was not provided."
@@ -255,6 +256,12 @@
 :'account/change_password/will_log_out_sessions': "Changing your password will log you out of all other sessions except the current one."
 :'account/change_password/does_not_match': "Your passwords do not match."
 :'account/change_password/success': "Your password has been changed. You have been logged out of all other sessions."
+:'account/delete/title': "Delete account"
+:'account/delete/content/one': "Deleting your <%= site_name %> account is a permanent action."
+:'account/delete/content/two': "To delete your account, enter your password below, and click the \"Delete account\" button."
+:'account/delete/submit': "Delete account"
+:'account/delete/success': "Your <%= site_name %> account has been deleted."
+:'account/delete/errors/invalid_password': "Your password was incorrect. Please try again."
 
 # System settings
 :'system/title': "System admin"

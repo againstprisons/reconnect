@@ -1,0 +1,14 @@
+.account-settings-delete
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= title
+
+    %p= t(:'account/delete/content/one')
+    %p= t(:'account/delete/content/two')
+
+    %label{:for => "delete_password"}= t :'password'
+    %input#delete_password{:name => 'password', :type => 'password', :placeholder => t(:'password'), :required => true}
+
+    %button.pure-button.button.button-error{type: 'submit'}
+      %i.fa.fa-trash= ""
+      = t(:'account/delete/submit')
