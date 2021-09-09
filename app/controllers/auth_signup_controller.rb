@@ -124,6 +124,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     # create an email verify token and store our user's data on that
     # as a JSON dump in the token extra data field
     verify_token = ReConnect::Models::Token.generate.update(use: 'user_create_verify').save
+    verify_token.expiry = Chronic.parse('in 3 days')
     verify_token.encrypt(:extra_data, JSON.generate(user_data))
     verify_token.save
 
@@ -132,6 +133,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       :name => [user_first_name, user_last_name],
       :email => email,
       :verify_url => url("/auth/signup/verify/#{verify_token.token}"),
+      :token_expiry => verify_token.expiry,
     })
     verify_email.queue_status = "queued"
     verify_email.encrypt(:subject, "Verify your #{site_name} account")
