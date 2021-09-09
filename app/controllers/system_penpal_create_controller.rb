@@ -60,6 +60,8 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
     @penpal.encrypt(:status, pp_status)
     @penpal.encrypt(:prison_id, pp_prison)
 
+    # If this penpal has been set to the configured "advocacy only" status,
+    # mark this penpal as an advocacy case
     if ReConnect.app_config['penpal-status-advocacy']
       if pp_status == ReConnect.app_config['penpal-status-advocacy']
         unless @penpal.is_advocacy
@@ -71,6 +73,7 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
       end
     end
 
+    # Create relationship with the admin profile, if one is configured
     admin_pid = ReConnect.app_config['admin-profile-id']&.to_i
     if !admin_pid.nil? && !admin_pid.zero?
       admin_profile = ReConnect::Models::Penpal[admin_pid]
@@ -82,6 +85,31 @@ class ReConnect::Controllers::SystemPenpalCreateController < ReConnect::Controll
 
         r = ReConnect::Models::PenpalRelationship.new({
           :penpal_one => admin_pid,
+          :penpal_two => @penpal.id,
+          :email_approved => true,
+          :email_approved_by_id => nil,
+          :confirmed => true,
+        })
+
+        r.save # to get ID
+        r.encrypt(:notes, relationship_message)
+        r.save
+      end
+    end
+
+    # If penpal marked as "is advocacy," create relationship with
+    # the advocacy profile, if one is configured
+    advo_pid = ReConnect.app_config['advocacy-profile-id']&.to_i
+    if !advo_pid.nil? && !advo_pid.zero? && @penpal.is_advocacy
+      advo_profile = ReConnect::Models::Penpal[advo_pid]
+      if advo_profile
+        relationship_message = (
+          "This relationship was created automatically on creation of this " +
+          "incarcerated penpal, at #{Time.now.strftime("%Y-%m-%d %H:%M:%S")}."
+        )
+
+        r = ReConnect::Models::PenpalRelationship.new({
+          :penpal_one => advo_pid,
           :penpal_two => @penpal.id,
           :email_approved => true,
           :email_approved_by_id => nil,
