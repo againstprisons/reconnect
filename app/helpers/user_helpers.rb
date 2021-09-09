@@ -9,13 +9,16 @@ module ReConnect::Helpers::UserHelpers
     t
   end
 
-  def logged_in?
-    !current_token.nil?
+  def current_user
+    user = current_token&.user
+    return nil unless user
+    return nil if user.soft_deleted
+
+    user
   end
 
-  def current_user
-    return nil unless logged_in?
-    current_token.user
+  def logged_in?
+    !current_user.nil?
   end
 
   def current_user_is_disabled?

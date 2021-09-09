@@ -10,6 +10,7 @@ class ReConnect::Controllers::AuthLoginTotpController < ReConnect::Controllers::
 
     user = ReConnect::Models::User[uid]
     return redirect to("/auth") unless user
+    return redirect to("/auth") if user.soft_deleted
     return redirect to("/auth") unless user.totp_enabled
     return redirect to("/auth") if user.totp_secret.nil? || user.totp_secret&.empty?
 

@@ -76,9 +76,11 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
   def self.recipients_list(data)
     mode = data["mode"]&.strip&.downcase
     if mode == "all"
-      return ReConnect::Models::User.all&.map(&:email).compact
+      return ReConnect::Models::User.where(soft_deleted: false).map(&:email).compact
+
     elsif mode == "list"
       return data["list"]
+
     elsif mode == "roles"
       roles = data["roles"].map(&:strip).map(&:downcase)
       uids = []

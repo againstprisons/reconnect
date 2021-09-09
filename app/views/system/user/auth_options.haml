@@ -5,6 +5,11 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
+  - if user.soft_deleted
+    .message.message-warning
+      %i.fa.fa-trash= ""
+      = t(:'system/user/soft_deleted')
+
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %input{:type => 'hidden', :name => 'action', :value => 'pwreset'}
