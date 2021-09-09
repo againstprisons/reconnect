@@ -4,6 +4,11 @@ class ReConnect::Controllers::ApiPenpalRelationshipCreateController < ReConnect:
   def index
     @penpal_one = ReConnect::Models::Penpal[request.params["penpal_one"]&.strip.to_i]
     @penpal_two = ReConnect::Models::Penpal[request.params["penpal_two"]&.strip.to_i]
+    
+    rl_confirmed = true
+    if request.params.key?('confirmed')
+      rl_confirmed = request.params['confirmed']&.strip.to_i.positive?
+    end
 
     if @penpal_one.nil? || @penpal_two.nil?
       return api_json({
@@ -31,7 +36,7 @@ class ReConnect::Controllers::ApiPenpalRelationshipCreateController < ReConnect:
     @relationship = ReConnect::Models::PenpalRelationship.new
     @relationship.penpal_one = @penpal_one.id
     @relationship.penpal_two = @penpal_two.id
-    @relationship.confirmed = true
+    @relationship.confirmed = rl_confirmed
     @relationship.save # to get ID
     @relationship.encrypt(:notes, @note)
     @relationship.save
