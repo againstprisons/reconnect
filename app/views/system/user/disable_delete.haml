@@ -10,6 +10,21 @@
       %i.fa.fa-trash= ""
       = t(:'system/user/soft_deleted')
 
+    %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
+      %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+      %input{:type => 'hidden', :name => 'action', :value => 'delete'}
+      %input{:type => 'hidden', :name => 'purge', :value => 'on'}
+      %input{:type => 'hidden', :name => 'confirm', :value => 'on'}
+      %h1= t(:'system/user/disable_delete/delete')
+
+      %label{:for => "delete_email"}
+        = t(:'system/user/disable_delete/delete/enter_email', :email => user_email)
+      %input{:type => 'email', :name => 'email', :placeholder => t(:'email_address'), :required => true}
+
+      %button.pure-button.button.button-error{:type => 'submit'}
+        %i.fa.fa-trash
+          = t(:'system/user/disable_delete/delete')
+
   - else
     %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
