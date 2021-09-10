@@ -64,16 +64,30 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
               ].compact.uniq
 
               if !reject_pids.empty?
-                rels = rels.reject do |r|
+                rels.reject! do |r|
                   other_party = r.penpal_one
-                  other_party = r.penpal_two if other_party = pp.id
+                  other_party = r.penpal_two if other_party == pp.id
 
                   reject_pids.include?(other_party)
                 end
               end
 
+              # filter out relationships with soft-deleted users
+              rels.reject! do |r|
+                other_party = r.penpal_one
+                other_party = r.penpal_two if other_party == pp.id
+
+                other_pp = ReConnect::Models::Penpal[other_party]
+                other_user = ReConnect::Models::User[other_pp&.user_id]
+                if other_user
+                  next true if other_user.soft_deleted
+                end
+
+                false
+              end
+
               # filter out relationships with override set
-              rels = rels.reject(&:status_override)
+              rels.reject!(&:status_override)
 
               do_transition << (rels.count > transition["when"]["penpal_count"])
             end
