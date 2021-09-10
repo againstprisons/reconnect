@@ -456,6 +456,7 @@
 :'system/penpal/view/relationships/empty': "There are no relationships for this penpal."
 :'system/penpal/view/relationships/too_many': "There are <%= count %> relationships for this penpal. To load the list of this penpal's relationships, click the button below. Note that loading the list of relationships for this penpal may take a long time."
 :'system/penpal/view/relationships/view_all': "View all relationships"
+:'system/penpal/view/relationships/item/archived': "Relationship is archived"
 :'system/penpal/view/relationships/item/view_relationship': "View relationship"
 :'system/penpal/view/relationships/item/is_incarcerated': "(penpal is incarcerated)"
 :'system/penpal/view/relationships/create/title': "Create relationship"

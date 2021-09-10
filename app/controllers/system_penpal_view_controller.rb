@@ -32,6 +32,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
           :id => r.id,
           :link => "/system/penpal/relationship/#{r.id}",
           :other_party => penpal_view_data(other_party),
+          :archived => r.status_override,
         }
       end.compact
     end

@@ -135,6 +135,7 @@
                 %thead
                   %tr
                     %th= ""
+                    %th= ""
                     %th= t(:'name')
                     %th= t(:'pseudonym')
                     %th= t(:'email_address')
@@ -145,6 +146,11 @@
                         %a.pure-button.button{:href => r[:link], :style => 'margin: 0 !important;'}
                           %i.fa.fa-link
                           = t(:'system/penpal/view/relationships/item/view_relationship')
+
+                      %td
+                        - if r[:archived]
+                          %span{title: t(:'system/penpal/view/relationships/item/archived')}
+                            %i.fa.fa-book= ""
 
                       %td
                         &= r[:other_party][:name]
