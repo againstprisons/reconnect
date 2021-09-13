@@ -7,12 +7,19 @@
     .correspondence-html.rich-text-container
       != content
 
+      %p
+        &mdash;
+        %br
+        From:
+        &= pseudonym
+
     .y-margin= ""
 
     %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST'}
       %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
       %input{:type => 'hidden', :name => 'confirm', :value => '1'}
       %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'pseudonym', :value => pseudonym}
       %button.pure-button.button.button-primary{:type => 'submit'}
         %i.fa.fa-envelope
         = t(:'penpal/waiting/compose/confirm/send')
@@ -22,6 +29,7 @@
       %input{:type => 'hidden', :name => 'confirm', :value => '0'}
       %input{:type => 'hidden', :name => 'compose', :value => '1'}
       %input{:type => 'hidden', :name => 'content', :value => content}
+      %input{:type => 'hidden', :name => 'pseudonym', :value => pseudonym}
       %button.pure-button.button{:type => 'submit'}
         %i.fa.fa-pencil
         = t(:'penpal/waiting/compose/confirm/edit')
