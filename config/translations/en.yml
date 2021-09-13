@@ -935,8 +935,13 @@
 :'system/apikey/create/submit': "Create API key"
 :'system/apikey/create/success': "The API key for <%= e(name) %> is: <code><%= e(token) %></code>. You will only see this once, so note it down."
 :'system/apikey/create/warnings/invalid_expiry': "Couldn't parse the expiry <code><%= e(expiry.inspect) %></code>, this API key will never expire."
+:'system/apikey/revoke/title': "Revoke API key: <%= e(name) %>"
+:'system/apikey/revoke/content': "To revoke this API key, enter the following verification code in the field below: <code><%= e(verify_code) %></code>"
+:'system/apikey/revoke/field': "Verification code"
+:'system/apikey/revoke/submit': "Revoke API key"
+:'system/apikey/revoke/cancel': "Cancel and go back"
 :'system/apikey/revoke/success': "Successfully revoked API key <%= e(name) %>."
-:'system/apikey/revoke/errors/invalid_id': "Form submission had an invalid token ID. Please try again."
+:'system/apikey/revoke/errors/invalid_code': "Invalid verification code. Please try again."
 
 # Miscellaneous things
 :'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://gitlab.com/againstprisons/reconnect\">re:connect</a>"

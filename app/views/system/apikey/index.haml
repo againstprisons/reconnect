@@ -53,11 +53,7 @@
                 - else
                   = t(:'system/apikey/list/item/invalid/revoked')
 
-          .system-admin-apikey-actions
+          .system-admin-apikey-actions.inline-form
             - if k[:valid]
-              %form.inline-form{method: 'POST', action: to('/system/apikey/revoke')}
-                %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
-                %input{type: 'hidden', name: 'tokenid', value: k[:id]}
-
-                %button.pure-button.button.button-error{type: 'submit'}
-                  = t(:'system/apikey/list/item/actions/revoke')
+              %a.pure-button.button.button-error{href: url("/system/apikey/revoke/#{k[:id]}")}
+                = t(:'system/apikey/list/item/actions/revoke')
