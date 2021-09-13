@@ -10,7 +10,8 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
       return redirect to("/auth")
     end
 
-    @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
+    @current_user = current_user
+    @current_penpal = ReConnect::Models::Penpal[@current_user.penpal_id]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
 
@@ -124,6 +125,14 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     # Append signature to content, now that we've confirmed the content
     content = "#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>"
+
+    # If needed, save new pseudonym on current user & regenerate filters
+    if pseudonym != @current_user.get_pseudonym
+      @current_user.encrypt(:pseudonym, pseudonym)
+      @current_user.save
+      ReConnect::Models::PenpalFilter.clear_filters_for(@current_penpal)
+      ReConnect::Models::PenpalFilter.create_filters_for(@current_penpal)
+    end
 
     # Save as file object
     obj = ReConnect::Models::File.upload(content, :filename => "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")
