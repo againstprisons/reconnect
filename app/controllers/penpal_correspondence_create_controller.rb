@@ -13,7 +13,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
-    
+
     @penpal_prison = ReConnect::Models::Prison[@penpal.decrypt(:prison_id).to_i]
     return halt 404 unless @penpal_prison
 
@@ -42,10 +42,23 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
     end
 
     force_compose = request.params["compose"]&.strip&.downcase == "1"
+
     content = nil
+    pseudonym = @current_penpal.get_pseudonym
     if request.post?
       content = request.params["content"]&.strip
-      content = nil if content.nil? || content.empty?
+      content = nil if content&.empty?
+      pseudonym = request.params["pseudonym"]&.strip
+
+      if content.nil? || content&.empty?
+        flash :error, t(:'penpal/view/correspondence/create/errors/no_text')
+        force_compose = true
+      end
+
+      if pseudonym.nil? || pseudonym&.empty?
+        flash :error, t(:'penpal/view/correspondence/create/errors/no_pseudonym')
+        force_compose = true
+      end
     end
 
     if request.get? || force_compose
@@ -55,12 +68,8 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
         :penpal_name => @penpal_name,
         :relationship => @relationship,
         :content => content,
+        :pseudonym => pseudonym,
       }
-    end
-
-    if content.nil? || content.empty?
-      flash :error, t(:'penpal/view/correspondence/create/errors/no_text')
-      return redirect to("/penpal/#{ppid}/correspondence/create")
     end
 
     # Remove invalid characters and do a sanitize run
@@ -69,7 +78,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     # Get word count
     wordcount = Sanitize.fragment(content).scan(/\w+/).count
-    
+
     # If the prison being sent to has a word count limit, check the limit
     if @penpal_prison.word_limit&.positive?
       if wordcount > @penpal_prison.word_limit
@@ -80,6 +89,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
           :penpal_name => @penpal_name,
           :relationship => @relationship,
           :content => content,
+          :pseudonym => pseudonym,
         }
       end
     end
@@ -95,6 +105,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
         :penpal_name => @penpal_name,
         :relationship => @relationship,
         :content => content,
+        :pseudonym => pseudonym,
       }
     end
 
@@ -107,8 +118,12 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
         :penpal_name => @penpal_name,
         :relationship => @relationship,
         :content => content,
+        :pseudonym => pseudonym,
       }
     end
+
+    # Append signature to content, now that we've confirmed the content
+    content = "#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>"
 
     # Save as file object
     obj = ReConnect::Models::File.upload(content, :filename => "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")

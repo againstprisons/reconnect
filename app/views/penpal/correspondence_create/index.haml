@@ -17,6 +17,9 @@
 
         %p= t(:'penpal/view/correspondence/create/profanity_warning')
 
+        %label{for: 'pseudonym'}= t(:'penpal/view/correspondence/create/compose/pseudonym_label')
+        %input#pseudonym{type: 'text', name: 'pseudonym', value: pseudonym}
+
         %button.pure-button.button.button-primary{:type => 'submit'}
           %i.fa.fa-upload
           = t(:'penpal/view/correspondence/create/compose/submit')

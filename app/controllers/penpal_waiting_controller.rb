@@ -15,12 +15,12 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     if ReConnect.app_config['disable-outside-correspondence-creation']
       return halt 404
     end
-    
+
     @can_send_to_waiting = (current_user.disable_sending_to_waiting == false)
     unless @can_send_to_waiting
       return halt 404
     end
-    
+
     # get the current user's penpal object, and then get the list of all
     # penpal IDs that the current user has a relationship with
     @our_penpal = current_user.penpal
@@ -34,7 +34,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
 
       other_party
     end
-    
+
     # get penpals waiting for relationships, excluding penpals that the
     # current user already has a relationship with
     @waiting_penpals = get_waiting_penpals
@@ -82,9 +82,21 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
 
     force_compose = request.params["compose"]&.strip&.downcase == "1"
     content = nil
+    pseudonym = @our_penpal.get_pseudonym
     if request.post?
       content = request.params["content"]&.strip
-      content = nil if content.nil? || content.empty?
+      content = nil if content&.empty?
+      pseudonym = request.params["pseudonym"]&.strip
+
+      if content.nil? || content&.empty?
+        flash :error, t(:'penpal/waiting/compose/errors/no_text')
+        force_compose = true
+      end
+
+      if pseudonym.nil? || pseudonym&.empty?
+        flash :error, t(:'penpal/waiting/compose/errors/no_pseudonym')
+        force_compose = true
+      end
     end
 
     if request.get? || force_compose
@@ -93,12 +105,8 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal => @penpal,
         :penpal_name => @penpal_name,
         :content => content,
+        :pseudonym => pseudonym,
       })
-    end
-
-    if content.nil? || content.empty?
-      flash :error, t(:'penpal/waiting/compose/errors/no_text')
-      return redirect to(request.path)
     end
 
     # Remove invalid characters and do a sanitize run
@@ -107,7 +115,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
 
     # Get word count
     wordcount = Sanitize.fragment(content).scan(/\w+/).count
-    
+
     # If the prison being sent to has a word count limit, check the limit
     if @penpal_prison.word_limit&.positive?
       if wordcount > @penpal_prison.word_limit
@@ -117,6 +125,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
           :penpal => @penpal,
           :penpal_name => @penpal_name,
           :content => content,
+          :pseudonym => pseudonym,
         })
       end
     end
@@ -131,6 +140,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal => @penpal,
         :penpal_name => @penpal_name,
         :content => content,
+        :pseudonym => pseudonym,
       })
     end
 
@@ -142,8 +152,12 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal => @penpal,
         :penpal_name => @penpal_name,
         :content => content,
+        :pseudonym => pseudonym,
       })
     end
+
+    # Append signature to content, now that we've confirmed the content
+    content = "#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>"
 
     # Create relationship marked as unconfirmed
     @relationship = ReConnect::Models::PenpalRelationship.new({
