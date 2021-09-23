@@ -127,7 +127,8 @@ DEPENDENCIES
   thwait (~> 0.1.0)
   tilt (~> 2.0.10)
   typhoeus (~> 1.4.0)
+  tzinfo (~> 2.0.4)
   u2f (~> 1.0.0)
 
 BUNDLED WITH
-   2.2.11
+   2.2.20

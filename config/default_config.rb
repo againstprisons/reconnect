@@ -14,6 +14,10 @@ module ReConnect
       :type => :text,
       :default => "https://localhost",
     },
+    "default-timezone" => {
+      :type => :text,
+      :default => 'Pacific/Auckland',
+    },
     "display-version" => {
       :type => :bool,
       :default => false,
