@@ -1,4 +1,13 @@
+require 'tzinfo'
+
 module ReConnect::Utils
+  def self.tz_convert(ts, tz: nil)
+    ts = ts.to_time if ts.respond_to?(:to_time)
+
+    tz = TZInfo::Timezone.get(tz || ReConnect.app_config['default-timezone'])
+    tz&.to_local(ts)
+  end
+
   # Converts a CamelCaseName to a snake_case_name.
   #
   # Taken from https://stackoverflow.com/a/1509939
