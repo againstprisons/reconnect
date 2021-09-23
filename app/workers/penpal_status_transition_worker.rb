@@ -89,7 +89,7 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
               # filter out relationships with override set
               rels.reject!(&:status_override)
 
-              do_transition << (rels.count > transition["when"]["penpal_count"])
+              do_transition << (rels.count >= transition["when"]["penpal_count"])
             end
           end
 
