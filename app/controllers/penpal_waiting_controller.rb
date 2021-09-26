@@ -160,6 +160,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
     # Append signature to content, now that we've confirmed the content
     content = "#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>"
 
+=begin
     # If needed, save new pseudonym on current user & regenerate filters
     if pseudonym != @current_user.get_pseudonym
       @current_user.encrypt(:pseudonym, pseudonym)
@@ -167,6 +168,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       ReConnect::Models::PenpalFilter.clear_filters_for(@current_penpal)
       ReConnect::Models::PenpalFilter.create_filters_for(@current_penpal)
     end
+=end
 
     # Create relationship marked as unconfirmed
     @relationship = ReConnect::Models::PenpalRelationship.new({
