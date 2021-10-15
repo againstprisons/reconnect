@@ -37,6 +37,9 @@ textarea,
 @import 'rich_text';
 @import 'blockquote';
 
+/* CAPTCHA stuff */
+@import 'captcha_smolcaptcha';
+
 /* Section-specific styles */
 @import 'section_maintenance';
 @import 'section_auth';

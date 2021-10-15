@@ -22,6 +22,18 @@ module ReConnect
       :type => :bool,
       :default => false,
     },
+    "captcha-type" => {
+      :type => :text,
+      :default => 'none',
+    },
+    "captcha-smolcaptcha-baseurl" => {
+      :type => :text,
+      :default => '',
+    },
+    "captcha-smolcaptcha-clientid" => {
+      :type => :text,
+      :default => '',
+    },
     "signups" => {
       :type => :bool,
       :default => false,
@@ -41,6 +53,10 @@ module ReConnect
     "signup-terms-agree-text" => {
       :type => :text,
       :default => 'I confirm that I am over 18 years old',
+    },
+    "signup-captcha-enabled" => {
+      :type => :bool,
+      :default => true,
     },
     "email-from" => {
       :type => :text,

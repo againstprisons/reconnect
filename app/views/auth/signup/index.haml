@@ -70,11 +70,14 @@
       %label{:for => "password_confirm"}= t(:'password/confirm')
       %input#password_confirm{:name => 'password_confirm', :type => 'password', :placeholder => t(:'password/confirm'), :required => true}
 
+      - if captcha
+        = captcha_render(captcha)
+
       - if ReConnect.app_config['signup-terms-agree-enabled']
         %label{:for => "terms_agree"}
           %input#terms_agree{:type => 'checkbox', :name => 'terms_agree', :checked => false, :required => true}
           = ReConnect.app_config['signup-terms-agree-text']
 
         %div{:style => 'height:1em'}= ""
-    
+
     %button.pure-button.button.button-primary{:type => 'submit'}= t(:'auth/signup/title')

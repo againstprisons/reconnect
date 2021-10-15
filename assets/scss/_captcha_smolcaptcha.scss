@@ -1,0 +1,27 @@
+.smolcaptcha-container
+{
+	border: 1px solid $color_body_fg;
+	border-radius: 3px;
+	padding: 1rem;
+	margin: 0 0 1rem 0;
+
+	p
+	{
+		margin: 0 0 1rem 0;
+	}
+
+	.smolcaptcha-image-container
+	{
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: center;
+
+		img
+		{
+			max-width: 100%;
+			border: 1px solid $color_body_fg;
+			border-radius: 3px;
+		}
+	}
+}

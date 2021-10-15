@@ -955,5 +955,10 @@
 :'system/apikey/revoke/success': "Successfully revoked API key <%= e(name) %>."
 :'system/apikey/revoke/errors/invalid_code': "Invalid verification code. Please try again."
 
+# CAPTCHA
+:'captcha/invalid': "The provided CAPTCHA verification was invalid, please try again."
+:'captcha/smolcaptcha/header': "Please answer the following question:"
+:'captcha/smolcaptcha/input': "Your answer:"
+
 # Miscellaneous things
 :'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://gitlab.com/againstprisons/reconnect\">re:connect</a>"
