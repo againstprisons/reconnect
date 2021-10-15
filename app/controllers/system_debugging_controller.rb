@@ -5,6 +5,7 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
   add_route :post, "/filter-refresh", :method => :filter_refresh
   add_route :get, "/routes", :method => :routes
   add_route :post, "/error-pls", :method => :error_pls
+  add_route :post, "/captcha-gen", :method => :captcha_gen
 
   def index
     return halt 404 unless logged_in?
@@ -104,5 +105,15 @@ class ReConnect::Controllers::SystemDebuggingController < ReConnect::Controllers
     return halt 404 unless has_role?("system:debugging")
 
     raise "This is a test exception!"
+  end
+
+  def captcha_gen
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:debugging")
+
+    out = captcha_generate
+    flash :success, "CAPTCHA: <code>#{ERB::Util.html_escape(out.inspect)}</code>"
+
+    return redirect back
   end
 end

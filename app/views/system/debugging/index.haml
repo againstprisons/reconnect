@@ -74,6 +74,17 @@
       %i.fa.fa-list
       = t(:'system/debugging/filter_refresh/submit')
 
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/captcha-gen'}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+    %h1= t(:'system/debugging/captcha_gen/title')
+
+    %p
+      = t(:'system/debugging/captcha_gen/content')
+
+    %button.pure-button.button.button-primary{:type => 'submit'}
+      %i.fa.fa-key
+      = t(:'system/debugging/captcha_gen/submit')
+
   %form.pure-form.pure-form-stacked.form-wrapped{:method => 'POST', :action => '/system/debugging/error-pls'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'system/debugging/error_pls/title')
