@@ -1,4 +1,8 @@
 module ReConnect::Helpers::CaptchaHelpers
+  def captcha_enabled
+    ReConnect.app_config['captcha-type'] != 'none'
+  end
+
   def captcha_generate
     case ReConnect.app_config['captcha-type']
     when 'smolcaptcha'
@@ -32,6 +36,8 @@ module ReConnect::Helpers::CaptchaHelpers
   end
 
   def captcha_render(c_data)
+    return "" unless c_data.is_a?(Hash)
+
     case c_data[:type]
     when 'smolcaptcha'
       haml :'helpers/captcha/smolcaptcha', layout: false, locals: { c_data: c_data }
@@ -42,6 +48,8 @@ module ReConnect::Helpers::CaptchaHelpers
   end
 
   def captcha_verify(c_data, result)
+    return false unless c_data.is_a?(Hash)
+
     case c_data[:type]
     when 'smolcaptcha'
       req_opts = {

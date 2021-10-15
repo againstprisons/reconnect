@@ -27,9 +27,11 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       end
     end
 
-    @captcha = session[:captcha]
-    @captcha ||= captcha_generate()
-    session[:captcha] = @captcha
+    if captcha_enabled && ReConnect.app_config['signup-captcha-enabled']
+      @captcha = session[:captcha]
+      @captcha ||= captcha_generate()
+      session[:captcha] = @captcha
+    end
 
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title}) do
@@ -59,7 +61,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       return redirect request.path
     end
 
-    if @captcha
+    if captcha_enabled && ReConnect.app_config['signup-captcha-enabled']
       session.delete(:captcha)
 
       unless captcha_verify(@captcha, request.params['captcha']&.strip)
