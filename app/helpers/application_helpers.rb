@@ -29,6 +29,9 @@ module ReConnect::Helpers::ApplicationHelpers
   require_relative './site_alert_helpers'
   include ReConnect::Helpers::SiteAlertHelpers
 
+  require_relative './captcha_helpers'
+  include ReConnect::Helpers::CaptchaHelpers
+
   def site_name
     ReConnect.app_config["site-name"]
   end

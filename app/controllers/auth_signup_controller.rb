@@ -27,11 +27,16 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       end
     end
 
+    @captcha = session[:captcha]
+    @captcha ||= captcha_generate()
+    session[:captcha] = @captcha
+
     if request.get?
       return haml(:'auth/layout', :locals => {:title => @title}) do
         haml(:'auth/signup/index', :layout => false, :locals => {
           :title => @title,
           :invite => @invite_data,
+          :captcha => @captcha,
         })
       end
     end
@@ -52,6 +57,15 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
     if errs.any?
       flash :error, t(:required_field_missing)
       return redirect request.path
+    end
+
+    if @captcha
+      session.delete(:captcha)
+
+      unless captcha_verify(@captcha, request.params['captcha']&.strip)
+        flash :error, t(:'captcha/invalid')
+        return redirect request.path
+      end
     end
 
     if ReConnect.app_config['signup-age-gate-enabled']

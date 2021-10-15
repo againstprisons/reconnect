@@ -1,0 +1,8 @@
+.smolcaptcha-container
+  %p= t(:'captcha/smolcaptcha/header')
+
+  .smolcaptcha-image-container
+    %img{src: c_data[:url_image]}
+
+  %label{for: 'smolcaptcha-input'}= t(:'captcha/smolcaptcha/input')
+  %input#smolcaptcha-input{type: 'text', name: 'captcha', required: true}
