@@ -118,6 +118,11 @@ controllers:
   - path: /system/group/:id
     controller: SystemGroupEditController
 
+  - path: /system/utilities/address-sticker
+    controller: SystemUtilitiesAddressStickerController
+  - path: /system/utilities
+    controller: SystemUtilitiesController
+
   - path: /system/configuration/announcements
     controller: SystemConfigurationAnnouncementsController
   - path: /system/configuration/site-org-name

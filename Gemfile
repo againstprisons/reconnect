@@ -28,6 +28,8 @@ gem 'e2mmap', '~> 0.1.0'
 gem 'thwait', '~> 0.1.0'
 gem 'pg', '~> 1.1.3'
 
+gem 'rcpdflayout', git: 'https://gitlab.com/againstprisons/rcpdflayout.git', ref: 'main'
+
 group :development do
   gem 'pry', '~> 0.13.1'
 end

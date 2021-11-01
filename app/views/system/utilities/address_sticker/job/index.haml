@@ -1,0 +1,24 @@
+.system-utilities-address-sticker-job{:'data-address-sticker-job' => job.id}
+  %h1= title
+
+  %a.pure-button.button{href: url('/system/utilities/address-sticker')}
+    %i.fa.fa-chevron-left= ""
+    = t(:'back')
+
+  - if job.status == 'ready'
+    .message.message-success
+      %i.fa.fa-check= ""
+      = t(:'system/utilities/address_sticker/job_view/message_ready/content')
+
+      %a.pure-button.button{href: url("/system/utilities/address-sticker/job/#{job.id}/download")}
+        %i.fa.fa-download= ""
+        = t(:'system/utilities/address_sticker/job_view/message_ready/submit')
+
+  - elsif job.status == 'error'
+    .message.message-error
+      %i.fa.fa-warning= ""
+      = t(:'system/utilities/address_sticker/job_view/message_error/content')
+
+  - else
+    .message.message-warning
+      = t(:'system/utilities/address_sticker/job_view/message_status/content', status: job.status)

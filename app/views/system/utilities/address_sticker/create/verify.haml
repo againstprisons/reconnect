@@ -1,0 +1,31 @@
+.system-utilities-address-sticker-create-verify
+  %h1= t(:'system/utilities/address_sticker/create_verify/title')
+  %p= t(:'system/utilities/address_sticker/create_verify/content')
+
+  %table.pure-table.pure-table-bordered.pure-table-striped
+    %thead
+      %tr
+        %th= t(:'system/utilities/address_sticker/create_verify/field_name')
+        %th= t(:'system/utilities/address_sticker/create_verify/field_address')
+
+    %tbody
+      - data.each do |addy|
+        %tr
+          - addy.each do |portion|
+            %td&= portion
+
+  %form.pure-form.pure-form-stacked.form-wrapped.y-margin-large{method: 'POST'}
+    %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
+
+    %label{for: 'layout'}= t(:'system/utilities/address_sticker/create_verify/choose_layout')
+    %select#layout{name: 'layout'}
+      - ReConnect.app_config['stickersheet-layouts'].keys.each do |layout|
+        %option{value: layout}&= layout
+
+    %button.pure-button.button.button-primary{type: 'submit'}
+      %i.fa.fa-check= ""
+      = t(:'system/utilities/address_sticker/create_verify/submit')
+
+    %a.pure-button.button.button-warning{href: url('/system/utilities/address-sticker')}
+      %i.fa.fa-times= ""
+      = t(:'system/utilities/address_sticker/create_verify/cancel')
