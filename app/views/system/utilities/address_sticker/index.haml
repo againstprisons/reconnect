@@ -4,7 +4,7 @@
   - unless my_jobs.empty?
     .form-wrapped
       %h1= t(:'system/utilities/address_sticker/jobs/title')
-      %table.pure-table.pure-table-bordered.pure-table-striped
+      %table.pure-table.pure-table-bordered.pure-table-striped.full-width
         %thead
           %tr
             %th= ""
@@ -16,22 +16,23 @@
           - my_jobs.each do |job|
             %tr
               %td
-                %a.pure-button.button{href: url("/system/utilities/address-sticker/job/#{job[:id]}"), class: [(job[:status] == 'ready' && 'button-success'), (job[:status] == 'error' && 'button-error')]}
-                  - if job[:status] == 'ready'
-                    %i.fa.fa-check= ""
-                    %span.sr-only= t(:'system/utilities/address_sticker/jobs/status_ready')
-                  - elsif job[:status] == 'pending'
-                    %i.fa.fa-hourglass-o= ""
-                    %span.sr-only= t(:'system/utilities/address_sticker/jobs/status_pending')
-                  - elsif job[:status] == 'working'
-                    %i.fa.fa-spin.fa-refresh= ""
-                    %span.sr-only= t(:'system/utilities/address_sticker/jobs/status_working')
-                  - elsif job[:status] == 'error'
-                    %i.fa.fa-warning= ""
-                    %span.sr-only= t(:'system/utilities/address_sticker/jobs/status_error')
-                  - else
-                    %i.fa.fa-question= ""
-                    %span.sr-only= t(:'system/utilities/address_sticker/jobs/status_unknown')
+                .inline-form
+                  %a.pure-button.button{href: url("/system/utilities/address-sticker/job/#{job[:id]}"), class: [(job[:status] == 'ready' && 'button-success'), (job[:status] == 'error' && 'button-error')]}
+                    - if job[:status] == 'ready'
+                      %i.fa.fa-check= ""
+                      %span= t(:'system/utilities/address_sticker/jobs/status_ready')
+                    - elsif job[:status] == 'pending'
+                      %i.fa.fa-hourglass-o= ""
+                      %span= t(:'system/utilities/address_sticker/jobs/status_pending')
+                    - elsif job[:status] == 'working'
+                      %i.fa.fa-spin.fa-refresh= ""
+                      %span= t(:'system/utilities/address_sticker/jobs/status_working')
+                    - elsif job[:status] == 'error'
+                      %i.fa.fa-warning= ""
+                      %span= t(:'system/utilities/address_sticker/jobs/status_error')
+                    - else
+                      %i.fa.fa-question= ""
+                      %span= t(:'system/utilities/address_sticker/jobs/status_unknown')
 
               %td
                 %code&= job[:id]
