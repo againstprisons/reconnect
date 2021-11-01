@@ -4,6 +4,7 @@ class ReConnect::Controllers::SystemUtilitiesAddressStickerController < ReConnec
   add_route :get, "/"
   add_route :get, "/job/:jid", method: :job_index
   add_route :get, "/job/:jid/download", method: :job_download
+  add_route :post, "/job/:jid/archive", method: :job_archive
   add_route :post, "/create/-/csv", method: :create_csv
   add_route :get, "/create/:fid", method: :create_verify
   add_route :post, "/create/:fid", method: :create_verify
@@ -55,13 +56,23 @@ class ReConnect::Controllers::SystemUtilitiesAddressStickerController < ReConnec
     @job = ReConnect::Models::AddressStickerJob[jid.to_i]
     return halt 404 unless @job
     return halt 404 unless @job.user_id == current_user.id
-  
+
     return halt 404 unless @job.file_id
     @file = ReConnect::Models::File.where(file_id: @job.file_id).first
     return halt 404 unless @file
 
     @token = @file.generate_download_token(current_user)
     return redirect url("/filedl/#{@file.file_id}/#{@token.token}")
+  end
+
+  def job_archive(jid)
+    @job = ReConnect::Models::AddressStickerJob[jid.to_i]
+    return halt 404 unless @job
+    return halt 404 unless @job.user_id == current_user.id
+
+    @job.update(deleted: true)
+    flash :success, t(:'system/utilities/address_sticker/job_view/archive/success')
+    return redirect url("/system/utilities/address-sticker/job/#{@job.id}")
   end
 
   def create_csv

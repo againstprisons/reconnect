@@ -22,3 +22,16 @@
   - else
     .message.message-warning
       = t(:'system/utilities/address_sticker/job_view/message_status/content', status: job.status)
+
+  %form.pure-form.pure-form-stacked.form-wrapped{method: 'POST', action: url("/system/utilities/address-sticker/job/#{job.id}/archive")}
+    %h1= t(:'system/utilities/address_sticker/job_view/archive/section_title')
+
+    - if job.deleted
+      .message.message-warning
+        = t(:'system/utilities/address_sticker/job_view/archive/errors/already_archived')
+
+    - else
+      %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
+      %button.pure-button.button.button-warning{type: 'submit'}
+        %i.fa.fa-archive= ""
+        = t(:'system/utilities/address_sticker/job_view/archive/submit')
