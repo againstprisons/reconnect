@@ -47,6 +47,19 @@
 
   .pure-g
     .pure-u-1.pure-u-md-1-2
+      %form.pure-form.form-wrapped.x-margin{method: 'POST', action: url('/system/utilities/address-sticker/create/-/search')}
+        %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
+        %h1= t(:'system/utilities/address_sticker/create_search/title')
+        %p= t(:'system/utilities/address_sticker/create_search/content')
+
+        %label{for: "search_query"}= t(:'system/utilities/address_sticker/create_search/field_query')
+        %input#search_query{name: 'query', type: 'text', required: true}
+
+        %button.pure-button.button.button-primary{type: 'submit'}
+          %i.fa.fa-search= ""
+          = t(:'system/utilities/address_sticker/create_search/submit')
+
+    .pure-u-1.pure-u-md-1-2
       %form.pure-form.form-wrapped.x-margin{method: 'POST', action: url('/system/utilities/address-sticker/create/-/csv'), enctype: 'multipart/form-data'}
         %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
         %h1= t(:'system/utilities/address_sticker/csv_upload/title')

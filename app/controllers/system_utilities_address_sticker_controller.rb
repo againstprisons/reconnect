@@ -5,9 +5,12 @@ class ReConnect::Controllers::SystemUtilitiesAddressStickerController < ReConnec
   add_route :get, "/job/:jid", method: :job_index
   add_route :get, "/job/:jid/download", method: :job_download
   add_route :post, "/job/:jid/archive", method: :job_archive
+  add_route :post, "/create/-/search", method: :create_search
   add_route :post, "/create/-/csv", method: :create_csv
   add_route :get, "/create/:fid", method: :create_verify
   add_route :post, "/create/:fid", method: :create_verify
+
+  include ReConnect::Helpers::SystemPenpalSearchHelpers
 
   def before(*args)
     return halt 404 unless logged_in?
@@ -73,6 +76,60 @@ class ReConnect::Controllers::SystemUtilitiesAddressStickerController < ReConnec
     @job.update(deleted: true)
     flash :success, t(:'system/utilities/address_sticker/job_view/archive/success')
     return redirect url("/system/utilities/address-sticker/job/#{@job.id}")
+  end
+
+  def create_search
+    return halt 404 unless has_role?("system:utilities:address_sticker:search")
+
+    query = request.params['query']&.strip
+    query = nil if query.empty?
+    return halt 400 unless query
+
+    begin
+      id_list = penpal_search_perform(query)
+      if id_list.empty?
+        flash :error, t(:'system/utilities/address_sticker/create_search/errors/no_results')
+        return redirect back
+      end
+
+    rescue => ex
+      flash :error, t(:'system/utilities/address_sticker/create_search/errors/exception', ex: ex.message)
+      return redirect back
+    end
+
+    # Create source data JSON from these search results
+    prison_addresses = {}
+    source_data = id_list.map do |ppid|
+      pp = ReConnect::Models::Penpal[ppid]
+
+      name = [
+        pp.get_name.join(' '),
+        "##{pp.decrypt(:prisoner_number)}",
+      ].join(", ")
+
+      pp_prison = pp.decrypt(:prison_id).to_s
+      unless prison_addresses.key?(pp_prison)
+        prison = ReConnect::Models::Prison[pp_prison.to_i]
+        prison_addresses[pp_prison] = prison&.decrypt(:physical_address)
+      end
+      address = prison_addresses[pp_prison]
+
+      [
+        name,
+        address,
+      ]
+    end
+
+    # Upload the source data as JSON
+    source_json = JSON.generate(source_data)
+    file = ReConnect::Models::File.upload(
+      source_json,
+      filename: "search_results.json",
+      mime_type: 'application/json'
+    )
+
+    # Redirect to the verification
+    return redirect url("/system/utilities/address-sticker/create/#{file.file_id}")
   end
 
   def create_csv
