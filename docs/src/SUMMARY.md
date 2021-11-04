@@ -14,3 +14,4 @@
 - [Internals](./internals/index.md)
   - [File uploads](./internals/file-uploads.md)
   - [Email queueing and templates](./internals/email-queue.md)
+- [Prisoner searching](./prisoner-search/index.md)
