@@ -1,3 +1,11 @@
+GIT
+  remote: https://gitlab.com/againstprisons/rcpdflayout.git
+  revision: 6dd3d2b2513c6296d98f39188bc1160a9dcb166b
+  ref: main
+  specs:
+    rcpdflayout (0.1.0.pre.1)
+      mini_magick (~> 4.11)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -30,6 +38,7 @@ GEM
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
+    mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     mustermann (1.1.1)
@@ -115,6 +124,7 @@ DEPENDENCIES
   puma (~> 3.12.0)
   rake (~> 12.3.2)
   rbnacl (~> 7.1.1)
+  rcpdflayout!
   reverse_markdown (~> 1.1.0)
   rotp (~> 4.0.2)
   rqrcode (~> 1.2.0)

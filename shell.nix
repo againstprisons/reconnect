@@ -23,6 +23,9 @@ pkgs.mkShell {
     pkg-config
     shared-mime-info
     cacert
+
+    imagemagick
+    pngcrush
   ] ++ neededLibraries;
 
   "LD_LIBRARY_PATH" = makeLibraryPath neededLibraries;

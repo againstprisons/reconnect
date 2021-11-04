@@ -141,7 +141,33 @@ module ReConnect
     "advocacy-profile-id" => {
       :type => :number,
       :default => 0,
-    }
+    },
+    "rcpdflayout-default-ppi" => {
+      :type => :number,
+      :default => 300,
+    },
+    "rcpdflayout-default-page-size-constant" => {
+      :type => :text,
+      :default => 'PAGE_SIZE_A4',
+    },
+    "stickersheet-layouts" => {
+      :type => :json,
+      :default => JSON.generate({
+        "TestLayout" => {
+          page_size: "PAGE_SIZE_A4",
+          bounds: [
+            {position: [10, 10], size: [85, 55]},
+            {position: [105, 10], size: [85, 55]},
+            {position: [10, 75], size: [85, 55]},
+            {position: [105, 75], size: [85, 55]},
+            {position: [10, 140], size: [85, 55]},
+            {position: [105, 140], size: [85, 55]},
+            {position: [10, 205], size: [85, 55]},
+            {position: [105, 205], size: [85, 55]},
+          ],
+        },
+      }),
+    },
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {

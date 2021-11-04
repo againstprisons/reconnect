@@ -37,6 +37,11 @@
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/mass-email'}
                 = t :'system/mass_email/title'
 
+          - if has_role?("system:utilities:access")
+            %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/utilities"))].compact}
+              %a.pure-menu-link.sidebar-menu-link{:href => '/system/utilities'}
+                = t :'system/utilities/title'
+
           - if has_role?("system:files:access")
             %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/system/files"))].compact}
               %a.pure-menu-link.sidebar-menu-link{:href => '/system/files'}
