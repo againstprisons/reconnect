@@ -93,7 +93,7 @@ class ReConnect::Controllers::SystemUtilitiesAddressStickerController < ReConnec
       end
 
     rescue => ex
-      flash :error, t(:'system/utilities/address_sticker/create_search/errors/exception', ex: ex.message)
+      flash :error, t(:'system/utilities/address_sticker/create_search/errors/exception', message: ex.message)
       return redirect back
     end
 
