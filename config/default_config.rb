@@ -98,6 +98,10 @@ module ReConnect
       :type => :json,
       :default => '[]',
     },
+    "penpal-status-transitions-ignored-penpals" => {
+      :type => :json,
+      :default => '[]',
+    },
     "penpal-status-advocacy" => {
       :type => :text,
       :default => '',
