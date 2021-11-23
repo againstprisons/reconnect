@@ -172,6 +172,10 @@ module ReConnect
         },
       }),
     },
+    "correspondence-card-instances" => {
+      :type => :json,
+      :default => '{}',
+    },
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {
