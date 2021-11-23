@@ -34,6 +34,7 @@ class ReConnect::Workers::CorrespondenceCardUpdateWorker
             penpal_one: ppid,
             penpal_two: instance["penpal_id"],
             card_instance: instance_name,
+            confirmed: true,
           }).save
         end
       end
