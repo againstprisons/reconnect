@@ -183,6 +183,8 @@
 :'holidaycard/index/manual_mode/submit': "Save manual count updates"
 :'holidaycard/index/manual_mode/success': "Successfully saved counts for the previously displayed penpals. A new list of penpals has been displayed."
 :'holidaycard/index/manual_mode/errors/unknown_error': "An unknown error occurred while updating the counts. A new list of penpals has been displayed."
+:'holidaycard/write/title': "Write a card to <%= e(name) %>"
+:'holidaycard/write/choose_cover/title': "Choose a cover for your card from the list below."
 
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"

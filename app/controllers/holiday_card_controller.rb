@@ -3,6 +3,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
 
   add_route :get, '/:instance', method: :index
   add_route :post, '/:instance', method: :index
+  add_route :get, '/:instance/write/:ppid', method: :write_choose_cover
 
   def before
     unless logged_in?
@@ -52,6 +53,28 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
       manual_mode: @manual_mode,
       instance_name: instance,
       instance: @instance,
+    }
+  end
+
+  def write_choose_cover(instance, ppid)
+    @instance = ReConnect.app_config['correspondence-card-instances'][instance]
+    return halt 404 unless @instance
+    @penpal = ReConnect::Models::Penpal[ppid.to_i]
+    return halt 404 unless @penpal
+    @pp_cobj = ReConnect::Models::HolidayCardCount.where(card_instance: instance, penpal_id: ppid).first
+    return halt 404 unless @pp_cobj
+
+    @penpal_pseudonym = @penpal.get_pseudonym
+    @covers = ReConnect::Models::HolidayCardCover.where(enabled: true).all
+    @title = t(:'holidaycard/write/title', name: @penpal_pseudonym)
+
+    haml :'holidaycard/write/cover', locals: {
+      title: @title,
+      instance: @instance,
+      instance_name: instance,
+      penpal: @penpal,
+      penpal_pseudonym: @penpal_pseudonym,
+      covers: @covers,
     }
   end
 end
