@@ -185,6 +185,13 @@
 :'holidaycard/index/manual_mode/errors/unknown_error': "An unknown error occurred while updating the counts. A new list of penpals has been displayed."
 :'holidaycard/write/title': "Write a card to <%= e(name) %>"
 :'holidaycard/write/choose_cover/title': "Choose a cover for your card from the list below."
+:'holidaycard/write/compose/submit': "Continue to confirmation"
+:'holidaycard/write/compose/success': "Your card to <%= e(name) %> was sent. If you wish to send another card to another person, you can select another name from the list below."
+:'holidaycard/write/compose/errors/no_text': "No text was provided - we can't send a blank message!"
+:'holidaycard/write/compose/errors/content_filter_matched': "Your message contains words that aren't allowed. Please remove the following words: <%= matched.join(', ') %>"
+:'holidaycard/write/compose/confirm/content': "If you are happy with your card, click the \"<%= t(:'holidaycard/write/compose/confirm/send') %>\" button below. To edit your message, click the \"<%= t(:'holidaycard/write/compose/confirm/edit') %>\" button."
+:'holidaycard/write/compose/confirm/send': "Send this card"
+:'holidaycard/write/compose/confirm/edit': "Go back and edit"
 
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"

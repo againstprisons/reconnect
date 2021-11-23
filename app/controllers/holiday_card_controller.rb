@@ -4,6 +4,8 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
   add_route :get, '/:instance', method: :index
   add_route :post, '/:instance', method: :index
   add_route :get, '/:instance/write/:ppid', method: :write_choose_cover
+  add_route :get, '/:instance/write/:ppid/c:coverid', method: :write_compose
+  add_route :post, '/:instance/write/:ppid/c:coverid', method: :write_compose
 
   def before
     unless logged_in?
@@ -21,7 +23,9 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     @count_field = :online_count
     if has_role?("holidaycard:manual:access")
       @manual_mode = request.params['manual']&.strip.to_i.positive?
-      @count_field = :manual_count
+      if @manual_mode
+        @count_field = :manual_count
+      end
     end
 
     if @manual_mode && request.post?
@@ -63,6 +67,8 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     return halt 404 unless @penpal
     @pp_cobj = ReConnect::Models::HolidayCardCount.where(card_instance: instance, penpal_id: ppid).first
     return halt 404 unless @pp_cobj
+    @relationship = @pp_cobj.get_relationship
+    return halt 404 unless @relationship
 
     @penpal_pseudonym = @penpal.get_pseudonym
     @covers = ReConnect::Models::HolidayCardCover.where(enabled: true).all
@@ -76,5 +82,96 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
       penpal_pseudonym: @penpal_pseudonym,
       covers: @covers,
     }
+  end
+
+  def write_compose(instance, ppid, coverid)
+    @instance = ReConnect.app_config['correspondence-card-instances'][instance]
+    return halt 404 unless @instance
+    @penpal = ReConnect::Models::Penpal[ppid.to_i]
+    return halt 404 unless @penpal
+    @pp_cobj = ReConnect::Models::HolidayCardCount.where(card_instance: instance, penpal_id: ppid).first
+    return halt 404 unless @pp_cobj
+    @relationship = @pp_cobj.get_relationship
+    return halt 404 unless @relationship
+    @cover = ReConnect::Models::HolidayCardCover[coverid.to_i]
+    return halt 404 unless @cover && @cover.enabled
+
+    @penpal_pseudonym = @penpal.get_pseudonym
+    @title = t(:'holidaycard/write/title', name: @penpal_pseudonym)
+
+    force_compose = request.params["compose"]&.strip&.downcase == "1"
+    content = nil
+    if request.post?
+      content = request.params["content"]&.strip
+      content = nil if content&.empty?
+
+      if content.nil? || content&.empty?
+        flash :error, t(:'holidaycard/write/compose/errors/no_text')
+        force_compose = true
+      end
+    end
+
+    if request.get? || force_compose
+      return haml(:'holidaycard/write/compose', locals: {
+        title: @title,
+        cover: @cover,
+        cobj: @pp_cobj,
+        penpal: @penpal,
+        penpal_pseudonym: @penpal_pseudonym,
+        content: content,
+      })
+    end
+
+    # Remove invalid characters and do a sanitize run
+    content.gsub!(/[^[:print:]]/, "\uFFFD")
+    content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
+
+    # Run content filter
+    filter = ReConnect.new_content_filter
+    matched = filter.do_filter(content)
+    if matched.count.positive?
+      flash :error, t(:'holidaycard/write/compose/errors/content_filter_matched', :matched => matched)
+      return haml(:'penpal/waiting/compose', :locals => {
+        :title => @title,
+        :penpal => @penpal,
+        :penpal_name => @penpal_name,
+        :content => content,
+        :pseudonym => pseudonym,
+      })
+    end
+
+    # Either show confirmation screen, or submit correspondence
+    confirmed = request.params["confirm"]&.strip&.downcase == "1"
+    unless confirmed
+      return haml(:'holidaycard/write/compose_confirm', locals: {
+        title: @title,
+        cover: @cover,
+        cobj: @pp_cobj,
+        penpal: @penpal,
+        penpal_pseudonym: @penpal_pseudonym,
+        content: content,
+      })
+    end
+
+    # Save as file object
+    obj = ReConnect::Models::File.upload(content, filename: "#{DateTime.now.strftime("%Y-%m-%d_%H%M%S")}.html")
+    obj.mime_type = "text/html"
+    obj.save
+
+    # create the correspondence
+    c = ReConnect::Models::Correspondence.new
+    c.creation = Time.now
+    c.creating_user = current_user.id
+    c.file_id = obj.file_id
+    c.sending_penpal = @instance["penpal_id"].to_i
+    c.receiving_penpal = @penpal.id
+    c.card_instance = instance
+    c.card_cover = @cover.id
+    c.save
+
+    @pp_cobj.update(online_count: (@pp_cobj.online_count + 1))
+
+    flash :success, t(:'holidaycard/write/compose/success', name: @penpal_pseudonym)
+    return redirect "/hcard/#{instance}"
   end
 end
