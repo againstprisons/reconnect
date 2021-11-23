@@ -172,6 +172,18 @@
 :'penpal/waiting/satisfied/content': "Good news! <strong><%= name %></strong> already has enough penpals to write to, so we've removed them from the list of waiting penpals. If you want to find someone else to write to, click the button below."
 :'penpal/waiting/satisfied/back': "Write to a different penpal"
 
+# Holiday cards
+:'holidaycard/index/title': "<%= instance_name %>"
+:'holidaycard/index/penpal/submit': "Write a card to this person"
+:'holidaycard/index/manual_mode/switch/in': "Switch to manual update mode"
+:'holidaycard/index/manual_mode/switch/out': "Switch to online writing mode"
+:'holidaycard/index/manual_mode/warning': "You are in <strong>manual update mode</strong>, allowing you to update the \"manual\" (or \"offline\") correspondence count for this event."
+:'holidaycard/index/manual_mode/counts/current': "Current counts: <%= e(cobj.online_count) %> online, <%= e(cobj.manual_count) %> manual"
+:'holidaycard/index/manual_mode/counts/update_label': "Add to manual count:"
+:'holidaycard/index/manual_mode/submit': "Save manual count updates"
+:'holidaycard/index/manual_mode/success': "Successfully saved counts for the previously displayed penpals. A new list of penpals has been displayed."
+:'holidaycard/index/manual_mode/errors/unknown_error': "An unknown error occurred while updating the counts. A new list of penpals has been displayed."
+
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"
 :'auth/logout': "Log out"

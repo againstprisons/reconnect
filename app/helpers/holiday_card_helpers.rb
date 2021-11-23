@@ -2,21 +2,19 @@ module ReConnect::Helpers::HolidayCardHelpers
   def holidaycard_penpal_list(instance, opts = {})
     opts[:n] ||= 5
     opts[:count_field] ||= :online_count
+    opts[:count_max] ||= 3
 
-    # Get smallest count in the database
-    smallest = ReConnect::Models::HolidayCardCount
-      .where(card_instance: instance)
-      .order(Sequel.asc(opts[:count_field]))
-      .first
-      &.[](opts[:count_field])
-    return [] unless smallest
+    current_count, counts = 0, []
+    while counts.length < opts[:n] && current_count < opts[:count_max]
+      counts << ReConnect::Models::HolidayCardCount
+        .where({ :card_instance => instance, opts[:count_field] => current_count })
+        .order(Sequel.lit('RANDOM()'))
+        .limit(opts[:n])
+        .all
 
-    # Get up to `n` random entries with that count
-    counts = ReConnect::Models::HolidayCardCount
-      .where({ :card_instance => instance, opts[:count_field] => smallest })
-      .order(Sequel.lit('RANDOM()'))
-      .limit(opts[:n])
-      .all
+      current_count += 1
+      counts.flatten!
+    end
 
     # Get the penpal objects
     counts.map do |cobj|
@@ -24,6 +22,6 @@ module ReConnect::Helpers::HolidayCardHelpers
         cobj: cobj,
         penpal: ReConnect::Models::Penpal[cobj.penpal_id],
       }
-    end
+    end.shuffle
   end
 end

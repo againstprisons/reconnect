@@ -1,0 +1,46 @@
+.holidaycard-index{class: manual_mode ? 'holidaycard-index--manual' : nil}
+  - if has_role?("holidaycard:manual:access")
+    .form-wrapped
+      %a.pure-button.button{href: "?manual=#{manual_mode ? 0 : 1}"}
+        %i.fa{class: "fa-toggle-#{manual_mode ? 'off' : 'on'}"}= ""
+        = t("holidaycard/index/manual_mode/switch/#{manual_mode ? 'out' : 'in'}".to_sym)
+
+  %form.form-wrapped{method: manual_mode ? 'POST' : nil}
+    %h1= title
+
+    - if manual_mode
+      %input{type: 'hidden', name: '_csrf', value: session[:csrf]}
+      %input{type: 'hidden', name: 'penpals', value: penpals.map{|x| x[:penpal].id}.join(',')}
+
+      .message.message-warning
+        %i.fa.fa-gear= ""
+        = t(:'holidaycard/index/manual_mode/warning')
+
+    - penpals.each do |x|
+      .holidaycard-penpal-item.penpal-waiting-item
+        .holidaycard-penpal-item-header.penpal-waiting-item-header
+          %h1= x[:penpal].get_pseudonym
+
+          .holidaycard-penpal-item-meta
+            - if manual_mode
+              %code&= "##{x[:penpal].id}"
+
+        - if manual_mode
+          .holidaycard-penpal-item-counts
+            %p
+              = t(:'holidaycard/index/manual_mode/counts/current', cobj: x[:cobj])
+
+            .inline-form
+              %label{for: "mcu__#{x[:penpal].id}"}= t(:'holidaycard/index/manual_mode/counts/update_label')
+              %input{type: 'number', id: "mcu__#{x[:penpal].id}", name: "mcu__#{x[:penpal].id}", value: 0, min: 0}
+
+        - else
+          %a.pure-button.button.button-primary{href: url("/hcard/#{instance_name}/write/#{x[:penpal].id}")}
+            %i.fa.fa-pencil= ""
+            = t(:'holidaycard/index/penpal/submit')
+
+    - if manual_mode
+      .y-margin-large
+        %button.pure-button.button.button-primary{type: 'submit'}
+          %i.fa.fa-save= ""
+          = t(:'holidaycard/index/manual_mode/submit')

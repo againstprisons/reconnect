@@ -23,6 +23,9 @@ controllers:
   - path: /penpal/:ppid
     controller: PenpalController
 
+  - path: /hcard
+    controller: HolidayCardController
+
   - path: /account/mfa/recovery
     controller: AccountMfaRecoveryController
   - path: /account/mfa/totp
