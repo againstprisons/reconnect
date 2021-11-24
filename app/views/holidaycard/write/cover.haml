@@ -1,0 +1,12 @@
+.holidaycard-write-cover
+  .form-wrapped
+    %h1= title  
+    %p= t(:'holidaycard/write/choose_cover/title')
+
+  .holidaycard-write-cover-list
+    - covers.each do |cover|
+      %a.holidaycard-write-cover-item{href: url("/hcard/#{instance_name}/write/#{penpal.id}/c#{cover.id}")}
+        %img{src: cover.preview_url, alt: cover.credit ? cover.credit : nil}
+        - if cover.credit
+          %span.holidaycard-write-cover-item-credit
+            &= cover.credit

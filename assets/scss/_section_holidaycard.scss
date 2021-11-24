@@ -1,0 +1,39 @@
+.holidaycard-penpal-item {
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 1rem;
+
+  .holidaycard-penpal-item-header {
+    h1 {
+      margin: 0 0 0.5rem 0;
+    }
+  }
+}
+
+.holidaycard-write-cover-item {
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 1rem;
+
+  color: $color_dimmed_fg;
+  text-decoration: none;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}
+
+.holidaycard-write-cover-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+
+  .holidaycard-write-cover-item {
+    width: 100%;
+    max-width: 30%;
+    margin: 1rem;
+  }
+}

@@ -61,7 +61,8 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
               reject_pids = [
                 ReConnect.app_config['admin-profile-id'].to_i,
                 ReConnect.app_config['advocacy-profile-id'].to_i,
-              ].compact.uniq
+                ReConnect.app_config['penpal-status-transitions-ignored-penpals'].map(&:to_i),
+              ].flatten.compact.uniq
 
               if !reject_pids.empty?
                 rels.reject! do |r|

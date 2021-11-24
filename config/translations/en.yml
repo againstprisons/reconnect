@@ -112,6 +112,8 @@
 :'index/new_correspondence/link_text': "From <strong><%= name %></strong> (on <%= t(:'timestamp/full', ts: date) %>)"
 :'index/penpals/title': "Your penpals"
 :'index/penpals/no_penpals': "You do not have any penpals."
+:'index/holidaycard/content': "<strong><%= e(name) %></strong> event is now running!"
+:'index/holidaycard/write': "Write a card to a prisoner"
 
 # Penpal
 :'penpal/view/title': "Your penpal: <%= name %>"
@@ -171,6 +173,27 @@
 :'penpal/waiting/satisfied/title': "This penpal has someone to write to!"
 :'penpal/waiting/satisfied/content': "Good news! <strong><%= name %></strong> already has enough penpals to write to, so we've removed them from the list of waiting penpals. If you want to find someone else to write to, click the button below."
 :'penpal/waiting/satisfied/back': "Write to a different penpal"
+
+# Holiday cards
+:'holidaycard/index/title': "<%= instance_name %>"
+:'holidaycard/index/penpal/submit': "Write a card to this person"
+:'holidaycard/index/manual_mode/switch/in': "Switch to manual update mode"
+:'holidaycard/index/manual_mode/switch/out': "Switch to online writing mode"
+:'holidaycard/index/manual_mode/warning': "You are in <strong>manual update mode</strong>, allowing you to update the \"manual\" (or \"offline\") correspondence count for this event."
+:'holidaycard/index/manual_mode/counts/current': "Current counts: <%= e(cobj.online_count) %> online, <%= e(cobj.manual_count) %> manual"
+:'holidaycard/index/manual_mode/counts/update_label': "Add to manual count:"
+:'holidaycard/index/manual_mode/submit': "Save manual count updates"
+:'holidaycard/index/manual_mode/success': "Successfully saved counts for the previously displayed penpals. A new list of penpals has been displayed."
+:'holidaycard/index/manual_mode/errors/unknown_error': "An unknown error occurred while updating the counts. A new list of penpals has been displayed."
+:'holidaycard/write/title': "Write a card to <%= e(name) %>"
+:'holidaycard/write/choose_cover/title': "Choose a cover for your card from the list below."
+:'holidaycard/write/compose/submit': "Continue to confirmation"
+:'holidaycard/write/compose/success': "Your card to <%= e(name) %> was sent. If you wish to send another card to another person, you can select another name from the list below."
+:'holidaycard/write/compose/errors/no_text': "No text was provided - we can't send a blank message!"
+:'holidaycard/write/compose/errors/content_filter_matched': "Your message contains words that aren't allowed. Please remove the following words: <%= matched.join(', ') %>"
+:'holidaycard/write/compose/confirm/content': "If you are happy with your card, click the \"<%= t(:'holidaycard/write/compose/confirm/send') %>\" button below. To edit your message, click the \"<%= t(:'holidaycard/write/compose/confirm/edit') %>\" button."
+:'holidaycard/write/compose/confirm/send': "Send this card"
+:'holidaycard/write/compose/confirm/edit': "Go back and edit"
 
 # Authentication
 :'auth/login_or_signup': "Log in or sign up"

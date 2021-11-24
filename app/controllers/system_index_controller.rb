@@ -10,6 +10,7 @@ class ReConnect::Controllers::SystemIndexController < ReConnect::Controllers::Ap
       .where({
         :sent => 'no',
         :actioning_user => nil,
+        :card_instance => nil,
       })
       .map(&:get_data)
       .reject{|x| x[:actioned]}
