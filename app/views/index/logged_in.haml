@@ -1,6 +1,15 @@
 .index-logged-in
   %h1= title
 
+  - unless hcard_instances.empty?
+    - hcard_instances.each do |hc|
+      .message.message-success
+        %span= t(hc[:data]["tl_banner"] ? hc[:data]["tl_banner"].to_sym : :'index/holidaycard/content', name: hc[:friendly])
+        &nbsp;
+        %a.pure-button.button{href: hc[:url]}
+          %i.fa.fa-pencil= ""
+          = t(:'index/holidaycard/write')
+
   - if can_send_to_waiting
     - unless ReConnect.app_config['disable-outside-correspondence-creation']
       %a.pure-button.button{:href => url("/penpal/waiting")}

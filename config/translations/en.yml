@@ -112,6 +112,8 @@
 :'index/new_correspondence/link_text': "From <strong><%= name %></strong> (on <%= t(:'timestamp/full', ts: date) %>)"
 :'index/penpals/title': "Your penpals"
 :'index/penpals/no_penpals': "You do not have any penpals."
+:'index/holidaycard/content': "<strong><%= e(name) %></strong> event is now running!"
+:'index/holidaycard/write': "Write a card to a prisoner"
 
 # Penpal
 :'penpal/view/title': "Your penpal: <%= name %>"

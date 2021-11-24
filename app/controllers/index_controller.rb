@@ -13,6 +13,18 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
     @can_send_to_waiting = (current_user.disable_sending_to_waiting == false)
     @current_penpal = ReConnect::Models::Penpal[current_user.penpal_id]
 
+    @hcard_instances = ReConnect.app_config['correspondence-card-instances'].map do |k, v|
+      next nil unless v["enabled"]
+      next nil unless v["show_on_index"]
+
+      {
+        name: k,
+        friendly: v["friendly"],
+        url: url("/hcard/#{k}"),
+        data: v,
+      }
+    end.compact
+
     @penpals = ReConnect::Models::PenpalRelationship.find_for_single_penpal(@current_penpal).map do |pr|
       if pr.penpal_one == @current_penpal.id
         other = ReConnect::Models::Penpal[pr.penpal_two]
@@ -57,6 +69,7 @@ class ReConnect::Controllers::IndexController < ReConnect::Controllers::Applicat
       :penpals => @penpals,
       :new_received => @new_received,
       :can_send_to_waiting => @can_send_to_waiting,
+      :hcard_instances => @hcard_instances,
     }
   end
 end

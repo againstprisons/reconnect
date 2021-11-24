@@ -11,7 +11,7 @@ module ReConnect::Config::CorrespondenceCardInstances
 
   def parse(value)
     begin
-      instances = JSON.parse(value)
+      value = JSON.parse(value)
     rescue => e
       return {
         :warning => "Failed to parse JSON: #{e.class.name}: #{e}",
@@ -20,19 +20,31 @@ module ReConnect::Config::CorrespondenceCardInstances
     end
 
     warnings = {}
-    instances.each do |k, v|
-      this_warnings = []
-      %w[friendly penpal_id statuses].each do |key|
+    instances = value.map do |k, v|
+      warnings[k] ||= []
+
+      # Check for required keys
+      %w[enabled friendly penpal_id statuses].each do |key|
         unless v.key?(key)
-          this_warnings << "missing key #{key.inspect}"
+          warnings[k] << "missing key #{key.inspect}"
         end
       end
-      warnings[k] = this_warnings unless this_warnings.empty?
-    end
+
+      # Set defaults
+      v["show_on_index"] = false unless v.key?("show_on_index")
+
+      [k, v]
+    end.compact.to_h
+
+    warnings = warnings.map do |k, v|
+      next nil if v&.empty?
+      "#{k}: #{v&.join(", ")}"
+    end.compact.join("; ")
+    warnings = nil if warnings.empty?
 
     {
       :data => instances,
-      :warning => (warnings.map { |k, v| v.empty? ? nil : v }.compact.map { |k, v| "#{k}: #{v.join(', ')}" }.compact.join("; ") unless warnings.empty?),
+      :warning => warnings,
     }
   end
 end

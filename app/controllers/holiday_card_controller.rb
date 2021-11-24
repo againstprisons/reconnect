@@ -17,7 +17,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
 
   def index(instance)
     @instance = ReConnect.app_config['correspondence-card-instances'][instance]
-    return halt 404 unless @instance
+    return halt 404 unless @instance && @instance["enabled"]
 
     @manual_mode = false
     @count_field = :online_count
@@ -62,7 +62,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
 
   def write_choose_cover(instance, ppid)
     @instance = ReConnect.app_config['correspondence-card-instances'][instance]
-    return halt 404 unless @instance
+    return halt 404 unless @instance && @instance["enabled"]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
     @pp_cobj = ReConnect::Models::HolidayCardCount.where(card_instance: instance, penpal_id: ppid).first
@@ -86,7 +86,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
 
   def write_compose(instance, ppid, coverid)
     @instance = ReConnect.app_config['correspondence-card-instances'][instance]
-    return halt 404 unless @instance
+    return halt 404 unless @instance && @instance["enabled"]
     @penpal = ReConnect::Models::Penpal[ppid.to_i]
     return halt 404 unless @penpal
     @pp_cobj = ReConnect::Models::HolidayCardCount.where(card_instance: instance, penpal_id: ppid).first
