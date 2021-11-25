@@ -114,6 +114,8 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     if request.get? || force_compose
       return haml(:'holidaycard/write/compose', locals: {
         title: @title,
+        instance: @instance,
+        instance_name: instance,
         cover: @cover,
         cobj: @pp_cobj,
         penpal: @penpal,
@@ -126,25 +128,13 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     content.gsub!(/[^[:print:]]/, "\uFFFD")
     content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
 
-    # Run content filter
-    filter = ReConnect.new_content_filter
-    matched = filter.do_filter(content)
-    if matched.count.positive?
-      flash :error, t(:'holidaycard/write/compose/errors/content_filter_matched', :matched => matched)
-      return haml(:'penpal/waiting/compose', :locals => {
-        :title => @title,
-        :penpal => @penpal,
-        :penpal_name => @penpal_name,
-        :content => content,
-        :pseudonym => pseudonym,
-      })
-    end
-
     # Either show confirmation screen, or submit correspondence
     confirmed = request.params["confirm"]&.strip&.downcase == "1"
     unless confirmed
       return haml(:'holidaycard/write/compose_confirm', locals: {
         title: @title,
+        instance: @instance,
+        instance_name: instance,
         cover: @cover,
         cobj: @pp_cobj,
         penpal: @penpal,
