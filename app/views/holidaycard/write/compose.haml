@@ -6,7 +6,8 @@
     = haml :'helpers/editor', :layout => false, :locals => {:editor_name => 'content', :editor_label => t(:'penpal/view/correspondence/create/compose/content_label'), :editor_data => content || ""}
     .y-margin= ""
 
-    %p= t(:'penpal/view/correspondence/create/profanity_warning')
+    - [instance["tl_below_editor"]].flatten.compact.each do |tl|
+      %p= t(tl.to_sym)
 
     %button.pure-button.button.button-primary{type: 'submit'}
       %i.fa.fa-upload
