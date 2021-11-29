@@ -160,6 +160,8 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     c.card_status = 'ready'
     c.save
 
+    ReConnect::Workers::CorrespondenceCardGenerateWorker.perform_async(c)
+
     @pp_cobj.update(online_count: (@pp_cobj.online_count + 1))
 
     flash :success, t(:'holidaycard/write/compose/success', name: @penpal_pseudonym)
