@@ -176,6 +176,10 @@ module ReConnect
       :type => :json,
       :default => '{}',
     },
+    'correspondence-card-default-page-size' => {
+      :type => :json,
+      :default => '"PAGE_SIZE_A4"',
+    },
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {

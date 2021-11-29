@@ -157,6 +157,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
     c.receiving_penpal = @penpal.id
     c.card_instance = instance
     c.card_cover = @cover.id
+    c.card_status = 'ready'
     c.save
 
     @pp_cobj.update(online_count: (@pp_cobj.online_count + 1))
