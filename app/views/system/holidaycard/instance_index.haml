@@ -1,0 +1,24 @@
+.system-admin-holidaycard-instance
+  %h1= title
+
+  .inline-form
+    %a.pure-button.button{href: url("/system/hcard")}
+      %i.fa.fa-chevron-left= ""
+      = t(:'back')
+
+  .pure-g
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/holidaycard/instance_index/stats/section_title')
+
+        %ul
+          %li= t(:'system/holidaycard/instance_index/stats/card_count', count: card_count)
+          %li= t(:'system/holidaycard/instance_index/stats/printed_count', count: card_printed_count)
+
+    .pure-u-1.pure-u-md-1-2
+      .form-wrapped.x-margin
+        %h1= t(:'system/holidaycard/instance_index/actions/section_title')
+
+        %a.pure-button.button{href: url("/system/hcard/#{instance_name}/card/-/random")}
+          %i.fa.fa-refresh= ""
+          = t(:'system/holidaycard/instance_index/actions/random_card')
