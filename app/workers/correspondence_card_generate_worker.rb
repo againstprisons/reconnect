@@ -72,7 +72,7 @@ class ReConnect::Workers::CorrespondenceCardGenerateWorker
       file = ReConnect::Models::File.upload(tmpfile.read, filename: "reconnect-holidaycard_#{Time.now.to_i}.pdf")
       
       # Update the job as ready
-      cc_obj.update(card_file_id: file.file_id, card_status: 'ready')
+      cc_obj.update(card_file_id: file.file_id, card_status: 'generated')
 
     rescue => e
       logger.error("Correspondence[#{cc_obj.id}] - exception, updating to status=error and raising")
