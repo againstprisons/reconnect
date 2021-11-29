@@ -40,6 +40,13 @@ controllers:
   - path: /system/apikey
     controller: SystemApiKeyController
 
+  - path: /system/hcard/:iname/card
+    controller: SystemHolidayCardInstanceCardController
+  - path: /system/hcard/:iname
+    controller: SystemHolidayCardInstanceController
+  - path: /system/hcard
+    controller: SystemHolidayCardController
+
   - path: /system/roster
     controller: SystemVolunteerRosterController
 

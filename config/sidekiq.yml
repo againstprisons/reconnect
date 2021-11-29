@@ -22,3 +22,7 @@
   correspondence_card_update:
     cron: '30 * * * *'
     class: "ReConnect::Workers::CorrespondenceCardUpdateWorker"
+
+  correspondence_card_queue_generate:
+    cron: '*/10 * * * *'
+    class: "ReConnect::Workers::CorrespondenceCardQueueGenerateWorker"

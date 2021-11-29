@@ -1,0 +1,12 @@
+.system-admin-holidaycard-index
+  %h1= title
+
+  %ul
+    - instances.each do |iname, inst|
+      %li
+        %a{href: url("/system/hcard/#{iname}")}
+          %strong&= inst["friendly"]
+
+        %ul.inline-list
+          %li= t("enabled/#{inst["enabled"] ? 'yes' : 'no'}".to_sym)
+          %li= t("visible/#{inst["show_on_index"] ? 'yes' : 'no'}".to_sym)
