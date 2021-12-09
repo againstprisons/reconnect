@@ -54,6 +54,9 @@ class ReConnect::Models::Penpal < Sequel::Model
       self.user_id = nil
     end
 
+    # delete holiday card counts
+    ReConnect::Models::HolidayCardCount.where(penpal_id: self.id).delete
+
     # clear filters
     ReConnect::Models::PenpalFilter.clear_filters_for(self)
 
