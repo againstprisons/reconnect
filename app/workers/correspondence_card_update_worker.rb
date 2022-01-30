@@ -10,7 +10,7 @@ class ReConnect::Workers::CorrespondenceCardUpdateWorker
     end
 
     ReConnect.app_config['correspondence-card-instances'].each do |instance_name, instance|
-      next logger.info("#{instance_name.inspect} - disabled, skipping") if instance["disabled"]
+      next logger.info("#{instance_name.inspect} - disabled, skipping") if !instance["enabled"]
       logger.info("#{instance_name.inspect} - start processing")
 
       # Search for penpals matching our statuses
