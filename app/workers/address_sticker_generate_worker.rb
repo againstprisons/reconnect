@@ -63,7 +63,7 @@ class ReConnect::Workers::AddressStickerGenerateWorker
 
             textbox.text_segment_lines = [
               [{ word: addy.first, tags: {'b' => []} }],
-              RcPdfLayout::TextMarkup.parse_segments(addy.last),
+              RcPdfLayout::TextMarkup.parse_segments(addy.last || ''),
             ]
 
             page.children << textbox
