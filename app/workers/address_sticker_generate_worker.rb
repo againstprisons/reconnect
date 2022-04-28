@@ -58,7 +58,8 @@ class ReConnect::Workers::AddressStickerGenerateWorker
             textbox = RcPdfLayout::Object::TextBox.new(
               sheet_desc['bounds'][idx]['position'],
               sheet_desc['bounds'][idx]['size'],
-              page_ppi
+              page_ppi,
+              font_size: 10,
             )
 
             textbox.text_segment_lines = [
