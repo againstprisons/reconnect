@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/againstprisons/rcpdflayout.git
-  revision: 35dcdaab4f561cdad7bb1664dc1534e9873e70f3
+  revision: 9548faedec8c4762b409810bda696a5981c51916
   branch: main
   specs:
     rcpdflayout (0.1.0.pre.1)
