@@ -1,7 +1,7 @@
 GIT
-  remote: https://gitlab.com/againstprisons/rcpdflayout.git
-  revision: 42bc5c106e6de6b13a6d509bc213093d57801203
-  ref: main
+  remote: https://github.com/againstprisons/rcpdflayout.git
+  revision: 35dcdaab4f561cdad7bb1664dc1534e9873e70f3
+  branch: main
   specs:
     rcpdflayout (0.1.0.pre.1)
       commonmarker (~> 0.22)
@@ -16,7 +16,7 @@ GEM
     chronic (0.10.2)
     chunky_png (1.4.0)
     coderay (1.1.3)
-    commonmarker (0.23.2)
+    commonmarker (0.23.4)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
@@ -26,7 +26,7 @@ GEM
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    ffi (1.15.4)
+    ffi (1.15.5)
     fugit (1.5.2)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
@@ -143,4 +143,4 @@ DEPENDENCIES
   u2f (~> 1.0.0)
 
 BUNDLED WITH
-   2.2.24
+   2.3.9
