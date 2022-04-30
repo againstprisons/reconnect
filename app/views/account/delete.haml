@@ -4,10 +4,20 @@
     %h1= title
 
     %p= t(:'account/delete/content/one')
-    %p= t(:'account/delete/content/two')
+
+    %p
+      - code_display = verify_code.split('').each_slice(3).to_a.map(&:join).join('-')
+      = t(:'account/delete/content/verify_code', :verify_code => code_display)
+
+    %label{:for => 'verify_code'}= t(:'account/delete/verify_code')
+    %input#verify_code{:type => 'text', :required => true, :name => 'verify', :placeholder => '123-456-789'}
+
+    %p= t(:'account/delete/content/password')
 
     %label{:for => "delete_password"}= t :'password'
     %input#delete_password{:name => 'password', :type => 'password', :placeholder => t(:'password'), :required => true}
+
+    %p= t(:'account/delete/content/two')
 
     %button.pure-button.button.button-error{type: 'submit'}
       %i.fa.fa-trash= ""
