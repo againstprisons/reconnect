@@ -17,11 +17,12 @@ class ReConnect::ContentFilter
     content = Sanitize.fragment(content)
 
     # Split into words, do basic word matching on each word
-    content.split(" ").map{|x| x.split("-")}.flatten.each do |partial|
-      partial = partial.strip.downcase
-      @words.each do |to_match|
-        if partial == to_match
-          matched << to_match
+    content.split(/\s+/).map{|x| x.split("-")}.flatten.compact.each do |p_full|
+      p_full.strip.downcase.split(/\W+/).map(&:strip).each do |partial|
+        @words.each do |to_match|
+          if partial == to_match
+            matched << to_match
+          end
         end
       end
     end
