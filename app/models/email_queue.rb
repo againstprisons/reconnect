@@ -1,9 +1,8 @@
 require 'tilt/erb'
 require 'ostruct'
+require 'email_address'
 
 class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
-  EMAIL_CHUNK_SIZE = 1
-
   include ReConnect::Helpers::EmailTemplateHelpers
 
   def self.new_from_template(template, data = {})
@@ -107,21 +106,18 @@ class ReConnect::Models::EmailQueue < Sequel::Model(:email_queue)
   end
 
   def generate_messages_chunked
-    out = []
+    self.generate_recipients_list.map do |target|
+      next unless EmailAddress.valid? target
+      next if ReConnect::Models::EmailBlock.is_blocked? target
 
-    chunks = self.generate_recipients_list.each_slice(EMAIL_CHUNK_SIZE).to_a
-    chunks.each do |chunk|
       m = self.generate_message_no_recipients
-      m.bcc = chunk
-
-      out << m
-    end
-
-    out
+      m.to = target
+      m
+    end.compact
   end
 
   def generate_message_no_recipients
-    this = self
+    this = self # load-bearing!
 
     m = Mail.new do
       from ReConnect.app_config["email-from"]
