@@ -46,7 +46,7 @@ class ReConnect::Workers::CorrespondenceCardGenerateWorker
       cover_tmpfile.close
 
       # Add cover image to one half of new page
-      cover_image = RcPdfLayout::Object::Image.new([default_pagesize.first / 2, 0], [default_pagesize.first / 2, default_pagesize.last], page_ppi, defer_image: true)
+      cover_image = RcPdfLayout::Object::Image.new([0, 0], [default_pagesize.first / 2, default_pagesize.last], page_ppi, defer_image: true)
       cover_image.object_image = MiniMagick::Image.open(cover_tmpfile.path)
       cover_page = RcPdfLayout::Object::Page.new(default_pagesize, page_ppi)
       cover_page.children << cover_image
