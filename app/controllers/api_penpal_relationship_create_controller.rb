@@ -37,6 +37,7 @@ class ReConnect::Controllers::ApiPenpalRelationshipCreateController < ReConnect:
     @relationship.penpal_one = @penpal_one.id
     @relationship.penpal_two = @penpal_two.id
     @relationship.confirmed = rl_confirmed
+    @relationship.email_approved = rl_confirmed
     @relationship.save # to get ID
     @relationship.encrypt(:notes, @note)
     @relationship.save
