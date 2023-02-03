@@ -1,6 +1,8 @@
 require 'sanitize'
 
 class ReConnect::ContentFilter
+  EMOJI_REGEXP = /<a?:.+?:\d{18}>|\p{Extended_Pictographic}/u
+
   attr_accessor :enabled
   attr_accessor :words
 
@@ -25,6 +27,11 @@ class ReConnect::ContentFilter
           end
         end
       end
+    end
+
+    # Check for emoji
+    content.scan(EMOJI_REGEXP).each do |em|
+      matched << em
     end
 
     matched
