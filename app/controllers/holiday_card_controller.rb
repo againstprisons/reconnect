@@ -126,7 +126,7 @@ class ReConnect::Controllers::HolidayCardController < ReConnect::Controllers::Ap
 
     # Remove invalid characters and do a sanitize run
     content.gsub!(/[^[:print:]]/, "\uFFFD")
-    content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
+    content = Sanitize.fragment(content, Sanitize::Config::BASIC)
 
     # Either show confirmation screen, or submit correspondence
     confirmed = request.params["confirm"]&.strip&.downcase == "1"

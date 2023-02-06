@@ -75,7 +75,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     # Remove invalid characters and do a sanitize run
     content.gsub!(/[^[:print:]]/, "\uFFFD")
-    content = Sanitize.fragment(content, Sanitize::Config::RELAXED)
+    content = Sanitize.fragment(content, Sanitize::Config::BASIC)
 
     # Get word count
     wordcount = Sanitize.fragment(content).scan(/\w+/).count

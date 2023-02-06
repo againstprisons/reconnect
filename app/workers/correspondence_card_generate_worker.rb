@@ -27,7 +27,7 @@ class ReConnect::Workers::CorrespondenceCardGenerateWorker
       raise "source file couldn't be decrypted or was empty" unless html_part
 
       # do a sanitize fragment run, just in case
-      html_part = Sanitize.fragment(html_part, Sanitize::Config::RELAXED)
+      html_part = Sanitize.fragment(html_part, Sanitize::Config::BASIC)
 
       # construct plain-text version of the HTML contents using reverse-markdown
       text_part = ReverseMarkdown.convert(html_part, :unknown_tags => :bypass)

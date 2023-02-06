@@ -236,7 +236,7 @@ class ReConnect::Models::Correspondence < Sequel::Model(:correspondence)
     # creation for normal-user-created correspondence entries, but it may not
     # have been done if this was uploaded by an administrator. doesn't hurt to
     # do it again!
-    html_part = Sanitize.fragment(html_part, Sanitize::Config::RELAXED)
+    html_part = Sanitize.fragment(html_part, Sanitize::Config::BASIC)
 
     # construct plain-text version of the HTML contents using reverse-markdown
     text_part = ReverseMarkdown.convert(html_part, :unknown_tags => :bypass)
