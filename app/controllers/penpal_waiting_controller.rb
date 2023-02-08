@@ -81,6 +81,12 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
       end
     end
 
+    # Check that we don't have a temp block on sending to this prison
+    if @penpal_prison.word_limit == -1
+      flash :error, t(:'penpal/view/correspondence/create/errors/prison_temporary_block')
+      return redirect back
+    end
+
     force_compose = request.params["compose"]&.strip&.downcase == "1"
     content = nil
     pseudonym = @current_penpal.get_pseudonym
