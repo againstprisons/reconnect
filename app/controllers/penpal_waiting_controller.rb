@@ -139,7 +139,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
 
     # Run content filter
     filter = ReConnect.new_content_filter
-    matched = filter.do_filter(content)
+    matched = filter.do_filter("#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>")
     if matched.count.positive?
       flash :error, t(:'penpal/waiting/compose/errors/content_filter_matched', :matched => matched)
       return haml(:'penpal/waiting/compose', :locals => {

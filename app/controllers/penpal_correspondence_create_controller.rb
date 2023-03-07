@@ -103,7 +103,7 @@ class ReConnect::Controllers::PenpalCorrespondenceCreateController < ReConnect::
 
     # Run content filter
     filter = ReConnect.new_content_filter
-    matched = filter.do_filter(content)
+    matched = filter.do_filter("#{content}\n<p>&mdash;<br>From: #{ERB::Util.html_escape(pseudonym)}</p>")
     if matched.count.positive?
       flash :error, t(:'penpal/view/correspondence/create/errors/content_filter_matched', :matched => matched)
       return haml :'penpal/correspondence_create/index', :locals => {
