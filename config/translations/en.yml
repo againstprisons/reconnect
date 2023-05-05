@@ -486,7 +486,6 @@
 :'system/penpal/actions/user_association_remove': "Remove user association"
 :'system/penpal/actions/delete': "Delete penpal"
 :'system/penpal/address_book/title': "Address book"
-:'system/penpal/address_book/totals/section_title': "Total penpal count by status"
 :'system/penpal/view/title': "Viewing penpal <%= name %> <% if pseudonym %>(<em><%= pseudonym %></em>) <% end %>(id <%= id %>)"
 :'system/penpal/view/penpal_info': "Penpal info"
 :'system/penpal/view/penpal_info/is_admin_profile': "This penpal is set as the administration profile for <%= org_name %>."

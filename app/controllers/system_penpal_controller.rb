@@ -3,6 +3,7 @@ class ReConnect::Controllers::SystemPenpalController < ReConnect::Controllers::A
   add_route :post, "/by-id", :method => :by_id
   add_route :post, "/search", :method => :search
   add_route :get, "/clear-copied", :method => :clear_copied
+  add_route :get, "/addressbook", :method => :address_book
 
   def index
     return halt 404 unless logged_in?
@@ -89,5 +90,19 @@ class ReConnect::Controllers::SystemPenpalController < ReConnect::Controllers::A
   def clear_copied
     session.delete(:copied_penpal_id)
     redirect back
+  end
+
+  def address_book
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:penpal:access")
+
+    file = ReConnect::Models::File
+      .where(mime_type: 'text/html;x-reconnect-type=address-book')
+      .order_by(Sequel.desc(:creation))
+      .first
+
+    return 500 if file.nil?
+    token = file.generate_download_token(current_user)
+    redirect to("/filedl/#{file.file_id}/#{token.token}?v=1")
   end
 end
