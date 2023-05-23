@@ -55,6 +55,7 @@ class ReConnect::Controllers::ApiPenpalController < ReConnect::Controllers::ApiC
       name: @penpal.get_name,
       pseudonym: @penpal.get_pseudonym,
       is_incarcerated: @penpal.is_incarcerated,
+      status: @penpal.decrypt(:status),
       prison: @penpal.decrypt(:prison_id).to_i,
       relationships: @relationships,
     })
