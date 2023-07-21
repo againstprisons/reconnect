@@ -14,8 +14,7 @@ let
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    ruby
-    bundler
+    ruby_2_7
 
     nodejs
     nodePackages.npm
