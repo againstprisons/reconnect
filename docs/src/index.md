@@ -12,7 +12,7 @@ For developers, the [*Internals*](./internals/index.md) section contains
 information about the internal components of re:connect.
 
 The source code for re:connect, and this documentation, can be found on
-GitLab.com at [againstprisons/reconnect][git]. The documentation lives in the
+GitHub.com at [againstprisons/reconnect][git]. The documentation lives in the
 `docs/` subdirectory.
 
 ## License
@@ -22,4 +22,4 @@ license.
 
 [pcn]: https://pcn.nz
 [papa]: https://papa.org.nz
-[git]: https://gitlab.com/againstprisons/reconnect
+[git]: https://github.com/againstprisons/reconnect

@@ -9,7 +9,7 @@ associated user, and does not have the "is incarcerated" flag set.
 
 For more information, see [the commit that introduced this feature][commit].
 
-[commit]: https://gitlab.com/againstprisons/reconnect/commit/4df2f28f
+[commit]: https://github.com/againstprisons/reconnect/commit/4df2f28f
 
 ## admin-profile-id
 

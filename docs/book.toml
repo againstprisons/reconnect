@@ -1,7 +1,4 @@
 [book]
 title = "re:connect Documentation"
-authors = [
-  "Alice Jenkinson <alice@jenkinson.nz>"
-]
 src = "src"
 multilingual = false
