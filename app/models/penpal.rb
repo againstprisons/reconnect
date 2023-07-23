@@ -37,6 +37,27 @@ class ReConnect::Models::Penpal < Sequel::Model
     [ds_one.all, ds_two.all].flatten.compact
   end
 
+  def mail_optout?(cat)
+    catparts = cat.split(":")
+    opted_out = (self.decrypt(:mail_optouts) || '').split(',').map { |a| a.split(":") }
+
+    opted_out.each do |part|
+      good = true
+      part.each_index do |i|
+        next if !good
+        if part[i] == '*'
+          return true
+        elsif part[i] != catparts[i]
+          good = false
+        end
+      end
+
+      return true if good
+    end
+
+    false
+  end
+
   def delete!
     # delete relationships
     self.relationships.map(&:delete!)

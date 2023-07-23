@@ -16,6 +16,16 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
     @penpal_name = @penpal_name_a.map{|x| x == "" ? nil : x}.compact.join(" ")
     @penpal_pseudonym = @penpal.get_pseudonym
 
+    @mail_optouts = ReConnect.app_config['mail-optout-categories'].map do |k, v|
+      [
+        k,
+        {
+          enabled: @penpal.mail_optout?(k),
+          friendly: v,
+        }
+      ]
+    end.to_h
+
     @pp_data = penpal_view_data(@penpal)
     @notes = @penpal.decrypt(:notes)&.strip
     @intro = @penpal.decrypt(:intro)
@@ -63,6 +73,7 @@ class ReConnect::Controllers::SystemPenpalViewController < ReConnect::Controller
         :relationships => @relationships,
         :copied_link => @copied_link,
         :intro => @intro,
+        :mail_optouts => @mail_optouts,
         :is_admin_profile => @penpal.id == ReConnect.app_config['admin-profile-id']&.to_i,
       })
     end

@@ -25,6 +25,17 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
       }
     end
 
+    @mail_optouts = ReConnect.app_config['mail-optout-categories'].map do |k, v|
+      [
+        k,
+        {
+          enabled: @penpal.mail_optout?(k),
+          form_name: k.gsub(':', '__'),
+          friendly: v,
+        }
+      ]
+    end.to_h
+
     @user = nil
     @user = @penpal.user unless @penpal.user_id.nil?
 
@@ -47,6 +58,7 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
           :intro => @penpal_intro,
           :user => @user,
           :prisons => @prisons,
+          :mail_optouts => @mail_optouts,
         })
       end
     end
@@ -107,6 +119,15 @@ class ReConnect::Controllers::SystemPenpalEditController < ReConnect::Controller
     pp_creation = request.params["creation"]&.strip&.downcase
     pp_creation = Chronic.parse(pp_creation, :guess => true)
     @penpal.creation = pp_creation if pp_creation
+
+    pp_optouts = @mail_optouts.map do |opt_k, opt_v|
+      if request.params["mail_optout_#{opt_v[:form_name]}"]&.strip&.downcase == "on"
+        opt_k
+      else
+        nil
+      end
+    end.compact
+    @penpal.encrypt(:mail_optouts, pp_optouts.join(','))
 
     if ReConnect.app_config['penpal-status-advocacy']
       if pp_status == ReConnect.app_config['penpal-status-advocacy']

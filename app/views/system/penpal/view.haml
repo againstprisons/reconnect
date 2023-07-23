@@ -21,6 +21,12 @@
               %span
                 &= d.last
 
+          %li
+            %strong= "#{t(:'system/penpal/edit/mail_optouts')}:"
+            %span
+              - opts = mail_optouts.map{|k,v| v[:enabled] ? v[:friendly] : nil}.compact
+              = opts.empty?() ? t(:'none') : opts.join(", ")
+
       - if has_role?('system:penpal:relationship:create')
         .form-wrapped.x-margin
           %h1= t(:'system/penpal/view/relationships/create/title')

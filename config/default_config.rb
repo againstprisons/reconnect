@@ -180,6 +180,12 @@ module ReConnect
       :type => :json,
       :default => '"PAGE_SIZE_A4"',
     },
+    "mail-optout-categories" => {
+      :type => :json,
+      :default => JSON.generate({
+        "holidaycard" => "Holiday Card Drive",
+      }),
+    },
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {
