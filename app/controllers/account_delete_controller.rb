@@ -51,6 +51,16 @@ class ReConnect::Controllers::AccountDeleteController < ReConnect::Controllers::
       end
     end
 
+    # Generate alert email
+    alertemail = make_generic_alert_email(
+      'user_self_deletion',
+      "The user #{@user.get_name.join(" ")} (email #{@user.email}; user ID #{@user.id}) has deleted their own account.",
+      {
+        uid: @user.id,
+        email: @user.email,
+      }
+    )
+
     # Mark account for soft deletion
     @user.soft_delete!
 
