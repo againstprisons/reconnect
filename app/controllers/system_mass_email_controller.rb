@@ -206,6 +206,17 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
       :content_html => @content,
       :content_text => @content_text,
     })
+
+    if @to_groups
+      @queued.recipient_assoc = "groups"
+      @queued.recipient_assoc_data = @to_groups.map(&:to_s).join(',')
+    elsif @penpal
+      @queued.recipient_assoc = "penpal_rls"
+      @queued.recipient_assoc_data = @penpal[:id].to_s
+    else
+      @queued.recipient_assoc = "all"
+    end
+
     @queued.queue_status = "queued"
     @queued.encrypt(:subject, @subject)
     @queued.encrypt(:recipients, recipients)
