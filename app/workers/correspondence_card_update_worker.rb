@@ -18,6 +18,15 @@ class ReConnect::Workers::CorrespondenceCardUpdateWorker
       instance["statuses"].each do |status|
         penpal_ids << helpers.penpal_search_perform("all status:#{status.inspect}")
       end
+
+      # filter optouts
+      penpal_ids = penpal_ids.flatten.compact.uniq.map do |ppid|
+        pp = ReConnect::Models::Penpal[ppid]
+        next nil unless pp
+        next nil if instance["optouts"]&.map { |x| pp.mail_optout?(x) }&.any?
+        pp.id
+      end
+
       penpal_ids = penpal_ids.flatten.compact.uniq
       logger.info("#{instance_name.inspect} - #{penpal_ids.count} penpal(s)")
 
