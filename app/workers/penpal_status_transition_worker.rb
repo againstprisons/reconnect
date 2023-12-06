@@ -34,7 +34,7 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
 
         begin
           do_transition = []
-          
+
           if ReConnect.app_config["penpal-allow-status-override"] && pp.status_override
             do_transition << false
           end
@@ -47,10 +47,12 @@ class ReConnect::Workers::PenpalStatusTransitionWorker
                 .order(Sequel.desc(:creation))
                 .first
 
-              if last
-                do_transition << (last.creation < last_correspondence_gate)
-              else
+              if last.nil?
                 do_transition << false
+              elsif last && transition["when"]["invert"]
+                do_transition << (last.creation > last_correspondence_gate)
+              else
+                do_transition << (last.creation < last_correspondence_gate)
               end
 
             when "penpal_count"
