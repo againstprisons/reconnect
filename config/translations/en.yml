@@ -164,6 +164,7 @@
 :'penpal/waiting/none_waiting': "There are no incarcerated penpals that need a new penpal!"
 :'penpal/waiting/item/write_to': "Write to this penpal"
 :'penpal/waiting/compose/title': "Write to <%= name %>"
+:'penpal/waiting/compose/intro_title': "Penpal introduction"
 :'penpal/waiting/compose/section_title': "Compose your letter"
 :'penpal/waiting/compose/submit': "Continue to confirmation"
 :'penpal/waiting/compose/errors/no_text': "No text was provided - we can't send a blank letter!"

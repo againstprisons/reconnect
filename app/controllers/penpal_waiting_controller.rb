@@ -113,6 +113,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal_name => @penpal_name,
         :content => content,
         :pseudonym => pseudonym,
+        :intro => @penpal.decrypt(:intro)&.strip,
       })
     end
 
@@ -133,6 +134,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
           :penpal_name => @penpal_name,
           :content => content,
           :pseudonym => pseudonym,
+          :intro => @penpal.decrypt(:intro)&.strip,
         })
       end
     end
@@ -148,6 +150,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal_name => @penpal_name,
         :content => content,
         :pseudonym => pseudonym,
+        :intro => @penpal.decrypt(:intro)&.strip,
       })
     end
 
@@ -160,6 +163,7 @@ class ReConnect::Controllers::PenpalWaitingController < ReConnect::Controllers::
         :penpal_name => @penpal_name,
         :content => content,
         :pseudonym => pseudonym,
+        :intro => @penpal.decrypt(:intro)&.strip,
       })
     end
 

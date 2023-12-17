@@ -5,6 +5,12 @@
     %i.fa.fa-chevron-left
     = t(:'back')
 
+  - unless intro.nil? || intro&.empty?
+    .form-wrapped.y-margin
+      %h1= t(:'penpal/waiting/compose/intro_title')
+      .rich-text-container
+        = intro
+
   %form.pure-form.pure-form-stacked.form-wrapped.x-margin{:method => 'POST'}
     %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
     %h1= t(:'penpal/waiting/compose/section_title')
