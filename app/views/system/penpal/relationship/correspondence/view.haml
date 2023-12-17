@@ -73,7 +73,7 @@
                   %i.fa.fa-check
                   = t(:'system/penpal/relationship/correspondence/view/actions/send/via_email')
 
-        %a.pure-button.button.button-primary{:href => download_form_url}
+        %a.pure-button.button.button-primary{:href => file_d[:download_url], :target => '_blank'}
           %i.fa.fa-download
           = t(:'system/penpal/relationship/correspondence/view/actions/download')
 
@@ -89,6 +89,11 @@
 
           .correspondence-html.rich-text-container
             = file_d[:html_content]
+
+    - elsif file_d[:display_embed]
+      .pure-u-1
+        .form-wrapped
+          %iframe.correspondence-iframe{src: file_d[:view_url]}= ""
 
   - if settings.development? || has_role?("system:debugging")
     .page-footer.y-margin-large

@@ -4,7 +4,6 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
   add_route :get, "/"
   add_route :post, "/mark", :method => :mark
   add_route :post, "/send", :method => :send_form
-  add_route :get, "/download", :method => :download
   add_route :get, "/delete", :method => :delete
   add_route :post, "/delete", :method => :delete
 
@@ -37,15 +36,19 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
     return halt 404 unless @file
+    @file_token = @file.generate_download_token(current_user)
     @file_d = {
       :mime_type => @file.mime_type,
+      :display_embed => @file.mime_type == 'application/pdf',
       :display_html => @file.mime_type == 'text/html',
       :html_content => @file.mime_type == 'text/html' ? @file.decrypt_file : nil,
+      :download_token => @file_token,
+      :download_url => url("/filedl/#{@file.file_id}/#{@file_token.token}?v=0"),
+      :view_url => url("/filedl/#{@file.file_id}/#{@file_token.token}?v=1"),
     }
 
     @mark_form_url = request.path.to_s + "/mark"
     @send_form_url = request.path.to_s + "/send"
-    @download_form_url = request.path.to_s + "/download"
     @delete_form_url = request.path.to_s + "/delete"
 
     @title = t(:'system/penpal/relationship/correspondence/view/title', :id => @correspondence.id)
@@ -65,7 +68,6 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
         :file_d => @file_d,
         :mark_form_url => @mark_form_url,
         :send_form_url => @send_form_url,
-        :download_form_url => @download_form_url,
         :delete_form_url => @delete_form_url,
       })
     end
@@ -170,31 +172,6 @@ class ReConnect::Controllers::SystemPenpalRelationshipCorrespondenceViewControll
 
     @correspondence.save
     return redirect back
-  end
-
-  def download(rid, cid)
-    return halt 404 unless logged_in?
-    return halt 404 unless has_role?("system:penpal:relationship:correspondence:access")
-
-    @relationship = ReConnect::Models::PenpalRelationship[rid.to_i]
-    return halt 404 unless @relationship
-
-    @penpal_one = ReConnect::Models::Penpal[@relationship.penpal_one]
-    @penpal_one_name = @penpal_one.get_name
-    @penpal_two = ReConnect::Models::Penpal[@relationship.penpal_two]
-    @penpal_two_name = @penpal_two.get_name
-
-    @correspondence = ReConnect::Models::Correspondence[cid.to_i]
-    return halt 404 unless @correspondence
-    return halt 404 unless @correspondence.sending_penpal == @penpal_one.id || @correspondence.receiving_penpal == @penpal_one.id
-    return halt 404 unless @correspondence.sending_penpal == @penpal_two.id || @correspondence.receiving_penpal == @penpal_two.id
-
-    @file = ReConnect::Models::File.where(:file_id => @correspondence.file_id).first
-    return halt 404 unless @file
-
-    @token = @file.generate_download_token(current_user)
-
-    return redirect to("/filedl/#{@file.file_id}/#{@token.token}")
   end
 
   def delete(rid, cid)
