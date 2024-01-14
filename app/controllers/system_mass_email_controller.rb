@@ -6,6 +6,8 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
   add_route :post, "/"
   add_route :post, "/confirm", :method => :confirm
   add_route :post, "/send", :method => :send_email
+  add_route :get, "/assoc/:type/:data", :method => :list_assoc
+  add_route :get, "/view/:mid", :method => :view_email
 
   def index
     return halt 404 unless logged_in?
@@ -228,6 +230,51 @@ class ReConnect::Controllers::SystemMassEmailController < ReConnect::Controllers
         :to_groups => [@to_groups, mass_email_display_groups(@to_groups)],
         :penpal => @penpal,
         :queue_id => @queued.id,
+      })
+    end
+  end
+
+  def list_assoc(type, data)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:mass_email:view")
+
+    @title = t(:'system/mass_email/list_assoc/title')
+
+    type = type&.downcase&.to_sym
+    known = nil
+    if type == :penpal_rls
+      data = data.to_i.to_s
+      return halt 404 if data.to_i.zero?
+      known = ReConnect::Models::EmailQueue.where(recipient_assoc: type.to_s, recipient_assoc_data: data).all
+    end
+
+    return halt 404 if known.nil? || (known&.respond_to?(:empty?) && known&.empty?)
+
+    haml(:'system/layout', :locals => {:title => @title}) do
+      haml(:'system/mass_email/list_assoc', :layout => false, :locals => {
+        :title => @title,
+        :assoc => [type, data],
+        :known => known,
+      })
+    end
+  end
+
+  def view_email(mid)
+    return halt 404 unless logged_in?
+    return halt 404 unless has_role?("system:mass_email:view")
+
+    @email = ReConnect::Models::EmailQueue[mid]
+    return halt 404 unless @email
+    @title = t(:'system/mass_email/view_email/title', meid: mid)
+
+    @rendered = @email.decrypt(:content_html)
+    @rendered = "data:text/html;base64,#{Base64.strict_encode64(@rendered)}"
+
+    haml(:'system/layout', :locals => {:title => @title}) do
+      haml(:'system/mass_email/view_email', :layout => false, :locals => {
+        :title => @title,
+        :email => @email,
+        :rendered => @rendered,
       })
     end
   end

@@ -93,6 +93,11 @@
               %i.fa.fa-envelope
               = t(:'system/penpal/actions/send-email')
 
+            - if has_role?("system:mass_email:view")
+              %a.pure-button.button{:href => url("/system/mass-email/assoc/penpal_rls/#{penpal.id}"), :target => '_blank'}
+                %i.fa.fa-list
+                = t(:'system/penpal/actions/view-email-assoc')
+
           - if has_role?("system:user:access")
             - if user
               %a.pure-button.button{:href => "/system/user/#{user.id}"}

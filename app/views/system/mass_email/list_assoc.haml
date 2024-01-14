@@ -1,0 +1,14 @@
+.system-admin-mass-email-listassoc
+  %h1= title
+  %p= t(:"system/mass_email/list_assoc/type/#{assoc.first}", assoc: assoc)
+
+  %ul
+    - known.each do |ke|
+      %li
+        %a{href: url("/system/mass-email/view/#{ke.id}")}
+          = "Email ID #{ke.id}"
+          = surround '(', ')' do
+            - if ke.creation
+              = t(:'timestamp/full_friendly', ts: ke.creation)
+            - else
+              = "unknown sending date/time"
