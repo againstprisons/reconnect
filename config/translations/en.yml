@@ -1073,4 +1073,4 @@
 :'account/tos/sign_form/validation_failed': "You must agree to the Terms of Service to continue."
 
 # Miscellaneous things
-:'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://gitlab.com/againstprisons/reconnect\">re:connect</a>"
+:'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://github.com/againstprisons/reconnect\">re:connect</a>"
