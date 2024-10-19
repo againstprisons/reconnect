@@ -43,7 +43,7 @@ module ReConnect
       :default => false,
     },
     "signup-age-gate" => {
-      :type => :text,
+      :type => :time_relative,
       :default => '18 years ago',
     },
     "signup-terms-agree-enabled" => {

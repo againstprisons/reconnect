@@ -1,5 +1,6 @@
 class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Controllers::ApplicationController
   include ReConnect::Helpers::SystemConfigurationHelpers
+  KNOWN_KEY_TYPES = %w[ bool text number json time_unix time_relative ]
 
   add_route :get, "/"
   add_route :get, "/new-key", :method => :new_key
@@ -50,6 +51,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
       return haml(:'system/layout', :locals => {:title => @title}) do
         haml(:'system/configuration/keyvalue/edit', :layout => false, :locals => {
           :title => @title,
+          :known_types => KNOWN_KEY_TYPES,
           :key => key,
           :is_new => entry.nil?,
           :type => type,
@@ -61,7 +63,7 @@ class ReConnect::Controllers::SystemConfigurationKeysController < ReConnect::Con
     end
 
     type = request.params["type"]&.strip&.downcase
-    unless %w[bool text number json].include?(type)
+    unless KNOWN_KEY_TYPES.include?(type)
       flash :error, t(:'system/configuration/key_value/edit_key/type/invalid')
       return redirect request.path
     end
