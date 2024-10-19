@@ -60,6 +60,17 @@ class ReConnect::Models::User < Sequel::Model
     token
   end
 
+  def needs_tos_agreement_update?
+    return nil unless ReConnect.app_config['tos-enabled']
+
+    agreed_ts = self.tos_agreed || Time.at(0)
+    return nil if agreed_ts > ReConnect.app_config['tos-last-updated']
+
+    enforce_after = Chronic.parse(ReConnect.app_config['tos-enforce-after'], now: ReConnect.app_config['tos-last-updated'])
+    return :hard if Time.now > enforce_after
+    return :soft
+  end
+
   def invalidate_tokens!
     invalidate_tokens_except!(nil)
   end 

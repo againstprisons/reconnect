@@ -46,14 +46,6 @@ module ReConnect
       :type => :time_relative,
       :default => '18 years ago',
     },
-    "signup-terms-agree-enabled" => {
-      :type => :bool,
-      :default => false,
-    },
-    "signup-terms-agree-text" => {
-      :type => :text,
-      :default => 'I confirm that I am over 18 years old',
-    },
     "signup-captcha-enabled" => {
       :type => :bool,
       :default => true,
@@ -186,6 +178,26 @@ module ReConnect
         "holidaycard" => "Holiday Card Drive",
       }),
     },
+    "tos-enabled" => {
+      :type => :bool,
+      :default => false,
+    },
+    "tos-last-updated" => {
+      :type => :time_unix,
+      :default => 0,
+    },
+    "tos-text" => {
+      :type => :text,
+      :default => '',
+    },
+    "tos-checklist" => {
+      :type => :json,
+      :default => '[]',
+    },
+    "tos-enforce-after" => {
+      :type => :text,
+      :default => 'in 28 days',
+    },
   }
 
   APP_CONFIG_DEPRECATED_ENTRIES = {
@@ -195,6 +207,14 @@ module ReConnect
          "Moved to 'disable-outside-file-upload', keeping the name in line " \
          "with other 'disable-*' configuration entries."
       ),
+    },
+    "signup-terms-agree-enabled" => {
+      :in => "1.4.0",
+      :reason => "Signup ToS merged with 'tos-*' options",
+    },
+    "signup-terms-agree-text" => {
+      :in => "1.4.0",
+      :reason => "Signup ToS merged with 'tos-*' options",
     },
   }
 

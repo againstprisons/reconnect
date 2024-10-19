@@ -26,6 +26,8 @@ controllers:
   - path: /hcard
     controller: HolidayCardController
 
+  - path: /account/tos
+    controller: AccountTosController
   - path: /account/mfa/recovery
     controller: AccountMfaRecoveryController
   - path: /account/mfa/totp

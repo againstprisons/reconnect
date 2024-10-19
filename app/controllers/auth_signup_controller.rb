@@ -2,6 +2,7 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
   add_route :get, "/"
   add_route :post, "/"
   add_route :get, "/verify/:token", method: :verify
+  add_route :post, "/verify/:token", method: :verify
 
   def index
     return redirect "/" if logged_in?
@@ -181,10 +182,34 @@ class ReConnect::Controllers::AuthSignupController < ReConnect::Controllers::App
       end
     end
 
+    if request.get?
+      @title = t(:'auth/signup/tos/title')
+      return haml(:'auth/layout', :locals => {:title => @title, :auth_no_tabs => true}) do
+        haml(:'auth/signup/tos', :layout => false, :locals => {
+          :title => @title,
+          :tos_text => ReConnect.app_config['tos-text'],
+          :tos_checklist => ReConnect.app_config['tos-checklist'],
+        })
+      end
+    end
+
+    is_tos_ok = request.params['agreed']&.strip&.downcase == "on"
+    if ReConnect.app_config['tos-checklist'].length > 0
+      is_tos_ok = ReConnect.app_config['tos-checklist'].map.with_index(0) do |_, chidx|
+        request.params["checklist_#{chidx}"]&.strip&.downcase == "on"
+      end.all?
+    end
+
+    unless is_tos_ok
+      flash :error, t(:'auth/signup/tos/validation_failed')
+      return redirect request.url
+    end
+
     # create the user
     user = ReConnect::Models::User.new({
       email: user_data['email_address'],
       password_hash: user_data['password_hash'],
+      tos_agreed: Sequel.function(:NOW),
     }).save
     user.encrypt(:first_name, user_data['name_first'])
     user.encrypt(:last_name, user_data['name_last'])

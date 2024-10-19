@@ -1,6 +1,9 @@
 = haml :'warnings/announcements', :layout => false
 
 - if logged_in?
+  - if current_user.needs_tos_agreement_update? != nil
+    = haml :'warnings/tos_banner', layout: false
+
   - if has_role?("system:configuration:refresh")
     - if ReConnect.app_config_refresh_pending.count.positive? || session[:we_changed_app_config]
       = haml :'warnings/appconfig_refresh_pending', :layout => false

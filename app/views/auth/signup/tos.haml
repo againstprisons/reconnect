@@ -1,0 +1,20 @@
+.auth-signup.auth-signup-tos
+  %form.pure-form.pure-form-stacked.form-wrapped{:method => "POST"}
+    %input{:type => 'hidden', :name => '_csrf', :value => session[:csrf]}
+
+    %h1= title
+    %div= tos_text
+
+    - if tos_checklist.empty?
+      %label{for: 'tos_sign_checkbox'}
+        %input#tos_sign_checkbox{name: 'agreed', type: 'checkbox', required: true}
+        = t(:'account/tos/sign_form/checkbox')
+    - else
+      - tos_checklist.each.with_index(0) do |chtext, chidx|
+        %label{for: "tos_checklist_#{chidx}"}
+          %input{id: "tos_checklist_#{chidx}", name: "checklist_#{chidx}", type: 'checkbox', required: true}
+          = chtext
+
+    .y-margin= ""
+    %button.pure-button.button.button-primary{type: 'submit'}
+      = t(:'auth/signup/tos/submit')

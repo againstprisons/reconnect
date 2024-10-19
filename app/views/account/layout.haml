@@ -7,6 +7,10 @@
             %a.pure-menu-link.sidebar-menu-link{:href => '/account'}
               = t :'account/title'
 
+          %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/account/tos"))].compact}
+            %a.pure-menu-link.sidebar-menu-link{:href => '/account/tos'}
+              = t :'account/tos/title'
+
           %li.pure-menu-item.sidebar-menu-item{:class => [("pure-menu-selected" if current_prefix?("/account/mfa"))].compact}
             %a.pure-menu-link.sidebar-menu-link{:href => '/account/mfa'}
               = t :'account/mfa/title'

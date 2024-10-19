@@ -31,7 +31,8 @@
     border-bottom-color: $color_warning_maintenance_border;
   }
 
-  &.appconfig-refresh-warning
+  &.appconfig-refresh-warning,
+  &.tos-banner
   {
     color: $color_warning_appconfig_refresh_fg;
     background: $color_warning_appconfig_refresh_bg;

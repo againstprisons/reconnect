@@ -231,6 +231,8 @@
 :'auth/signup/verify_sent/content/two': "It may take a few minutes for the email to arrive, so please be patient."
 :'auth/signup/verify_invalid/title': "Something went wrong here..."
 :'auth/signup/verify_invalid/content': "The verification link you've clicked was invalid. Please try copying and pasting the full link from the verification email into your browser's address bar."
+:'auth/signup/tos/title': "Terms of Service"
+:'auth/signup/tos/validation_failed': "You must agree to the Terms of Service to continue signing up to <%= site_name %>."
 :'auth/signup/success': "Your sign up was successful. Welcome to <%= site_name %>!"
 :'auth/reset/title': "Reset password"
 :'auth/reset/enter_email': "To reset your password, please enter your email address."
@@ -1062,6 +1064,13 @@
 :'captcha/invalid': "The provided CAPTCHA verification was invalid, please try again."
 :'captcha/smolcaptcha/header': "Please answer the following question:"
 :'captcha/smolcaptcha/input': "Your answer:"
+
+# ToS
+:'tos/user_unsigned_banner': "You have not yet agreed to the Terms of Service for <%= site_name %>. <a href=\"/account/tos\">Please click here to read, and agree to, the Terms of Service.</a>"
+:'account/tos/title': "Terms of Service"
+:'account/tos/sign_form/checkbox': "I agree to the Terms of Service"
+:'account/tos/sign_form/submit': "Confirm"
+:'account/tos/sign_form/validation_failed': "You must agree to the Terms of Service to continue."
 
 # Miscellaneous things
 :'powered_by_reconnect': "<%= site_name %> is powered by <a href=\"https://gitlab.com/againstprisons/reconnect\">re:connect</a>"
